@@ -40,6 +40,7 @@
 | Lemma 3.1 (`lem:intersection`), flowchart block G | `IntersectionWitness`, `exists_intersectionData` in [`Intersection/Existence.lean`](SharpTopologicalOverlap/Intersection/Existence.lean) | Proved from `2 ≤ d`, `d + 1 ≤ n`, and an arbitrary continuous map. Constructs a finite target of dimension exactly `d`, a cycle and all five properties, with no geometric existence premise. See the [plan](docs/intersection-plan.md) and [verification record](docs/intersection-verification.md). |
 | Morse band vanishing used in Lemma 5.5 (`lem:band`) | `TauCeti.IsMorse.isZero_singularHomology_sublevelPair_of_le_manifoldMorseIndex` | Imported and [checked over $\mathbb F_2$](docs/dependency-assessment.md#build-and-verification). The simplex application is open. |
 | Theorem 1.2 (`thm:finite`) | — | Open |
+| Lemma 6.1, compatible exceptional vertices (`lem:covers`), block D | `IntersectionData.exceptionalSet_card_le`, `exceptionalSet_mono`, `remainingVertices_nonempty`, `cochain_eq_zero_on_remaining`, `vertex_cochain_eq_on_remaining`, `remainingFamily_hasCocycleParity`, `remainingFamily_image` in [`Deletion.lean`](SharpTopologicalOverlap/Deletion.lean) | Proved from the checked intersection data. Choices of maximal disjoint support families are global per target face. The common cocycle is on the actual subtype of remaining vertices; its ambient image is exactly upward support restricted to those vertices. |
 | Theorem 1.1 (`thm:main`) | — | Open |
 
 The foundation work follows [the implementation plan](docs/foundation-plan.md).

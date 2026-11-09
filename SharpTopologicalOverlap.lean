@@ -44,6 +44,7 @@ public import SharpTopologicalOverlap.Intersection.BarycentricCochains
 public import SharpTopologicalOverlap.Intersection.LocalConstruction
 public import SharpTopologicalOverlap.Intersection.Normalization
 public import SharpTopologicalOverlap.Intersection.Existence
+public import SharpTopologicalOverlap.Deletion
 public import TauCeti.AlgebraicTopology.SimplicialComplex.Realization.CWComplex.OrderedChainComplex
 public import TauCeti.AlgebraicTopology.SimplicialComplex.Subdivision.IteratedNeighborhood
 public import TauCeti.AlgebraicTopology.Singular.ModuleChains.Basic

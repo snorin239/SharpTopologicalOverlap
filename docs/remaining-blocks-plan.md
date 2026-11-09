@@ -1,0 +1,59 @@
+# Remaining blocks toward Theorem 1.2
+
+Work resumed on 9 November 2026 from the checked completion of block G
+(`09e3cbd`). The reference manuscript is unchanged. Each completed flowchart
+block will be checked, audited, documented, and committed separately.
+
+## Initial parallel work
+
+* **H, singular chains (primary agent):** concrete singular support and its
+  carrier/lifting API, followed by relative-cycle fillings and a
+  support-controlled prism. Direct prerequisites: the existing simplex API
+  and TauCeti's singular module chains, relative chains, and homotopies.
+* **P, polynomials (polynomial agent):** finite-sum weight polynomials,
+  smoothness and derivatives, positivity/counting bounds, restriction,
+  and the independence complex. Direct prerequisites: simplex and finite
+  family APIs. This supplies the spectral and weight-space branches.
+* **D, deletion (deletion agent):** compatible maximal support matchings,
+  cardinality bound, vanishing on complements, agreement of vertex
+  cochains and restricted cocycles. Direct prerequisites: block G and
+  the existing simplicial algebra.
+* **C, comparison (comparison agent):** inspect the canonical comparison
+  theorem in the pinned library, implement the affine chain map and its
+  carrier compatibility, then its homology isomorphism and the supported
+  inverse. Its singular carrier prerequisites are coordinated with H.
+
+Each agent owns its named module and subtree. The primary agent owns root
+imports, integration, documentation, validation, and commits. Agents do not
+commit or edit each other's files. Dependencies and remaining gaps are
+reported explicitly; a conditional interface is never counted as the final
+theorem.
+
+## Subsequent dependencies
+
+Block D is implemented in `Deletion.lean`: all five parts of Lemma 6.1,
+including the actual remaining-vertex subtype and the exact family-image
+identity, are checked. The independent review checked the global matching
+choices, cardinality estimate, edge argument, and reindexing.
+
+The next spectral work starts with a separate finite real-sum lemma
+(`Spectral/Counting.lean`): a lower bound on each eigenvalue and their fixed
+negative sum imply the required count, with the equality case proved
+explicitly. This depends only on finite sums and real arithmetic. Its
+library spectral/signature adapter will be inspected alongside that proof;
+it does not yet claim the matrix or cocycle rigidity theorem.
+
+After P, implement spectral rigidity (including equality), then the
+logarithmic barrier and index persistence. H and the barrier supply sublevel
+relative vanishing. D, P, and sublevel vanishing supply the nested weight
+spaces. C, H, G, and the weight spaces supply the descending contradiction
+and the exact finite overlap theorem. Before starting each later block,
+record its concrete dependencies and assign nonoverlapping implementation
+and verification tasks.
+
+## Completion checks
+
+Check each new module with `lake env lean`, expose it from
+`SharpTopologicalOverlap.lean`, run `lake build`, and inspect endpoint axioms.
+Update `FORMALIZATION.md` with actual declarations and proof status. Only
+checked results free of placeholders and project axioms count as complete.
