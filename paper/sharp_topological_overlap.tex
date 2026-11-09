@@ -1,0 +1,745 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1.05in]{geometry}
+\usepackage[expansion=false]{microtype}
+\usepackage{enumitem,xcolor}
+\usepackage[colorlinks=true,linkcolor=blue!40!black,citecolor=blue!40!black,urlcolor=blue!40!black]{hyperref}
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=3pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\numberwithin{equation}{section}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\one}{\boldsymbol 1}
+\newcommand{\R}{\mathbb R}
+\DeclareMathOperator{\supp}{supp}
+\DeclareMathOperator{\ov}{ov}
+\DeclareMathOperator{\Hess}{Hess}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\aff}{aff}
+\DeclareMathOperator{\im}{im}
+\title{Sharp topological overlap in every dimension}
+\author{}
+\date{9 November 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For $d\ge2$, the topological overlap constant $c_d^{\mathrm{top}}$ is the largest number $c$ such that, for every continuous map from the $d$-dimensional skeleton of the $(n-1)$-dimensional simplex to $\R^d$, some point of $\R^d$ lies in the images of at least $(c-o(1))\binom n{d+1}$ of the $d$-dimensional faces, as $n\to\infty$. We prove that $c_d^{\mathrm{top}}=(d+1)!/(d+1)^{d+1}$ for every $d\ge2$. This value matches the affine upper bound of Bukh, Matou\v{s}ek, and Nivasch.
+\end{abstract}
+
+\section{Introduction}\label{sec:intro}
+
+For integers $d\ge2$ and $n\ge d+1$, let $X_{n,d}$ be the $d$-dimensional skeleton of the simplex with vertex set $[n]=\{1,\ldots,n\}$, and let $|X_{n,d}|$ be its geometric realization (Section~\ref{sec:complexes}). For a continuous map $f:|X_{n,d}|\to\R^d$, put
+\begin{equation*}
+ \ov(f)=\max_{y\in\R^d}\left|\left\{\sigma\in\binom{[n]}{d+1}:y\in f(|\sigma|)\right\}\right|,
+\end{equation*}
+the largest number of $d$-dimensional faces whose images have a common point. The maximum exists because the cardinality takes finitely many values. The \emph{topological overlap constant} is
+\begin{equation*}
+ c_d^{\mathrm{top}}=\liminf_{n\to\infty}\ \min_f\frac{\ov(f)}{\binom n{d+1}},
+\end{equation*}
+where the minimum is over all continuous maps $f:|X_{n,d}|\to\R^d$; it exists because $\ov(f)$ is a nonnegative integer.
+
+Gromov introduced this constant for continuous maps of the whole $(n-1)$-dimensional simplex~\cite[\S1.1]{Gromov}. Since $\ov(f)$ depends only on the restriction of $f$ to $|X_{n,d}|$, and every continuous map $|X_{n,d}|\to\R^d$ extends to the whole simplex, his constant coincides with $c_d^{\mathrm{top}}$. (To extend, treat the faces of dimension $d+1,\ldots,n-1$ in turn: if the map is defined on the boundary of a face with barycenter $b$, the formula $(1-t)b+ty\mapsto t\,f(y)$, for $y$ in the boundary and $t\in[0,1]$, extends it continuously over the face.) Gromov proved that $c_d^{\mathrm{top}}\ge 2d/((d+1)(d+1)!)$~\cite[\S1.1, p.~419]{Gromov}; Matou\v{s}ek and Wagner~\cite{MW} give an exposition of the combinatorial component of his method. Maps that are affine on every face are continuous, so an upper bound for such maps bounds $c_d^{\mathrm{top}}$. Bukh, Matou\v{s}ek, and Nivasch~\cite[Theorem~1.3]{BMN} constructed point sets which give $c_d^{\mathrm{top}}\le(d+1)!/(d+1)^{d+1}$ (Section~\ref{sec:final}). For $d=2$ both bounds equal~$2/9$. We prove that the upper bound is attained in every dimension.
+
+\begin{theorem}\label{thm:main}
+For every integer~$d\ge2$,
+\begin{equation*}
+ c_d^{\mathrm{top}}=\frac{(d+1)!}{(d+1)^{d+1}}.
+\end{equation*}
+\end{theorem}
+
+Throughout the paper we fix an integer $d\ge2$ and write
+\begin{equation*}
+ \theta=\frac{(d+1)!}{(d+1)^{d+1}}.
+\end{equation*}
+The lower bound in Theorem~\ref{thm:main} follows from the following finite statement.
+
+\begin{theorem}\label{thm:finite}
+Put
+\begin{equation}\label{eq:C}
+ C_d=\sum_{p=1}^{d}\binom{d+1}{p+1}(d+1-p)\left\lfloor\frac dp\right\rfloor.
+\end{equation}
+If $n>C_d$, then every continuous map $f:|X_{n,d}|\to\R^d$ satisfies
+\begin{equation*}
+ \ov(f)\ge\left(\frac{n-C_d}{d+1}\right)^{d+1}.
+\end{equation*}
+\end{theorem}
+
+The number $C_d$ bounds the number of vertices deleted in Lemma~\ref{lem:covers}; we have not tried to optimize it. Theorem~\ref{thm:finite} applies in particular to maps that are affine on every face: for every $n$-point set $S\subset\R^d$ with $n>C_d$, some point of $\R^d$ lies in the convex hulls of at least $((n-C_d)/(d+1))^{d+1}$ of the $(d+1)$-element subsets of~$S$. Together with~\cite[Theorem~1.3]{BMN} this shows that the constant of the first selection lemma, which~\cite{BMN} normalizes by $n^{d+1}$ rather than $\binom n{d+1}$, equals $(d+1)^{-(d+1)}$, as conjectured in~\cite[\S6]{BMN}. Gromov remarked that it was unknown whether the constant for continuous maps is smaller than the constant for affine maps in some dimension $d\ge3$~\cite[p.~419]{Gromov}; by Theorem~\ref{thm:main} the two constants coincide for every $d\ge2$.
+
+\paragraph{Organization.} Section~\ref{sec:prelim} fixes terminology. Section~\ref{sec:intersection} states the geometric input: a continuous map $f$ yields a finite $d$-dimensional simplicial complex $T$ with a $d$-cycle and, for every simplex $\tau$ of $T$, a cochain on the full simplex $\Delta([n])$ of degree $d-\dim\tau$; these cochains satisfy coboundary identities along the faces of $T$, and their supports are controlled by $\ov(f)$ (Lemma~\ref{lem:intersection}, proved in Appendix~\ref{app:intersection}). Section~\ref{sec:spectral} shows that the weight polynomial of a $(d+1)$-uniform cocycle has negative index at least $d+1$ at every face-critical point with value in $(0,\theta)$ (Corollary~\ref{cor:index}). Section~\ref{sec:morse} deduces, by ordinary Morse theory applied to the polynomial perturbed by a logarithmic barrier, that the set where this polynomial is less than $\theta$ has vanishing homology relative to its zero set in degrees at most~$d$ (Theorem~\ref{thm:weights}). Section~\ref{sec:proof} attaches to every simplex $\tau$ of $T$ a pair of subsets of $\Delta([n])$ with this vanishing property; the pairs decrease under passage to cofaces and, if $\ov(f)<((n-C_d)/(d+1))^{d+1}$, all contain the uniform vector. Filling this point successively in the pairs, from the $d$-simplices of $T$ down to its vertices, and evaluating the cochains along the fillings gives $1=0$; this proves Theorem~\ref{thm:finite}. Section~\ref{sec:final} proves Theorem~\ref{thm:main}.
+
+\section{Preliminaries}\label{sec:prelim}
+
+\subsection{Simplicial complexes}\label{sec:complexes}
+
+Let $V$ be a finite set. A \emph{simplicial complex} on $V$ is a family $K$ of nonempty subsets of $V$, called \emph{faces}, such that every nonempty subset of a face is a face. The \emph{dimension} of a face $\sigma$ is $|\sigma|-1$, and a $k$-face is a face of dimension~$k$. A \emph{facet} of a $k$-face $\sigma$ is a set $\sigma\setminus\{v\}$ with $v\in\sigma$, and $\sigma$ is a \emph{coface} of every face it contains. Elements of $V$ that form faces are \emph{vertices}; we write $a_v$ rather than $a_{\{v\}}$ for objects indexed by $0$-faces. A \emph{subcomplex} of $K$ is a subfamily that is itself a simplicial complex. A subcomplex $L$ of $K$ is \emph{full} if every face of $K$ whose vertices are all vertices of $L$ belongs to~$L$. The \emph{full simplex} $\Delta(V)$ consists of all nonempty subsets of~$V$. For $n\ge d+1$, the complex $X_{n,d}$ consists of all nonempty subsets of $[n]$ with at most $d+1$ elements.
+
+We realize $\Delta(V)$ as the probability simplex
+\begin{equation*}
+ \Delta(V)=\Bigl\{\mu\in\R^V:\mu_i\ge0\ (i\in V),\ \sum_{i\in V}\mu_i=1\Bigr\},
+\end{equation*}
+and use the same symbol for the complex and for this set. For $i\in V$ let $e_i\in\Delta(V)$ be the corresponding unit vector. The \emph{support} of $\mu\in\R^V$ is $\supp\mu=\{i:\mu_i\ne0\}$. For a nonempty $\sigma\subseteq V$, the \emph{closed face} and the \emph{open face} of $\sigma$ are
+\begin{equation*}
+ |\sigma|=\{\mu\in\Delta(V):\supp\mu\subseteq\sigma\},\qquad
+ \Delta^\circ(\sigma)=\{\mu\in\Delta(V):\supp\mu=\sigma\}.
+\end{equation*}
+The \emph{geometric realization} of a simplicial complex $K$ on $V$ is $|K|=\bigcup_{\sigma\in K}|\sigma|$. It is the disjoint union of the open faces $\Delta^\circ(\sigma)$, $\sigma\in K$; thus $\mu\in\Delta(V)$ lies in $|K|$ if and only if $\supp\mu\in K$. The \emph{uniform vector} of $\Delta(V)$ has all coordinates equal to $1/|V|$.
+
+We also use simplicial complexes in a Euclidean space $\R^N$, following~\cite[\S3.2.1, pp.~49--51]{Coste}. A \emph{simplex} in $\R^N$ is the convex hull of a nonempty affinely independent set, its \emph{vertices}; its \emph{faces} are the convex hulls of the nonempty subsets of its vertices, and its \emph{open simplex} is the set of its points all of whose barycentric coordinates are positive. A \emph{geometric simplicial complex} is a finite set $K$ of simplices in $\R^N$ that contains all faces of its members and such that any two members meet in a common face or not at all. Its \emph{underlying space} $|K|$ is the union of its simplices; it is the disjoint union of their open simplices~\cite[p.~51]{Coste}. A face of a simplex that meets its open simplex is the simplex itself, since proper faces have a vanishing barycentric coordinate. Hence, if $s,s'\in K$ and $s'$ meets the open simplex of $s$, then $s\subseteq s'$, because $s\cap s'$ is a face of $s$. The vertex sets of the simplices of $K$ form a simplicial complex in the previous sense, and we transfer to $K$ the notions defined for such complexes. For a vertex $w$ of $K$, the \emph{barycentric coordinate} $\beta_w:|K|\to[0,1]$ assigns to a point of a simplex $s\in K$ its barycentric coordinate with respect to $w$ if $w$ is a vertex of $s$, and $0$ otherwise; it is well defined and continuous, because it is affine on every simplex and the simplices meet in common faces. For a simplicial complex $K$ on $V$, the closed faces $|\sigma|$, $\sigma\in K$, form a geometric simplicial complex in $\R^V$ with underlying space $|K|$.
+
+The \emph{barycentric subdivision} $\operatorname{sd}K$ of a geometric simplicial complex $K$ consists of the simplices spanned by the barycenters $b_{s_0},\ldots,b_{s_q}$ of chains $s_0\subsetneq\cdots\subsetneq s_q$ of simplices of $K$; it is a geometric simplicial complex~\cite[p.~51]{Coste}. Put $K^{(0)}=K$ and $K^{(j)}=\operatorname{sd}K^{(j-1)}$ for $j\ge1$.
+
+\begin{lemma}\label{lem:sd}
+Let $K$ be a geometric simplicial complex, $j\ge0$, and let $m$ be the largest dimension of a simplex of~$K$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Every open simplex of $K^{(j)}$ is contained in an open simplex of $K$, and $|K^{(j)}|=|K|$.
+\item For every simplex $s$ of $K$, the simplices of $K^{(j)}$ contained in $s$ form a subcomplex of $K^{(j)}$ with underlying space $s$; for $j\ge1$ it is the barycentric subdivision of the subcomplex of simplices of $K^{(j-1)}$ contained in~$s$.
+\item Every simplex of $K^{(j)}$ has diameter at most $(m/(m+1))^j$ times the largest diameter of a simplex of~$K$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) By induction it suffices to take $j=1$. Let $r\in\operatorname{sd}K$ be spanned by $b_{s_0},\ldots,b_{s_q}$ for a chain $s_0\subsetneq\cdots\subsetneq s_q$. A point $\sum_ic_ib_{s_i}$ with all $c_i>0$ has positive barycentric coordinate with respect to every vertex of $s_q$, because $b_{s_q}$ has; so the open simplex of $r$ lies in that of $s_q$, and $r\subseteq s_q$. Conversely, let $x$ lie in the open simplex of $s\in K$, and order the vertices $w_1,\ldots,w_{q+1}$ of $s$ so that the barycentric coordinates of $x$ satisfy $\lambda_1\ge\cdots\ge\lambda_{q+1}>0$. Put $s_i=\conv\{w_1,\ldots,w_{i+1}\}$ and $\lambda_{q+2}=0$. Then
+\begin{equation*}
+ x=\sum_{i=0}^q(i+1)(\lambda_{i+1}-\lambda_{i+2})\,b_{s_i},
+\end{equation*}
+since the coefficient of $w_l$ on the right is $\sum_{i\ge l-1}(\lambda_{i+1}-\lambda_{i+2})=\lambda_l$. The coefficients of the $b_{s_i}$ are nonnegative with sum $\sum_l\lambda_l=1$, so $x\in|\operatorname{sd}K|$.
+
+(b) For $j=0$ the simplices in question are the faces of $s$. Let $j\ge1$, and let $r\in K^{(j)}$ be spanned by the barycenters of a chain $t_0\subsetneq\cdots\subsetneq t_q$ in $K^{(j-1)}$. If $t_q\subseteq s$, then $r\subseteq t_q\subseteq s$. Conversely, suppose $r\subseteq s$. By~(a), the open simplex of $t_q$ lies in the open simplex of some $s''\in K$; it contains $b_{t_q}\in r\subseteq s$, so $s''\subseteq s$, and $t_q\subseteq s''\subseteq s$. Hence the simplices of $K^{(j)}$ contained in $s$ are those of the barycentric subdivision of the subcomplex of simplices of $K^{(j-1)}$ contained in $s$, and by induction and~(a) their union is~$s$.
+
+(c) The simplex $r$ in~(a) is a face of a simplex of the barycentric subdivision of $s_q$ in the sense of~\cite[pp.~119--120]{Hatcher}, obtained by extending the chain to a maximal chain of faces of $s_q$. By~\cite[p.~120]{Hatcher}, the diameter of $r$ is at most $\dim s_q/(\dim s_q+1)\le m/(m+1)$ times the diameter of $s_q$. Induction on $j$ completes the proof.
+\end{proof}
+
+\subsection{Chains and cochains}\label{sec:chains}
+
+All chains, cochains, and homology groups have coefficients in~$\F$. Let $K$ be a simplicial complex. For $k\ge0$, the group of \emph{$k$-chains} $C_k(K)$ is the $\F$-vector space with basis the $k$-faces of~$K$; we identify a chain with the set of faces having coefficient one. The \emph{boundary} map $\partial:C_k(K)\to C_{k-1}(K)$ is
+\begin{equation*}
+ \partial\sigma=\sum_{v\in\sigma}\sigma\setminus\{v\}\qquad(k\ge1),
+\end{equation*}
+and $\partial=0$ on $C_0(K)$. Thus our chain complexes are unaugmented, and a vertex has zero boundary. One has $\partial\partial=0$. A \emph{cycle} is a chain with zero boundary.
+
+A \emph{$k$-cochain} is a function $c$ from the $k$-faces of $K$ to~$\F$; they form the vector space $C^k(K)$. The \emph{support} of $c$ is the set of $k$-faces $\sigma$ with $c(\sigma)=1$. A cochain is evaluated on a chain by $c(z)=\sum_{\sigma\in z}c(\sigma)$. The \emph{coboundary} $\delta:C^k(K)\to C^{k+1}(K)$ is
+\begin{equation*}
+ (\delta c)(\sigma)=\sum_{v\in\sigma}c(\sigma\setminus\{v\})=c(\partial\sigma);
+\end{equation*}
+hence $(\delta c)(z)=c(\partial z)$ for every $(k+1)$-chain $z$, and $\delta\delta=0$. A \emph{cocycle} is a cochain with $\delta c=0$. We say that a $k$-cochain $c$ \emph{vanishes on} a set $Y$ of vertices if $c(\sigma)=0$ for every $k$-face $\sigma\subseteq Y$. We write $\one\in C^0(K)$ for the cochain with value one on every vertex.
+
+Let $V$ be a finite set. A \emph{$(d+1)$-uniform cocycle} on $V$ is a family $G$ of $(d+1)$-element subsets of $V$, its \emph{members}, such that every $(d+2)$-element subset of $V$ contains an even number of members. Equivalently, $G$ is the support of a $d$-cocycle on~$\Delta(V)$.
+
+\subsection{Singular homology}\label{sec:singular}
+
+Let $Y$ be a topological space. For $k\ge0$, let $\Delta^k\subset\R^{k+1}$ be the standard simplex, the convex hull of the unit vectors $\epsilon_0,\ldots,\epsilon_k$. A \emph{singular $k$-simplex} in $Y$ is a continuous map $s:\Delta^k\to Y$~\cite[p.~108]{Hatcher}. The group $S_k(Y)$ of \emph{singular $k$-chains} is the $\F$-vector space with basis the singular $k$-simplices, and $\partial s=\sum_{i=0}^ks\circ\iota_i$ for $k\ge1$, where $\iota_i:\Delta^{k-1}\to\Delta^k$ is the affine map sending $\epsilon_0,\ldots,\epsilon_{k-1}$ in order to the $\epsilon_l$ with $l\ne i$; $\partial=0$ on $S_0(Y)$. One has $\partial\partial=0$~\cite[p.~108 and p.~153]{Hatcher}. The \emph{image} of a chain is the union of the images of the simplices with coefficient one; it is compact. For $A\subseteq Y$, $S_k(A)\subseteq S_k(Y)$ consists of the chains with image in~$A$. A continuous map $\varphi:Y\to Y'$ induces linear maps $\varphi_\#:S_k(Y)\to S_k(Y')$, $s\mapsto\varphi\circ s$, with $\varphi_\#\partial=\partial\varphi_\#$. For $y\in Y$ we write $[y]$ for the singular $0$-simplex with value~$y$.
+
+The \emph{relative homology} $H_k(Y,A)$ is the homology of the quotient complex $S_\ast(Y)/S_\ast(A)$~\cite[p.~115 and p.~153]{Hatcher}. Thus $H_k(Y,A)=0$ if and only if every $c\in S_k(Y)$ with $\partial c\in S_{k-1}(A)$ has the form $c=\partial w+c'$ with $w\in S_{k+1}(Y)$ and $c'\in S_k(A)$; we only use this characterization. A subspace $A\subseteq Y$ is a \emph{strong deformation retract} of $Y$ if there is a continuous map $H:Y\times[0,1]\to Y$ with $H(y,0)=y$, $H(Y\times\{1\})\subseteq A$, and $H(a,t)=a$ for all $a\in A$ and $t\in[0,1]$.
+
+\begin{lemma}\label{lem:prism}
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Let $Y\subseteq Y'$ be spaces and $H:Y\times[0,1]\to Y'$ a continuous map with $H(y,0)=y$ for $y\in Y$, and put $H_1=H(\cdot,1)$. There are linear maps $P:S_k(Y)\to S_{k+1}(Y')$ such that, for every $c\in S_k(Y)$,
+\begin{equation*}
+ \partial P(c)+P(\partial c)=c+(H_1)_\#c,
+\end{equation*}
+and the image of $P(c)$ is contained in $H(\im c\times[0,1])$.
+\item If $A$ is a strong deformation retract of $Y$, then $H_k(Y,A)=0$ for all~$k$.
+\item If $Y_0\subseteq Y_1\subseteq\cdots\subseteq Y_l$ and $H_k(Y_i,Y_{i-1})=0$ for $1\le i\le l$, then $H_k(Y_l,Y_0)=0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Hatcher's prism operator~\cite[proof of Theorem~2.10, pp.~112--113]{Hatcher} is defined by $P(s)=\sum_i(-1)^iH\circ(s\times\mathrm{id})|[v_0,\ldots,v_i,w_i,\ldots,w_k]$ for a singular $k$-simplex $s$, where $[v_0,\ldots,v_i,w_i,\ldots,w_k]$ denotes an affine $(k+1)$-simplex in $\Delta^k\times[0,1]$, and it satisfies $\partial P=(H_1)_\#-\mathrm{id}-P\partial$. With coefficients in $\F$ the signs disappear and this is the displayed identity. Every singular simplex in $P(s)$ has image in $H(s(\Delta^k)\times[0,1])$.
+
+(b) Let $H$ be as in the definition, $c\in S_k(Y)$, and $\partial c\in S_{k-1}(A)$. By~(a), $c=\partial P(c)+\bigl(P(\partial c)+(H_1)_\#c\bigr)$. Since $H$ fixes $A$ pointwise, $P(\partial c)$ has image in $H(A\times[0,1])=A$, and $(H_1)_\#c$ has image in~$A$.
+
+(c) Let $c\in S_k(Y_l)$ with $\partial c\in S_{k-1}(Y_0)$. Since $H_k(Y_l,Y_{l-1})=0$, $c=\partial w+c'$ with $w\in S_{k+1}(Y_l)$ and $c'\in S_k(Y_{l-1})$. Then $\partial c'=\partial c\in S_{k-1}(Y_0)$, and induction on $l$ applied to $c'$ completes the proof.
+\end{proof}
+
+We compare singular and simplicial chains. Let $L$ be a simplicial complex on a totally ordered finite set $V$. For a face $\tau=\{v_0<\cdots<v_k\}$ of $L$, let $\iota(\tau)$ be the affine singular simplex $\Delta^k\to|L|$ sending $\epsilon_l$ to $e_{v_l}$ for each~$l$. The linear extension $\iota:C_k(L)\to S_k(|L|)$ satisfies $\iota\partial=\partial\iota$. With the given order, $L$ is a $\Delta$-complex in the sense of~\cite[p.~103]{Hatcher}, as explained in~\cite[p.~107]{Hatcher}; its realization is identified with $|L|$ via the characteristic maps $\iota(\tau)$, its simplicial chain complex with coefficients in $\F$ is $C_\ast(L)$, and the canonical chain map to singular chains is~$\iota$. We use the following case of Hatcher's comparison theorem.
+
+\begin{theorem}[{\cite[Theorem~2.27, p.~128]{Hatcher}}]\label{thm:hatcher}
+For every $k$, the homomorphism $H_k(C_\ast(L))\to H_k(|L|,\varnothing)$ induced by $\iota$ is an isomorphism.
+\end{theorem}
+
+Hatcher states this for all $\Delta$-complex pairs with integer coefficients, and notes that the theory of~\cite[\S2.1]{Hatcher} carries over to arbitrary coefficient groups with the same proofs~\cite[p.~153]{Hatcher}; we use the case of the pair $(L,\varnothing)$ with coefficients in~$\F$.
+
+\begin{lemma}\label{lem:comparison}
+Let $V$ be a finite set, $x\in V$, and $u$ the uniform vector of $\Delta(V)$. There is a linear map $\rho:S_\ast(\Delta(V))\to C_\ast(\Delta(V))$, preserving degrees, such that $\rho\partial=\partial\rho$, $\rho([u])=x$, and $\rho(S_\ast(|L|))\subseteq C_\ast(L)$ for every subcomplex $L$ of~$\Delta(V)$.
+\end{lemma}
+\begin{proof}
+Fix a total order on $V$, and let $\iota$ be as above for $\Delta(V)$ and all its subcomplexes. For a singular simplex $s$ in $\Delta(V)$, let $L_s$ be the set of nonempty subsets of the supports of the points of $s(\Delta^k)$. It is a subcomplex of $\Delta(V)$ with $s(\Delta^k)\subseteq|L_s|$, and $L_s\subseteq L$ for every subcomplex $L$ with $s(\Delta^k)\subseteq|L|$. If $s'$ is a face $s\circ\iota_i$ of $s$, then $L_{s'}\subseteq L_s$. We construct, by induction on the degree, $\rho$ together with linear maps $Q:S_k(\Delta(V))\to S_{k+1}(\Delta(V))$ such that, for every singular simplex~$s$,
+\begin{equation}\label{eq:Q}
+ \rho(s)\in C_\ast(L_s),\qquad Q(s)\in S_\ast(|L_s|),\qquad \partial Q(s)+Q(\partial s)=\iota\rho(s)+s,
+\end{equation}
+and $\rho\partial s=\partial\rho s$. The lemma follows: if $s(\Delta^k)\subseteq|L|$, then $\rho(s)\in C_\ast(L_s)\subseteq C_\ast(L)$.
+
+In degree $0$, choose for each $\mu\in\Delta(V)$ a vertex $v(\mu)\in\supp\mu$, with $v(u)=x$, put $\rho([\mu])=v(\mu)$, and let $Q([\mu])$ be the affine singular $1$-simplex from $\mu$ to $e_{v(\mu)}$; it lies in $|\supp\mu|\subseteq|L_{[\mu]}|$, and $\partial Q([\mu])=[e_{v(\mu)}]+[\mu]=\iota\rho([\mu])+[\mu]$.
+
+Let $k\ge1$, assume $\rho$ and $Q$ are defined in degrees less than $k$, and let $s$ be a singular $k$-simplex. The chain $\rho(\partial s)$ lies in $C_{k-1}(L_s)$ and is a cycle: for $k\ge2$, $\partial\rho(\partial s)=\rho(\partial\partial s)=0$, and for $k=1$ every $0$-chain is a cycle. By~\eqref{eq:Q} in degree $k-1$, $\iota\rho(\partial s)=\partial Q(\partial s)+Q(\partial\partial s)+\partial s=\partial\bigl(s+Q(\partial s)\bigr)$, a boundary in $S_\ast(|L_s|)$. By the injectivity in Theorem~\ref{thm:hatcher} for $L_s$, there is $t\in C_k(L_s)$ with $\partial t=\rho(\partial s)$. The chain $z=s+Q(\partial s)+\iota(t)$ lies in $S_k(|L_s|)$, and $\partial z=\partial s+\bigl(\iota\rho(\partial s)+\partial s\bigr)+\iota\rho(\partial s)=0$. By the surjectivity in Theorem~\ref{thm:hatcher} for $L_s$, there are a cycle $b\in C_k(L_s)$ and $q\in S_{k+1}(|L_s|)$ with $z+\iota(b)=\partial q$. Put $\rho(s)=t+b$ and $Q(s)=q$. Then $\partial\rho(s)=\rho(\partial s)$ and $\partial Q(s)+Q(\partial s)=z+\iota(b)+Q(\partial s)=s+\iota\rho(s)$. Extending linearly completes the induction.
+\end{proof}
+
+\subsection{Functions on a simplex}\label{sec:calculus}
+
+Let $V$ be a finite set. For a nonempty $\sigma\subseteq V$, put
+\begin{equation*}
+ \R^\sigma_0=\Bigl\{x\in\R^V:x_i=0\ (i\notin\sigma),\ \sum_ix_i=0\Bigr\}.
+\end{equation*}
+The open face $\Delta^\circ(\sigma)$ is an open subset of the affine subspace $\mu+\R^\sigma_0$ for any $\mu\in\Delta^\circ(\sigma)$; it is a smooth manifold of dimension $|\sigma|-1$ with tangent space $\R^\sigma_0$ at every point.
+
+Let $f$ be a $C^2$ function on an open subset of $\R^V$, with differential $df(\mu)$ and Hessian form $\Hess f(\mu)$. A point $\mu\in\Delta(V)$ in its domain, with support $\sigma$, is \emph{face-critical} for $f$ if $df(\mu)$ vanishes on $\R^\sigma_0$, that is, if $\mu$ is a critical point of the restriction of $f$ to $\Delta^\circ(\sigma)$. Every vertex $e_i$ is face-critical, since $\R^{\{i\}}_0=0$. The \emph{negative index} of $f$ at a face-critical point $\mu$ with support $\sigma$ is the largest dimension of a subspace of $\R^\sigma_0$ on which $\Hess f(\mu)$ is negative definite; equivalently, the number of negative eigenvalues, counted with multiplicity, of $\Hess f(\mu)$ restricted to $\R^\sigma_0$. It is the Morse index of the restriction of $f$ to $\Delta^\circ(\sigma)$ at~$\mu$, and $\mu$ is a nondegenerate critical point of this restriction if $\Hess f(\mu)$ is nondegenerate on~$\R^\sigma_0$.
+
+For a family $\mathcal F$ of subsets of $V$, its \emph{weight polynomial} is
+\begin{equation}\label{eq:polynomial}
+ p_{\mathcal F}(\mu)=(d+1)!\sum_{e\in\mathcal F,\ |e|=d+1}\ \prod_{i\in e}\mu_i\qquad(\mu\in\R^V).
+\end{equation}
+Only members of size $d+1$ contribute. The polynomial is homogeneous of degree $d+1$ with nonnegative coefficients, so it is nondecreasing in each coordinate on $[0,\infty)^V$, and $p_{\mathcal F}\le p_{\mathcal F'}$ there if $\mathcal F\subseteq\mathcal F'$. For $\mu\in\Delta(V)$, $p_{\mathcal F}(\mu)$ is the probability that $d+1$ independent samples from the distribution $\mu$ are pairwise distinct and their set is a member of $\mathcal F$: each $(d+1)$-set $e$ arises from exactly $(d+1)!$ sequences, each of probability $\prod_{i\in e}\mu_i$. In particular $0\le p_{\mathcal F}\le1$ on $\Delta(V)$. Similarly, for $i\in V$,
+\begin{equation}\label{eq:derivbound}
+ \partial_ip_{\mathcal F}(\mu)=(d+1)\cdot d!\sum_{e\in\mathcal F,\ |e|=d+1,\ e\ni i}\ \prod_{j\in e\setminus\{i\}}\mu_j\in[0,d+1]\qquad(\mu\in\Delta(V)),
+\end{equation}
+because the sum multiplied by $d!$ is the probability that $d$ independent samples from $\mu$ are pairwise distinct and form a set $e\setminus\{i\}$ with $i\in e\in\mathcal F$.
+
+Let $G$ be a family of $(d+1)$-element subsets of $V$. All terms of $p_G$ are nonnegative on $\Delta(V)$, and the term of a member $e$ is positive at $\mu$ exactly when $e\subseteq\supp\mu$. Hence $p_G(\mu)=0$ if and only if $\supp\mu$ contains no member of $G$, that is,
+\begin{equation}\label{eq:independence}
+ \{\mu\in\Delta(V):p_G(\mu)=0\}=|I_G|,\qquad I_G=\{\tau\subseteq V:\tau\ne\varnothing,\ \text{no member of $G$ is contained in }\tau\}.
+\end{equation}
+The simplicial complex $I_G$ is the \emph{independence complex} of~$G$. For a function $f$ on $\Delta(V)$ we write $\{f<t\}=\{\mu\in\Delta(V):f(\mu)<t\}$, and similarly $\{f\le t\}$ and $\{f=0\}$.
+
+\section{Intersection cochains}\label{sec:intersection}
+
+The following lemma is the only input about continuous maps. It is proved in Appendix~\ref{app:intersection}, by approximating $f$ by a map that is affine on the simplices of a fine subdivision and counting intersection points of their images with the simplices of a triangulation of a large simplex in~$\R^d$. Cochains of this kind are the intersection cochains used by Gromov~\cite[\S2.2]{Gromov} and by Dotterrer, Kaufman, and Wagner~\cite[Definition~15 and Lemma~16]{DKW} for maps into manifolds.
+
+\begin{lemma}\label{lem:intersection}
+Let $n\ge d+1$ and let $f:|X_{n,d}|\to\R^d$ be continuous. There are a finite simplicial complex $T$ of dimension $d$, a $d$-cycle $\zeta\in C_d(T)$, and cochains $a_\tau\in C^{d-\dim\tau}(\Delta([n]))$ for $\tau\in T$, with the following properties.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item\label{I:bd} $\delta a_\tau=\sum_{v\in\tau}a_{\tau\setminus\{v\}}$ for every $\tau\in T$ with $\dim\tau\ge1$.
+\item\label{I:vert} $\delta a_v=0$ in $C^{d+1}(\Delta([n]))$ for every vertex $v$ of~$T$.
+\item\label{I:top} $\sum_{\tau\in\zeta}a_\tau=\one$ in $C^0(\Delta([n]))$, the sum over the $d$-simplices with coefficient one in~$\zeta$.
+\item\label{I:ov} For every $\tau\in T$ there is a point of $\R^d$ that lies in $f(|\sigma|)$ for every $d$-face $\sigma$ of $X_{n,d}$ containing a face in the support of $a_\eta$ for some face $\eta$ of $\tau$.
+\item\label{I:gp} For every $\tau\in T$ of dimension $p\ge1$, the support of $a_\tau$ does not contain $\lfloor d/p\rfloor+1$ pairwise vertex-disjoint faces.
+\end{enumerate}
+\end{lemma}
+
+For a $p$-simplex $\tau$ of $T$ with ordered vertices, properties~\ref{I:bd} and~\ref{I:vert} state that the map sending each face of $\tau$ to its cochain $a_\eta$ is a chain map from the chains of $\tau$, with degrees reversed and shifted by $d$, to the cochains of $\Delta([n])$; that is, the family $(a_\eta)_{\eta\subseteq\tau}$ is a $p$-simplex of Gromov's space of $d$-cocycles of this cochain complex~\cite[\S2.2, pp.~429--430]{Gromov}.
+\section{Critical points of cocycle polynomials}\label{sec:spectral}
+
+Let $V$ be a finite set. A family of $(d+1)$-element subsets of $V$ is \emph{complete $(d+1)$-partite} if $V$ has a partition into $d+1$ nonempty parts such that the members are exactly the $(d+1)$-sets meeting every part in one element. The weight polynomials~\eqref{eq:polynomial} of $(d+1)$-uniform cocycles have the following property at their face-critical points.
+
+\begin{lemma}\label{lem:spectral}
+Let $G$ be a nonempty $(d+1)$-uniform cocycle on $V$, and let $\mu\in\Delta(V)$ with $\supp\mu=V$ be face-critical for $p_G$. Then the negative index of $p_G$ at $\mu$ is at least~$d$. If it equals $d$, then $G$ is complete $(d+1)$-partite, every part has $\mu$-mass $1/(d+1)$, and $p_G(\mu)=\theta$.
+\end{lemma}
+\begin{proof}
+\emph{Normalized Hessian.} Put $t=p_G(\mu)$; then $t>0$, since $G\ne\varnothing$ and all coordinates of $\mu$ are positive. Let $H=(\partial_i\partial_jp_G(\mu))_{i,j\in V}$, and define the symmetric matrix $\widetilde H$ and the vector $v$ by
+\begin{equation*}
+ \widetilde H_{ij}=\sqrt{\mu_i\mu_j}\,H_{ij},\qquad v=(\sqrt{\mu_i})_{i\in V}.
+\end{equation*}
+Since $\mu$ is face-critical with support $V$, $dp_G(\mu)$ vanishes on $\R^V_0$, so all partial derivatives $\partial_ip_G(\mu)$ are equal. The polynomial $p_G$ is homogeneous of degree $d+1$, and each $\partial_ip_G$ is homogeneous of degree $d$. Euler's identity for these polynomials, together with $\sum_i\mu_i=1$, gives
+\begin{equation}\label{eq:stationary}
+ \partial_ip_G(\mu)=(d+1)t,\qquad
+ \sum_jH_{ij}\mu_j=d(d+1)t,\qquad
+ \widetilde Hv=d(d+1)t\,v,
+\end{equation}
+for every $i\in V$. The vector $v$ has norm one. The linear bijection $x\mapsto(x_i/\sqrt{\mu_i})_i$ maps $\R^V_0$ onto the orthogonal complement $v^\perp$, and transforms the quadratic form $x^{\mathsf T}Hx$ into $z^{\mathsf T}\widetilde Hz$. By Sylvester's law of inertia, the negative index of $p_G$ at $\mu$ equals the number of negative eigenvalues of $\widetilde H$ on the invariant subspace $v^\perp$. Every monomial of $p_G$ is a product of distinct variables, so $H$ and $\widetilde H$ have zero diagonal. Consequently
+\begin{equation}\label{eq:trace}
+ \tr\bigl(\widetilde H|_{v^\perp}\bigr)=\tr\widetilde H-v^{\mathsf T}\widetilde Hv=-d(d+1)t.
+\end{equation}
+
+\emph{A covariance matrix.} Let $E$ be a random member of $G$ with $\Pr(E=e)=(d+1)!\prod_{i\in e}\mu_i/t$, and define the random vector $\chi\in\R^V$ by $\chi_i=1/\sqrt{\mu_i}$ if $i\in E$ and $\chi_i=0$ otherwise. Since $\partial_ip_G(\mu)=(d+1)!\sum_{e\ni i}\prod_{j\in e\setminus\{i\}}\mu_j$ and, for $i\ne j$, $H_{ij}=(d+1)!\sum_{e\supseteq\{i,j\}}\prod_{l\in e\setminus\{i,j\}}\mu_l$, we have
+\begin{equation*}
+ \Pr(i\in E)=\frac{\mu_i\,\partial_ip_G(\mu)}t=(d+1)\mu_i,\qquad
+ \Pr(i,j\in E)=\frac{\mu_i\mu_jH_{ij}}t\quad(i\ne j).
+\end{equation*}
+Hence $\mathbb E\chi=(d+1)v$, $\mathbb E\chi_i^2=d+1$, and $\mathbb E(\chi_i\chi_j)=\widetilde H_{ij}/t$ for $i\ne j$. Therefore
+\begin{equation}\label{eq:covariance}
+ \Cov(\chi)=\frac{\widetilde H}t+(d+1)I-(d+1)^2vv^{\mathsf T}\succeq0.
+\end{equation}
+For $z\in v^\perp$ this gives $z^{\mathsf T}\widetilde Hz\ge-(d+1)t|z|^2$, so every eigenvalue of $\widetilde H$ on $v^\perp$ is at least $-(d+1)t$. If fewer than $d$ of them were negative, their sum would be at least $-(d-1)(d+1)t$, contradicting~\eqref{eq:trace}. Hence the negative index is at least~$d$.
+
+\emph{The equality case.} Assume that exactly $d$ eigenvalues of $\widetilde H$ on $v^\perp$ are negative. Their sum is at least $-d(d+1)t$ and the remaining eigenvalues are nonnegative, so~\eqref{eq:trace} forces the negative eigenvalues to equal $-(d+1)t$ and the others to vanish. Let $y_1,\ldots,y_d$ be an orthonormal basis of the negative eigenspace. The spectral decomposition of $\widetilde H$ reads
+\begin{equation*}
+ \widetilde H=(d+1)t\Bigl(d\,vv^{\mathsf T}-\sum_{a=1}^dy_ay_a^{\mathsf T}\Bigr).
+\end{equation*}
+For $i\in V$ define $w_i\in\R^d$ by $w_i(a)=y_a(i)/\sqrt{\mu_i}$. Comparing diagonal entries gives $|w_i|^2=d$, and comparing off-diagonal entries gives
+\begin{equation}\label{eq:pairhess}
+ H_{ij}=(d+1)t\bigl(d-w_i\cdot w_j\bigr)\qquad(i\ne j).
+\end{equation}
+By~\eqref{eq:covariance}, $\Cov(\chi)y_a=-(d+1)y_a+(d+1)y_a=0$, so the random variable $y_a^{\mathsf T}\chi$ has variance zero; its mean is $(d+1)y_a^{\mathsf T}v=0$. Hence $y_a^{\mathsf T}\chi=0$ almost surely. Every member of $G$ has positive probability, and on the event $E=e$ we have $y_a^{\mathsf T}\chi=\sum_{i\in e}w_i(a)$. Therefore
+\begin{equation}\label{eq:zerosum}
+ \sum_{i\in e}w_i=0\qquad(e\in G).
+\end{equation}
+
+\emph{The parts.} Let $i\ne j$ with $w_i=w_j$. Then $w_i\cdot w_j=d$, so $H_{ij}=0$ by~\eqref{eq:pairhess}. Since $H_{ij}$ is a sum of positive terms, one for each member containing $i$ and $j$, no member contains both. Fix $e\in G$; its $d+1$ vectors $w_i$, $i\in e$, are pairwise distinct. Let $j\notin e$. The $(d+2)$-set $e\cup\{j\}$ contains an even number of members, among them $e$; every other member has the form $(e\setminus\{i\})\cup\{j\}$ with $i\in e$. Subtracting~\eqref{eq:zerosum} for $e$ and for this member gives $w_j=w_i$. Hence the vectors $w_j$, $j\in V$, take exactly $d+1$ values. The corresponding classes $V_1,\ldots,V_{d+1}$ are nonempty, and every member meets each class in exactly one element, since its $d+1$ vectors are distinct.
+
+Conversely, every set meeting each class in one element is a member. Let $e'\in G$, $i\in e'$, and $j\notin e'$ in the class of~$i$. In $e'\cup\{j\}$, every set $(e'\setminus\{k\})\cup\{j\}$ with $k\ne i$ contains $i$ and $j$ and is not a member. Parity therefore forces $(e'\setminus\{i\})\cup\{j\}\in G$. Starting from $e$ and exchanging one element at a time, we reach every set meeting each class once.
+
+\emph{The masses.} Let $s_a$ be the $\mu$-mass of $V_a$. Then $t=(d+1)!\,s_1\cdots s_{d+1}$, and for $i\in V_a$ we get $\partial_ip_G(\mu)=(d+1)!\prod_{b\ne a}s_b=t/s_a$. By~\eqref{eq:stationary}, $s_a=1/(d+1)$ for every $a$, and $t=(d+1)!/(d+1)^{d+1}=\theta$.
+\end{proof}
+
+\begin{corollary}\label{cor:index}
+Let $G$ be a $(d+1)$-uniform cocycle on $V$. At every face-critical point $\mu$ of $p_G$ with $0<p_G(\mu)<\theta$, the negative index of $p_G$ is at least $d+1$.
+\end{corollary}
+\begin{proof}
+Let $\sigma=\supp\mu$ and $G_\sigma=\{e\in G:e\subseteq\sigma\}$. Every $(d+2)$-subset of $\sigma$ contains an even number of members of $G_\sigma$, so $G_\sigma$ is a $(d+1)$-uniform cocycle on $\sigma$; it is nonempty because $p_G(\mu)>0$. On $\R^\sigma\subseteq\R^V$ (vectors vanishing outside $\sigma$), the monomials of $p_G$ involving a variable outside $\sigma$ vanish, so $p_G$ agrees with $p_{G_\sigma}$ there. Since $\mu+\R^\sigma_0\subseteq\R^\sigma$, the point $\mu$ is face-critical for $p_{G_\sigma}$ on $\Delta(\sigma)$ with support $\sigma$, and the two restricted Hessians on $\R^\sigma_0$ coincide. Lemma~\ref{lem:spectral} gives negative index at least $d$, and index exactly $d$ would force $p_G(\mu)=\theta$.
+\end{proof}
+
+\section{Relative homology of sublevel sets}\label{sec:morse}
+
+The goal of this section is the following consequence of Corollary~\ref{cor:index}.
+
+\begin{theorem}\label{thm:weights}
+Let $V$ be a nonempty finite set and $G$ a $(d+1)$-uniform cocycle on $V$. Then
+\begin{equation*}
+ H_j\bigl(\{p_G<\theta\},\{p_G=0\}\bigr)=0\qquad(0\le j\le d).
+\end{equation*}
+\end{theorem}
+
+The sets are subsets of $\Delta(V)$. We reduce the statement to ordinary Morse theory on the open simplex $\Delta^\circ(V)$, a smooth manifold without boundary, by adding to $p_G$ a small logarithmic barrier and a small generic linear function.
+
+\subsection{Ordinary Morse theory}
+
+We use the following elementary case of Sard's theorem. Lebesgue measure on $\R^m$ is denoted by~$|\cdot|$.
+
+\begin{lemma}\label{lem:sard}
+Let $W\subseteq\R^m$ be open and $\varphi:W\to\R^m$ a $C^1$ map. Then the set $\varphi(\{x\in W:\det D\varphi(x)=0\})$ has Lebesgue measure zero. In particular, its complement is dense in~$\R^m$.
+\end{lemma}
+\begin{proof}
+The set $W$ is a countable union of closed cubes contained in $W$, so it suffices to show that $\varphi(Z_Q)$ is null for a closed cube $Q\subseteq W$ of side $\ell$, where $Z_Q=\{x\in Q:\det D\varphi(x)=0\}$. Let $M=\max\{1,\max_Q\|D\varphi\|\}$ and $0<\eta\le M$. By uniform continuity of $D\varphi$ on $Q$, there is an integer $k\ge1$ such that $\|D\varphi(x)-D\varphi(x')\|\le\eta$ for $x,x'\in Q$ with $|x-x'|\le h$, where $h=\sqrt m\,\ell/k$. Divide $Q$ into $k^m$ closed cubes of side $\ell/k$ and diameter $h$, and let $Q'$ be one of them containing a point $x_0\in Z_Q$. By the mean value inequality applied to $x\mapsto\varphi(x)-D\varphi(x_0)x$ on the convex set $Q'$, every $x\in Q'$ satisfies
+\begin{equation*}
+ \bigl|\varphi(x)-\varphi(x_0)-D\varphi(x_0)(x-x_0)\bigr|\le\eta h.
+\end{equation*}
+The vector $D\varphi(x_0)(x-x_0)$ lies in a hyperplane $\Pi$ through the origin, since $D\varphi(x_0)$ is singular, and has norm at most $Mh$. Hence $\varphi(Q')$ lies in a box with $m-1$ sides of length $2(M+\eta)h\le4Mh$ parallel to $\Pi$ and one side of length $2\eta h$, of volume at most $2\cdot4^{m-1}M^{m-1}h^m\eta$. Summing over at most $k^m$ cubes, $\varphi(Z_Q)$ is contained in a set of measure at most $2\cdot4^{m-1}M^{m-1}m^{m/2}\ell^m\eta$. Since $\eta$ is arbitrary, $|\varphi(Z_Q)|=0$. A null set has empty interior.
+\end{proof}
+
+For a function $f$ on a manifold $M$ and $c\in\R$ we write $M^c=f^{-1}((-\infty,c])$, following~\cite{Milnor}.
+
+\begin{theorem}[{\cite[Theorem~3.1, p.~12]{Milnor}}]\label{thm:milnor}
+Let $f$ be a smooth real valued function on a manifold $M$. Let $a<b$ and suppose that the set $f^{-1}[a,b]$, consisting of all $p\in M$ with $a\le f(p)\le b$, is compact, and contains no critical points of $f$. Then $M^a$ is diffeomorphic to $M^b$. Furthermore, $M^a$ is a deformation retract of $M^b$, so that the inclusion map $M^a\to M^b$ is a homotopy equivalence.
+\end{theorem}
+
+The deformation constructed in the proof~\cite[pp.~12--13]{Milnor} is a family of maps $r_t:M^b\to M^b$, $0\le t\le1$, with $r_0$ the identity, $r_1$ a retraction of $M^b$ onto $M^a$, and $r_t(q)=q$ whenever $f(q)\le a$; it is continuous in $(q,t)$, being given by the flow of a smooth vector field. Thus $M^a$ is a strong deformation retract of $M^b$, and by Lemma~\ref{lem:prism}(b),
+\begin{equation}\label{eq:milnor}
+ H_k(M^b,M^a)=0\qquad\text{for all }k.
+\end{equation}
+
+\begin{theorem}[{\cite[\S1.3.1, Theorem~1 and the display following it, p.~2]{Goresky}}]\label{thm:goresky}
+Let $M$ be a smooth manifold and $f:M\to\R$ a smooth proper Morse function, that is, a function with isolated critical points and nondegenerate Hessian matrix at each critical point. If $p\in M$ is a nondegenerate critical point with isolated critical value $v=f(p)$ (meaning that no other critical points have critical value $v$), then for any $\varepsilon>0$ sufficiently small and any local coefficient system $E\to M$ of finitely generated abelian groups,
+\begin{equation*}
+ H_i(M_{\le v+\varepsilon},M_{\le v-\varepsilon};E)\cong\begin{cases}E_p&i=\lambda,\\0&\text{otherwise,}\end{cases}
+\end{equation*}
+where $\lambda$ is the Morse index of $f$ at $p$, that is, the dimension of the greatest subspace on which the Hessian is negative definite.
+\end{theorem}
+
+Here $M_{\le c}=f^{-1}((-\infty,c])=M^c$. We use the constant coefficient system $\F$, for which the groups are the singular homology groups of Section~\ref{sec:singular}; thus $H_i(M^{v+\varepsilon},M^{v-\varepsilon})=0$ for $i\ne\lambda$.
+
+We apply these results on $M=\Delta^\circ(V)$, with $|V|\ge2$. A smooth function $\varphi$ on $\Delta^\circ(V)$ is the restriction of a smooth function on an open subset of $\R^V$ (for instance, extend it to be constant along the vector $(1,\ldots,1)$), and by Section~\ref{sec:calculus} its critical points are its face-critical points with support $V$, its Morse index is the negative index, and nondegeneracy is nondegeneracy of $\Hess\varphi(\mu)$ on~$\R^V_0$. A nondegenerate critical point is isolated: in affine coordinates the gradient map of $\varphi$ has invertible derivative there, so by the inverse function theorem it has no other zero nearby. We call $\varphi$ \emph{Morse} if all its critical points are nondegenerate. A value is \emph{regular} if it is not a critical value.
+
+\begin{lemma}\label{lem:band}
+Let $\varphi:\Delta^\circ(V)\to\R$ be a smooth proper Morse function, and let $r_0<r_1$ be regular values such that every critical point of $\varphi$ with value in $[r_0,r_1]$ has negative index at least $d+1$. Then $H_j(\{\varphi\le r_1\},\{\varphi\le r_0\})=0$ for $0\le j\le d$.
+\end{lemma}
+\begin{proof}
+The critical points in the compact set $\varphi^{-1}([r_0,r_1])$ are isolated, hence finitely many, say $\mu_1,\ldots,\mu_k$; their values lie in $(r_0,r_1)$. If $k=0$, the assertion is~\eqref{eq:milnor}. We first make the critical values distinct without changing the two sublevel sets.
+
+Distances below are measured in the affine hyperplane containing $\Delta(V)$. Choose $\varrho>0$ such that the closed balls $\bar B(\mu_l,\varrho)$ are pairwise disjoint and contained in the open set $\varphi^{-1}((r_0,r_1))$, and $\gamma>0$ with $r_0+\gamma<\varphi<r_1-\gamma$ on their union. Choose smooth functions $\omega_l:\Delta^\circ(V)\to[0,1]$ equal to $1$ on $B(\mu_l,\varrho/3)$ and vanishing outside $B(\mu_l,2\varrho/3)$. The compact set $\Omega=\varphi^{-1}([r_0,r_1])\setminus\bigcup_lB(\mu_l,\varrho/3)$ contains no critical point, so $\|d\varphi\|\ge\kappa$ on $\Omega$ for some $\kappa>0$. Choose $c\in\R^k$ with $|c_l|<\gamma$ and $|c_l|\max\|d\omega_l\|<\kappa$ for all $l$, such that the numbers $\varphi(\mu_l)+c_l$ are pairwise distinct, and put $\tilde\varphi=\varphi+\sum_lc_l\omega_l$.
+
+The functions $\tilde\varphi$ and $\varphi$ coincide, together with all derivatives, outside $\bigcup_lB(\mu_l,2\varrho/3)$, and both take values in $(r_0,r_1)$ on $\bigcup_l\bar B(\mu_l,\varrho)$. Hence $\{\tilde\varphi\le r_i\}=\{\varphi\le r_i\}$ for $i=0,1$, and $\tilde\varphi$ is proper. The function $\tilde\varphi$ has no critical point in $\Omega$, since $\|d\tilde\varphi-d\varphi\|<\kappa$ there; on $B(\mu_l,\varrho/3)$ it equals $\varphi+c_l$, so its only critical point there is $\mu_l$, with the same Hessian. Its critical points outside these balls and outside $\Omega$ are those of $\varphi$ with values outside $[r_0,r_1]$, with the same Hessians. Thus $\tilde\varphi$ is a proper Morse function, $r_0$ and $r_1$ are regular values of $\tilde\varphi$, and the critical points of $\tilde\varphi$ with values in $[r_0,r_1]$ are $\mu_1,\ldots,\mu_k$, with negative indices $\lambda_l\ge d+1$ and pairwise distinct values in $(r_0,r_1)$.
+
+Order the critical values as $v_1<\cdots<v_k$ and choose $r_0=t_0<v_1<t_1<\cdots<v_k<t_k=r_1$. For each $l$, Theorem~\ref{thm:goresky} applied to $\tilde\varphi$ at the critical point with value $v_l$ gives $\varepsilon_l>0$ with $t_{l-1}<v_l-\varepsilon_l<v_l+\varepsilon_l<t_l$ and $H_j(M^{v_l+\varepsilon_l},M^{v_l-\varepsilon_l})=0$ for $j\le d<\lambda_l$, where $M^c=\{\tilde\varphi\le c\}$. The intervals $[t_{l-1},v_l-\varepsilon_l]$ and $[v_l+\varepsilon_l,t_l]$ contain no critical values of $\tilde\varphi$, and their preimages are compact, so~\eqref{eq:milnor} applies to them. Lemma~\ref{lem:prism}(c), applied to the chain
+\begin{equation*}
+ M^{t_0}\subseteq M^{v_1-\varepsilon_1}\subseteq M^{v_1+\varepsilon_1}\subseteq M^{t_1}\subseteq\cdots\subseteq M^{t_k},
+\end{equation*}
+gives $H_j(\{\tilde\varphi\le r_1\},\{\tilde\varphi\le r_0\})=0$ for $j\le d$, and these sublevel sets are those of~$\varphi$.
+\end{proof}
+
+\subsection{A logarithmic barrier}
+
+In the rest of this section, $V$ is a finite set with $N=|V|\ge2$ elements, $G$ is a $(d+1)$-uniform cocycle on $V$, and $p=p_G$. For $\varepsilon>0$ and $\alpha\in\R^V_0$ define
+\begin{equation*}
+ \Phi_{\varepsilon,\alpha}(\mu)=p(\mu)-\varepsilon\sum_{i\in V}\log\mu_i+\sum_{i\in V}\alpha_i\mu_i\qquad(\mu\in\Delta^\circ(V)),
+\end{equation*}
+and write $\|\alpha\|=\max_i|\alpha_i|$. On $\Delta^\circ(V)$ the barrier term $-\varepsilon\sum_i\log\mu_i$ is nonnegative, and $|\sum_i\alpha_i\mu_i|\le\|\alpha\|$.
+
+\begin{lemma}\label{lem:barrier}
+Let $\varepsilon>0$ and $\alpha\in\R^V_0$, and put $\Phi=\Phi_{\varepsilon,\alpha}$.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item The function $\Phi$ is smooth and proper on $\Delta^\circ(V)$, and for $\mu\in\Delta^\circ(V)$ and $x\in\R^V_0$,
+\begin{equation*}
+ d\Phi(\mu)x=\sum_i\Bigl(\partial_ip(\mu)-\frac\varepsilon{\mu_i}+\alpha_i\Bigr)x_i,\qquad
+ \Hess\Phi(\mu)[x,x]=\Hess p(\mu)[x,x]+\varepsilon\sum_i\frac{x_i^2}{\mu_i^2}.
+\end{equation*}
+\item If $N\varepsilon\le1$ and $\|\alpha\|\le1$, then every critical point $\mu$ of $\Phi$ satisfies $\mu_i\ge\varepsilon/(d+4)$ for all $i$, and hence
+\begin{equation*}
+ 0\le-\varepsilon\sum_i\log\mu_i\le N\varepsilon\log\frac{d+4}\varepsilon.
+\end{equation*}
+\item For every $\varepsilon>0$ and $\delta'>0$ there is $\alpha\in\R^V_0$ with $\|\alpha\|<\delta'$ such that $\Phi_{\varepsilon,\alpha}$ is Morse.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) The formulas are direct computations. For $c\in\R$, every $\mu\in\Delta^\circ(V)$ with $\Phi(\mu)\le c$ satisfies $-\varepsilon\log\mu_i\le c+\|\alpha\|$ for each $i$, since the other terms of $\Phi$ are at least $-\|\alpha\|$ in total. Hence $\{\Phi\le c\}$ is a closed subset of $\Delta^\circ(V)$ contained in the compact set $\{\mu\in\Delta(V):\mu_i\ge\exp(-(c+\|\alpha\|)/\varepsilon)\text{ for all }i\}\subseteq\Delta^\circ(V)$, so it is compact. Thus preimages of compact sets are compact.
+
+(b) A linear form on $\R^V$ vanishes on $\R^V_0$ only if it is a multiple of $x\mapsto\sum_ix_i$. By~(a), at a critical point there is $\lambda\in\R$ with
+\begin{equation*}
+ \partial_ip(\mu)-\frac\varepsilon{\mu_i}+\alpha_i=\lambda\qquad(i\in V).
+\end{equation*}
+Multiplying by $\mu_i$, summing, and using Euler's identity $\sum_i\mu_i\partial_ip(\mu)=(d+1)p(\mu)$ gives $\lambda=(d+1)p(\mu)-N\varepsilon+\sum_i\alpha_i\mu_i\ge-N\varepsilon-\|\alpha\|\ge-2$. By~\eqref{eq:derivbound}, $\varepsilon/\mu_i=\partial_ip(\mu)+\alpha_i-\lambda\le(d+1)+1+2$. Hence $\mu_i\ge\varepsilon/(d+4)$, and since $\mu_i\le1$, $0\le-\varepsilon\log\mu_i\le\varepsilon\log((d+4)/\varepsilon)$ for each~$i$.
+
+(c) Let $g(\mu)\in\R^V_0$ be the orthogonal projection onto $\R^V_0$ of the vector $(\partial_ip(\mu)-\varepsilon/\mu_i)_{i\in V}$. By~(a), $d\Phi_{\varepsilon,\alpha}(\mu)x=\langle g(\mu)+\alpha,x\rangle$ for $x\in\R^V_0$, so $\mu$ is a critical point of $\Phi_{\varepsilon,\alpha}$ if and only if $g(\mu)=-\alpha$, and $\Hess\Phi_{\varepsilon,\alpha}(\mu)[x,x']=\langle Dg(\mu)x',x\rangle$ for $x,x'\in\R^V_0$. Thus $\Phi_{\varepsilon,\alpha}$ has a degenerate critical point if and only if $-\alpha$ is the image under $g$ of a point at which $Dg:\R^V_0\to\R^V_0$ is singular. Identifying the affine hyperplane containing $\Delta(V)$ and the space $\R^V_0$ with $\R^{N-1}$ by affine isometries, Lemma~\ref{lem:sard} shows that these $\alpha$ form a set with dense complement in~$\R^V_0$.
+\end{proof}
+
+\begin{lemma}\label{lem:persistence}
+Let $0<h_0<h_1<\theta$. There is $\delta>0$ with $\delta\le\min\{1,1/N\}$ such that, for $0<\varepsilon<\delta$ and $\alpha\in\R^V_0$ with $\|\alpha\|<\delta$, every critical point of $\Phi_{\varepsilon,\alpha}$ with value in $[h_0,h_1]$ has negative index at least $d+1$.
+\end{lemma}
+\begin{proof}
+Otherwise there are $\varepsilon_k\to0$, $\alpha_k\to0$, and critical points $\mu_k$ of $\Phi_k=\Phi_{\varepsilon_k,\alpha_k}$ with $\Phi_k(\mu_k)\in[h_0,h_1]$ and negative index at most $d$, where we may assume $N\varepsilon_k\le1$ and $\|\alpha_k\|\le1$. Passing to a subsequence, $\mu_k$ converges to a point $\mu\in\Delta(V)$; let $\sigma=\supp\mu$. By Lemma~\ref{lem:barrier}(b), the barrier term of $\Phi_k$ at $\mu_k$ is at most $N\varepsilon_k\log((d+4)/\varepsilon_k)$, which tends to zero, and the linear term is at most $\|\alpha_k\|$ in absolute value. Hence $p(\mu_k)\to p(\mu)$ lies in $[h_0,h_1]$.
+
+Let $x\in\R^\sigma_0$. By Lemma~\ref{lem:barrier}(a), $0=d\Phi_k(\mu_k)x=dp(\mu_k)x-\varepsilon_k\sum_{i\in\sigma}x_i/(\mu_k)_i+\sum_i(\alpha_k)_ix_i$. As $k\to\infty$, $(\mu_k)_i\to\mu_i>0$ for $i\in\sigma$, so the last two terms tend to zero and $dp(\mu)x=0$. Thus $\mu$ is face-critical for $p$ with $0<p(\mu)<\theta$. By Corollary~\ref{cor:index}, there is a $(d+1)$-dimensional subspace $L\subseteq\R^\sigma_0$ on which $\Hess p(\mu)$ is negative definite; let $-\kappa<0$ be its maximum on the unit vectors of~$L$. For unit vectors $x\in L$, Lemma~\ref{lem:barrier}(a) gives
+\begin{equation*}
+ \Hess\Phi_k(\mu_k)[x,x]=\Hess p(\mu_k)[x,x]+\varepsilon_k\sum_{i\in\sigma}\frac{x_i^2}{(\mu_k)_i^2}.
+\end{equation*}
+The first term converges to $\Hess p(\mu)[x,x]$ uniformly in $x$, and the second tends to zero uniformly in $x$. Hence for large $k$ the form $\Hess\Phi_k(\mu_k)$ is at most $-\kappa/2$ on the unit vectors of $L$. Since $L\subseteq\R^V_0$, the negative index of $\Phi_k$ at $\mu_k$ is at least $d+1$, a contradiction.
+\end{proof}
+
+\subsection{Proof of Theorem~\ref{thm:weights}}
+
+If $G=\varnothing$, both sets equal $\Delta(V)$. Assume $G\ne\varnothing$; then $N\ge d+1\ge2$. Put $p=p_G$, $Z=\{p=0\}=|I_G|$ by~\eqref{eq:independence}, and $B=\{p<\theta\}$.
+
+\emph{A neighborhood of $Z$.} Let $L_0$ be the geometric simplicial complex of the closed faces of $\Delta(V)$, and $L_k=L_0^{(k)}$. The set $Z$ is the underlying space of the subcomplex $Z_k$ of the simplices of $L_k$ contained in $Z$, by Lemma~\ref{lem:sd}(b) applied to the faces $|\tau|$, $\tau\in I_G$. For $k\ge1$, $Z_k$ is full. Indeed, a simplex of $L_k$ is spanned by the barycenters $b_{s_0},\ldots,b_{s_q}$ of a chain $s_0\subsetneq\cdots\subsetneq s_q$ in $L_{k-1}$. If $b_{s_q}\in Z$, then $b_{s_q}$ lies in a simplex of $Z_{k-1}$; this simplex meets the open simplex of $s_q$, so it contains $s_q$. Hence $s_q\subseteq Z$, and the simplex, which lies in $s_q$, belongs to~$Z_k$.
+
+Let $k\ge1$. For the vertices $w$ of $L_k$ let $\beta_w$ be the barycentric coordinates (Section~\ref{sec:complexes}), and put $\beta_Z=\sum_w\beta_w$, the sum over the vertices $w$ of $Z_k$. Let $U=\{\beta_Z>0\}$, an open subset of $\Delta(V)$ containing $Z$, and define
+\begin{equation*}
+ \pi(\nu)=\frac1{\beta_Z(\nu)}\sum_{w\in Z_k}\beta_w(\nu)\,w,\qquad
+ R(\nu,t)=(1-t)\nu+t\,\pi(\nu)\qquad(\nu\in U,\ t\in[0,1]).
+\end{equation*}
+Let $\nu\in U$ lie in the open simplex of $s\in L_k$. The vertices $w$ with $\beta_w(\nu)>0$ are the vertices of $s$, so $\pi(\nu)$ lies in the face of $s$ spanned by its vertices in $Z_k$, which belongs to $Z_k$ because $Z_k$ is full. Thus $\pi(\nu)\in Z$. For $t<1$, the point $R(\nu,t)$ lies in the open simplex of $s$, which is contained in $U$ because $s$ has a vertex in $Z_k$. If $\nu\in Z$, then all vertices of $s$ lie in $Z_k$ and $\pi(\nu)=\nu$. Hence $Z$ is a strong deformation retract of $U$, and $H_j(U,Z)=0$ for all $j$ by Lemma~\ref{lem:prism}(b). Every point of $U$ lies in a simplex of $L_k$ that meets $Z$, so its distance to $Z$ is at most the largest diameter of a simplex of $L_k$, which tends to zero as $k\to\infty$ by Lemma~\ref{lem:sd}(c). Since $B$ is an open subset of $\Delta(V)$ containing the compact set $Z$, we may choose $k$ with $U\subseteq B$.
+
+\emph{Filling a relative cycle.} Let $0\le j\le d$ and $c\in S_j(B)$ with $\partial c\in S_{j-1}(Z)$, $c\ne0$. The image of $c$ is compact, so $\kappa=(\theta-\max_{\im c}p)/4$ is positive. The set $\Delta(V)\setminus U$ is compact and disjoint from $Z$, so we may choose $\gamma$ with $0<\gamma<\kappa/3$ and $\{p\le4\gamma\}\subseteq U$.
+
+Let $u$ be the uniform vector of $\Delta(V)$ and $\psi_t(\mu)=(1-t)\mu+tu$. Since $p$ is uniformly continuous on $\Delta(V)$, there is $t_0\in(0,1]$ such that $p(\psi_t(\mu))<p(\mu)+\gamma$ for all $\mu\in\Delta(V)$ and $t\in[0,t_0]$. Then
+\begin{equation}\label{eq:push}
+ \psi_t(\im c)\subseteq\{p<\theta-3\kappa\},\qquad\psi_t(Z)\subseteq\{p<\gamma\}\subseteq U\qquad(0\le t\le t_0).
+\end{equation}
+Every coordinate of a point of $\psi_{t_0}(\Delta(V))$ is at least $t_0/N$, so on this set the barrier term of $\Phi_{\varepsilon,\alpha}$ is at most $\varepsilon N\log(N/t_0)$.
+
+Let $\delta$ be given by Lemma~\ref{lem:persistence} for $[h_0,h_1]=[2\gamma,\theta-\kappa]$. Choose $\varepsilon\in(0,\delta)$ with $\varepsilon N\log(N/t_0)<\gamma/2$, and by Lemma~\ref{lem:barrier}(c) choose $\alpha\in\R^V_0$ with $\|\alpha\|<\min\{\delta,\gamma/2\}$ such that $\Phi=\Phi_{\varepsilon,\alpha}$ is Morse. On $\psi_{t_0}(\Delta(V))$ we have $|\Phi-p|<\gamma$, so by~\eqref{eq:push}
+\begin{equation*}
+ \Phi<\theta-2\kappa\ \text{on }\psi_{t_0}(\im c),\qquad\Phi<2\gamma\ \text{on }\psi_{t_0}(Z).
+\end{equation*}
+The critical points of $\Phi$ in the compact set $\Phi^{-1}([0,\theta])$ are finitely many, so we may choose regular values $r_0\in(2\gamma,3\gamma)$ and $r_1\in(\theta-2\kappa,\theta-\kappa)$; then $r_0<\kappa<r_1$. Every critical point with value in $[r_0,r_1]\subseteq[h_0,h_1]$ has negative index at least $d+1$ by Lemma~\ref{lem:persistence}, so Lemma~\ref{lem:band} gives $H_j(\{\Phi\le r_1\},\{\Phi\le r_0\})=0$. The chain $(\psi_{t_0})_\#c$ lies in $S_j(\{\Phi\le r_1\})$, and its boundary $(\psi_{t_0})_\#\partial c$ lies in $S_{j-1}(\{\Phi\le r_0\})$. Hence
+\begin{equation*}
+ (\psi_{t_0})_\#c=\partial w+z,\qquad w\in S_{j+1}(\{\Phi\le r_1\}),\quad z\in S_j(\{\Phi\le r_0\}).
+\end{equation*}
+Since the barrier term is nonnegative, $p\le\Phi+\|\alpha\|$ on $\Delta^\circ(V)$, and therefore
+\begin{equation*}
+ \{\Phi\le r_1\}\subseteq\{p<\theta-\kappa+\gamma\}\subseteq B,\qquad
+ \{\Phi\le r_0\}\subseteq\{p<4\gamma\}\subseteq U.
+\end{equation*}
+
+Let $P$ be given by Lemma~\ref{lem:prism}(a) for the homotopy $(\mu,s)\mapsto\psi_{st_0}(\mu)$ on $\Delta(V)\times[0,1]$. By~\eqref{eq:push}, $P(c)$ lies in $S_{j+1}(B)$ and $P(\partial c)$ lies in $S_j(U)$, and
+\begin{equation*}
+ c=\partial P(c)+P(\partial c)+(\psi_{t_0})_\#c=\partial\bigl(P(c)+w\bigr)+y,\qquad y=P(\partial c)+z\in S_j(U).
+\end{equation*}
+Then $\partial y=\partial c\in S_{j-1}(Z)$. Since $H_j(U,Z)=0$, $y=\partial w'+y'$ with $w'\in S_{j+1}(U)$ and $y'\in S_j(Z)$. Thus $c=\partial(P(c)+w+w')+y'$ with $P(c)+w+w'\in S_{j+1}(B)$, which proves the theorem.\qed
+
+\section{Proof of Theorem~\ref{thm:finite}}\label{sec:proof}
+
+Throughout this section, $n>C_d$, $f:|X_{n,d}|\to\R^d$ is a continuous map, $m=\ov(f)$, and $T$, $\zeta$, and $(a_\tau)_{\tau\in T}$ are given by Lemma~\ref{lem:intersection}. The term $p=1$ of~\eqref{eq:C} shows $C_d\ge d^3(d+1)/2\ge d+1$, so Lemma~\ref{lem:intersection} applies. For $\tau\in T$, let $P_\tau$ be the set of $d$-faces of $\Delta([n])$ that contain a face in the support of $a_\eta$ for some face $\eta$ of $\tau$. By Lemma~\ref{lem:intersection}\ref{I:ov}, the $f$-images of the members of $P_\tau$ have a common point, so
+\begin{equation}\label{eq:Pbound}
+ |P_\tau|\le m.
+\end{equation}
+If $\sigma$ is a face of $\tau$, then $P_\sigma\subseteq P_\tau$.
+
+\subsection{Exceptional vertices}
+
+The vertex cochains $a_v$ of a simplex $\tau$ need not agree. We delete a bounded set of vertices outside which they agree and the other cochains of faces of $\tau$ vanish. For every simplex $\eta$ of $T$ of positive dimension, choose once and for all a maximal family of pairwise vertex-disjoint faces in the support of $a_\eta$. For $\tau\in T$, let $S_\tau\subseteq[n]$ be the set of vertices of the faces in the families chosen for the faces of $\tau$ of positive dimension, and put $Y_\tau=[n]\setminus S_\tau$.
+
+\begin{lemma}\label{lem:covers}
+Let $\tau\in T$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $|S_\tau|\le C_d$; in particular $Y_\tau\ne\varnothing$.
+\item $S_\sigma\subseteq S_\tau$ for every face $\sigma$ of~$\tau$.
+\item For every face $\eta$ of $\tau$ of positive dimension, $a_\eta$ vanishes on $Y_\tau$.
+\item The cochains $a_v$, $v\in\tau$, agree on the $d$-faces contained in $Y_\tau$, and the set $G_\tau$ of $d$-faces $\sigma\subseteq Y_\tau$ with $a_v(\sigma)=1$ is a $(d+1)$-uniform cocycle on~$Y_\tau$.
+\item The members of $P_\tau$ contained in $Y_\tau$ are exactly the members of~$G_\tau$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Let $\eta$ be a face of $\tau$ of dimension $p\ge1$. The faces in the support of $a_\eta$ have dimension $d-p$. By Lemma~\ref{lem:intersection}\ref{I:gp}, the family chosen for $\eta$ has at most $\lfloor d/p\rfloor$ members, which have at most $(d-p+1)\lfloor d/p\rfloor$ vertices in total. By maximality, every face in the support of $a_\eta$ shares a vertex with a member of the family, hence meets $S_\tau$; this proves~(iii). Since $\dim\tau\le d$, the simplex $\tau$ has at most $\binom{d+1}{p+1}$ faces of dimension $p$, so $|S_\tau|\le C_d<n$ by~\eqref{eq:C}, which proves~(i). Property~(ii) holds because the faces of $\sigma$ are faces of~$\tau$.
+
+(iv) Let $\{v,w\}\subseteq\tau$ be an edge. By Lemma~\ref{lem:intersection}\ref{I:bd}, $a_v+a_w=\delta a_{\{v,w\}}$, and for a $d$-face $\sigma\subseteq Y_\tau$ we have $(\delta a_{\{v,w\}})(\sigma)=\sum_{x\in\sigma}a_{\{v,w\}}(\sigma\setminus\{x\})=0$ by~(iii). Since any two vertices of $\tau$ form an edge, the $a_v$ agree on the $d$-faces in $Y_\tau$. If $\varrho\subseteq Y_\tau$ has $d+2$ elements, Lemma~\ref{lem:intersection}\ref{I:vert} gives $\sum_{x\in\varrho}a_v(\varrho\setminus\{x\})=(\delta a_v)(\varrho)=0$, so $\varrho$ contains an even number of members of~$G_\tau$.
+
+(v) Let $\sigma\subseteq Y_\tau$ be a $d$-face. By~(iii), $\sigma$ contains no face in the support of $a_\eta$ for a face $\eta$ of $\tau$ of positive dimension. Hence $\sigma\in P_\tau$ if and only if $\sigma$ contains a $d$-face in the support of some $a_v$, $v\in\tau$, that is, if and only if $a_v(\sigma)=1$ for some $v\in\tau$. By~(iv), this means $\sigma\in G_\tau$.
+\end{proof}
+
+\subsection{Weight spaces}
+
+For $\tau\in T$ define subsets of $\Delta([n])$ by
+\begin{equation}\label{eq:weightspace}
+ B_\tau=\Bigl\{\mu\in\Delta([n]):p_{P_\tau}(\mu)<\theta\Bigl(1-\sum_{i\in S_\tau}\mu_i\Bigr)^{d+1}\Bigr\},\qquad
+ J_\tau=|I_{G_\tau}|,
+\end{equation}
+where $p_{P_\tau}$ is the weight polynomial~\eqref{eq:polynomial} of $P_\tau$ on $V=[n]$, and $I_{G_\tau}$ is the independence complex~\eqref{eq:independence} of $G_\tau$ on $Y_\tau$, a subcomplex of $\Delta([n])$ whose faces are contained in~$Y_\tau$. Thus $J_\tau=\{\mu\in\Delta(Y_\tau):p_{G_\tau}(\mu)=0\}$, where $\Delta(Y_\tau)=|Y_\tau|\subseteq\Delta([n])$. For $\mu\in\Delta(Y_\tau)$, only the members of $P_\tau$ contained in $Y_\tau$ contribute to $p_{P_\tau}(\mu)$, so Lemma~\ref{lem:covers}(v) gives
+\begin{equation}\label{eq:restrict}
+ p_{P_\tau}(\mu)=p_{G_\tau}(\mu)\qquad(\mu\in\Delta(Y_\tau)).
+\end{equation}
+
+\begin{lemma}\label{lem:carriers}
+Let $\tau\in T$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $J_\tau\subseteq B_\tau$; moreover $B_\tau\subseteq B_\sigma$ and $J_\tau\subseteq J_\sigma$ for every face $\sigma$ of~$\tau$.
+\item If $m<((n-C_d)/(d+1))^{d+1}$, then the uniform vector $u$ of $\Delta([n])$ belongs to $B_\tau$.
+\item $H_j(B_\tau,J_\tau)=0$ for $0\le j\le d$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) A point $\mu\in J_\tau$ is supported in $Y_\tau$, so $\sum_{i\in S_\tau}\mu_i=0$ and $p_{P_\tau}(\mu)=p_{G_\tau}(\mu)=0<\theta$ by~\eqref{eq:restrict}. Let $\sigma$ be a face of $\tau$. By $P_\sigma\subseteq P_\tau$ and Lemma~\ref{lem:covers}(ii), every $\mu\in B_\tau$ satisfies
+\begin{equation*}
+ p_{P_\sigma}(\mu)\le p_{P_\tau}(\mu)<\theta\Bigl(1-\sum_{i\in S_\tau}\mu_i\Bigr)^{d+1}\le\theta\Bigl(1-\sum_{i\in S_\sigma}\mu_i\Bigr)^{d+1}.
+\end{equation*}
+If $\mu\in J_\tau$, then $\mu\in\Delta(Y_\tau)\subseteq\Delta(Y_\sigma)$, and~\eqref{eq:restrict} for $\sigma$ and $\tau$ gives $p_{G_\sigma}(\mu)=p_{P_\sigma}(\mu)\le p_{P_\tau}(\mu)=p_{G_\tau}(\mu)=0$, so $\mu\in J_\sigma$.
+
+(ii) By~\eqref{eq:Pbound} and Lemma~\ref{lem:covers}(i),
+\begin{equation*}
+ p_{P_\tau}(u)=\frac{(d+1)!\,|P_\tau|}{n^{d+1}}\le\frac{(d+1)!\,m}{n^{d+1}}<\frac{(d+1)!}{(d+1)^{d+1}}\Bigl(\frac{n-C_d}n\Bigr)^{d+1}\le\theta\Bigl(1-\frac{|S_\tau|}n\Bigr)^{d+1},
+\end{equation*}
+and $\sum_{i\in S_\tau}u_i=|S_\tau|/n$.
+
+(iii) We first deform $B_\tau$ into $\Delta(Y_\tau)$, keeping $\Delta(Y_\tau)$ fixed. For $\mu\in B_\tau$ put $t=\sum_{i\in S_\tau}\mu_i$; then $t<1$, since for $t=1$ the right-hand side in~\eqref{eq:weightspace} vanishes while $p_{P_\tau}\ge0$. For $Y\subseteq[n]$ let $\mu|_Y$ agree with $\mu$ on $Y$ and vanish elsewhere, and define
+\begin{equation*}
+ H(\mu,r)=\frac{1-(1-r)t}{1-t}\,\mu|_{Y_\tau}+(1-r)\,\mu|_{S_\tau}\qquad(\mu\in B_\tau,\ r\in[0,1]).
+\end{equation*}
+This map is continuous, $H(\mu,0)=\mu$, $H(\mu,1)\in\Delta(Y_\tau)$, and $H(\mu,r)=\mu$ if $\mu\in\Delta(Y_\tau)$. We show $H(\mu,r)\in B_\tau$. The $S_\tau$-mass of $H(\mu,r)$ is $s=(1-r)t\le t$. If $t>0$, let $\nu=\mu|_{Y_\tau}/(1-t)$ and $\omega=\mu|_{S_\tau}/t$, so that $\mu=(1-t)\nu+t\omega$ and $H(\mu,r)=(1-s)\nu+s\omega$. Since $p_{P_\tau}$ is homogeneous of degree $d+1$,
+\begin{equation*}
+ \frac{p_{P_\tau}\bigl((1-s)\nu+s\omega\bigr)}{(1-s)^{d+1}}=p_{P_\tau}\Bigl(\nu+\frac s{1-s}\,\omega\Bigr)\qquad(0\le s<1),
+\end{equation*}
+which is nondecreasing in $s$, because $s/(1-s)$ is increasing and $p_{P_\tau}$ is nondecreasing in each coordinate on $[0,\infty)^{[n]}$. Hence $p_{P_\tau}(H(\mu,r))/(1-s)^{d+1}\le p_{P_\tau}(\mu)/(1-t)^{d+1}<\theta$, that is, $H(\mu,r)\in B_\tau$. By~\eqref{eq:restrict}, $H(B_\tau\times\{1\})$ lies in
+\begin{equation*}
+ B_\tau\cap\Delta(Y_\tau)=\{\mu\in\Delta(Y_\tau):p_{G_\tau}(\mu)<\theta\}.
+\end{equation*}
+
+Let $c\in S_j(B_\tau)$ with $\partial c\in S_{j-1}(J_\tau)$, where $j\le d$. Let $P$ be given by Lemma~\ref{lem:prism}(a) for $H$, and $H_1=H(\cdot,1)$. Then $c=\partial P(c)+P(\partial c)+(H_1)_\#c$. Since $H$ fixes $J_\tau\subseteq\Delta(Y_\tau)$ pointwise, $P(\partial c)\in S_j(J_\tau)$. The chain $(H_1)_\#c$ lies in $S_j(B_\tau\cap\Delta(Y_\tau))$, and its boundary $(H_1)_\#\partial c=\partial c$ lies in $S_{j-1}(J_\tau)$. By Lemma~\ref{lem:covers}(i) and~(iv), Theorem~\ref{thm:weights} applies to $V=Y_\tau$ and $G=G_\tau$, and gives $(H_1)_\#c=\partial w+c'$ with $w\in S_{j+1}(B_\tau\cap\Delta(Y_\tau))$ and $c'\in S_j(J_\tau)$. Hence $c=\partial(P(c)+w)+(P(\partial c)+c')$, with $P(c)+w\in S_{j+1}(B_\tau)$ and $P(\partial c)+c'\in S_j(J_\tau)$.
+\end{proof}
+
+\subsection{Descending fillings}
+
+\begin{proof}[Proof of Theorem~\ref{thm:finite}]
+Suppose that $m<((n-C_d)/(d+1))^{d+1}$; we derive a contradiction. Let $T_p$ be the set of $p$-simplices of $T$, and regard $\zeta$ as a subset of $T_d$. Fix $x\in[n]$, and let $\rho$ be given by Lemma~\ref{lem:comparison} for $V=[n]$, so that $\rho([u])=x$.
+
+\emph{The fillings.} For $p=d,d-1,\ldots,0$ in turn and every $\tau\in T_p$ we choose chains
+\begin{equation*}
+ z_\tau\in S_{d-p}(B_\tau),\qquad c_\tau\in S_{d-p+1}(B_\tau),\qquad z_\tau-\partial c_\tau\in S_{d-p}(J_\tau),
+\end{equation*}
+as follows. For $\tau\in T_d$, let $z_\tau=[u]$ if $\tau\in\zeta$ and $z_\tau=0$ otherwise; $z_\tau\in S_0(B_\tau)$ by Lemma~\ref{lem:carriers}(ii). For $\sigma\in T_p$ with $p<d$, put
+\begin{equation*}
+ z_\sigma=\sum_{\tau\in T_{p+1},\ \tau\supset\sigma}c_\tau;
+\end{equation*}
+it lies in $S_{d-p}(B_\sigma)$ by Lemma~\ref{lem:carriers}(i). In each case we show $\partial z_\sigma\in S_{d-p-1}(J_\sigma)$; then Lemma~\ref{lem:carriers}(iii) in degree $d-p\in[0,d]$ provides $c_\sigma$. For $p=d$, $z_\sigma$ is a $0$-chain and $\partial z_\sigma=0$. For $p<d$,
+\begin{equation*}
+ \partial z_\sigma=\sum_{\tau\in T_{p+1},\ \tau\supset\sigma}(\partial c_\tau-z_\tau)+\sum_{\tau\in T_{p+1},\ \tau\supset\sigma}z_\tau.
+\end{equation*}
+The first sum lies in $S_{d-p-1}(J_\sigma)$ by Lemma~\ref{lem:carriers}(i). If $p=d-1$, the second sum is $[u]$ times the number of $d$-simplices of $\zeta$ containing $\sigma$, which is even because $\zeta$ is a cycle. If $p\le d-2$, the second sum is the sum of $c_\xi$ over the pairs $(\tau,\xi)$ with $\sigma\subset\tau\subset\xi$, $\tau\in T_{p+1}$, and $\xi\in T_{p+2}$; every $\xi$ occurs in exactly two pairs, since $|\xi\setminus\sigma|=2$. In both cases the second sum vanishes.
+
+\emph{The evaluation.} For $0\le p\le d$ put
+\begin{equation*}
+ E_p=\sum_{\tau\in T_p}a_\tau\bigl(\rho(z_\tau)\bigr)\in\F,
+\end{equation*}
+where $a_\tau\in C^{d-p}(\Delta([n]))$ is evaluated on the simplicial chain $\rho(z_\tau)\in C_{d-p}(\Delta([n]))$. Let $\tau\in T_p$. By Lemma~\ref{lem:comparison}, $\rho(z_\tau-\partial c_\tau)$ is a sum of $(d-p)$-faces of $I_{G_\tau}$; these are contained in $Y_\tau$ and contain no member of $G_\tau$. If $p\ge1$, $a_\tau$ vanishes on $Y_\tau$ by Lemma~\ref{lem:covers}(iii). If $p=0$, $\tau=\{v\}$ and $a_v$ is the indicator of $G_\tau$ on the $d$-faces contained in $Y_\tau$ by Lemma~\ref{lem:covers}(iv). In both cases $a_\tau(\rho(z_\tau-\partial c_\tau))=0$, and therefore
+\begin{equation*}
+ a_\tau(\rho(z_\tau))=a_\tau(\rho(\partial c_\tau))=a_\tau(\partial\rho(c_\tau))=(\delta a_\tau)(\rho(c_\tau)).
+\end{equation*}
+For $p\ge1$, Lemma~\ref{lem:intersection}\ref{I:bd} gives
+\begin{equation*}
+ E_p=\sum_{\tau\in T_p}\ \sum_{v\in\tau}a_{\tau\setminus\{v\}}\bigl(\rho(c_\tau)\bigr)=\sum_{\sigma\in T_{p-1}}a_\sigma\Bigl(\rho\Bigl(\sum_{\tau\in T_p,\ \tau\supset\sigma}c_\tau\Bigr)\Bigr)=E_{p-1}.
+\end{equation*}
+For $p=0$, Lemma~\ref{lem:intersection}\ref{I:vert} gives $\delta a_v=0$, so $E_0=0$. Finally, since $\rho([u])=x$, Lemma~\ref{lem:intersection}\ref{I:top} gives
+\begin{equation*}
+ E_d=\sum_{\tau\in\zeta}a_\tau(x)=\one(x)=1.
+\end{equation*}
+Thus $1=E_d=E_{d-1}=\cdots=E_0=0$, a contradiction. Hence $\ov(f)=m\ge((n-C_d)/(d+1))^{d+1}$.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:main}}\label{sec:final}
+
+For the upper bound we use the following result. Bukh, Matou\v{s}ek, and Nivasch call the simplices $\conv(e)$, for $(d+1)$-element subsets $e$ of a finite set $S\subset\R^d$, the $d$-simplices spanned by~$S$~\cite[\S1]{BMN}.
+
+\begin{theorem}[{\cite[Theorem~1.3]{BMN}}]\label{thm:bmn}
+For every fixed $d\ge2$ and every $n$ there exists an $n$-point set $S\subset\R^d$ such that no point $p\in\R^d$ is contained in more than $(n/(d+1))^{d+1}+O(n^d)$ $d$-simplices spanned by $S$. Moreover, such an $S$ can be chosen in convex position.
+\end{theorem}
+
+The implicit constant depends only on $d$. In the set $S$ constructed in~\cite[\S2]{BMN}, any $d+1$ points are affinely independent: the proof of~\cite[Lemma~2.2]{BMN} shows that the determinant $\det M$ formed from any $d+1$ points of $S$ is positive. Hence the $d$-simplices spanned by $S$ correspond bijectively to the $(d+1)$-element subsets of~$S$.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+\emph{Lower bound.} Let $n>C_d$ and let $f:|X_{n,d}|\to\R^d$ be continuous. Since $(d+1)!\binom n{d+1}\le n^{d+1}$, Theorem~\ref{thm:finite} gives
+\begin{equation*}
+ \frac{\ov(f)}{\binom n{d+1}}\ge\frac{(d+1)!}{n^{d+1}}\Bigl(\frac{n-C_d}{d+1}\Bigr)^{d+1}=\theta\Bigl(1-\frac{C_d}n\Bigr)^{d+1}.
+\end{equation*}
+The right-hand side tends to $\theta$ as $n\to\infty$, so $c_d^{\mathrm{top}}\ge\theta$.
+
+\emph{Upper bound.} Let $S=\{s_1,\ldots,s_n\}$ be the set of Theorem~\ref{thm:bmn}, and let $f(\mu)=\sum_{i=1}^n\mu_is_i$ for $\mu\in|X_{n,d}|\subseteq\Delta([n])$. This map is continuous, and $f(|\sigma|)=\conv\{s_i:i\in\sigma\}$ for every face $\sigma$. By Theorem~\ref{thm:bmn} and the bijection noted after it,
+\begin{equation*}
+ \frac{\ov(f)}{\binom n{d+1}}\le\frac{(n/(d+1))^{d+1}+O(n^d)}{\binom n{d+1}}=\frac{(d+1)!}{(d+1)^{d+1}}+o(1)\qquad(n\to\infty).
+\end{equation*}
+Hence $c_d^{\mathrm{top}}\le\theta$.
+\end{proof}
+
+\appendix
+
+\section{Proof of Lemma~\ref{lem:intersection}}\label{app:intersection}
+
+Throughout this appendix $n\ge d+1$, $X=X_{n,d}$, and $X_0$ is the geometric simplicial complex of the closed faces $|\sigma|$, $\sigma\in X$, in $\R^n$ (Section~\ref{sec:complexes}). Faces of $\Delta([n])$ of dimension at most $d$ are faces of $X$, so cochains of degree at most $d$ on $X$ and on $\Delta([n])$ are the same.
+
+\subsection{Fundamental chains of subdivisions}
+
+Let $K$ be a geometric simplicial complex and $j\ge0$. For a simplex $s$ of $K$ of dimension $k$, let $[s]_j\in C_k(K^{(j)})$ be the sum of the $k$-simplices of $K^{(j)}$ contained in $s$; thus $[s]_j=s$ if $k=0$.
+
+\begin{lemma}\label{lem:fundamental}
+If $\dim s=k\ge1$, then $\partial[s]_j=\sum_{s'}[s']_j$, the sum over the facets $s'$ of~$s$.
+\end{lemma}
+\begin{proof}
+For $j=0$ this is the definition of $\partial$. Let $j=1$. By Lemma~\ref{lem:sd}(b), the $k$-simplices of $\operatorname{sd}K$ contained in $s$ are spanned by the barycenters of chains $s_0\subsetneq\cdots\subsetneq s_k$ of faces of $s$; since there are $k+1$ members, $\dim s_i=i$ and $s_k=s$. Distinct chains span distinct simplices, since the barycenters of distinct faces are distinct points. The facets of such a simplex are obtained by deleting one barycenter $b_{s_i}$. Deleting $b_{s_k}$ gives a $(k-1)$-simplex of $\operatorname{sd}K$ spanned by a maximal chain of faces of the facet $s_{k-1}$ of $s$; conversely, by Lemma~\ref{lem:sd}(b), every $(k-1)$-simplex of $\operatorname{sd}K$ contained in a facet $s'$ of $s$ is spanned by a maximal chain of faces of $s'$ and arises in this way from exactly one $k$-simplex, obtained by appending $s$. Deleting $b_{s_i}$ with $i<k$ gives a $(k-1)$-simplex containing $b_s$, which is not contained in a facet of $s$; it is a facet of exactly two $k$-simplices contained in $s$, since the chain can be completed in exactly two ways: by either vertex of $s_1$ if $i=0$, and by either of the two $i$-faces between $s_{i-1}$ and $s_{i+1}$ if $0<i<k$. Over $\F$ these facets cancel, and $\partial[s]_1=\sum_{s'}[s']_1$.
+
+Let $j\ge2$. For a simplex $t$ of $K^{(j-1)}$ let $\Lambda(t)\in C_{\dim t}(K^{(j)})$ be the sum of the $(\dim t)$-simplices of $K^{(j)}=\operatorname{sd}K^{(j-1)}$ contained in $t$, and extend $\Lambda$ linearly. By the case $j=1$ applied to $K^{(j-1)}$, $\partial\Lambda=\Lambda\partial$. By Lemma~\ref{lem:sd}(b), a $k$-simplex of $K^{(j)}$ contained in $s$ is spanned by the barycenters of a chain $t_0\subsetneq\cdots\subsetneq t_k$ in $K^{(j-1)}$ with $t_k\subseteq s$, and $\dim t_k=k$, since the chain has $k+1$ members of dimension at most $k$; it lies in no other $k$-simplex of $K^{(j-1)}$, since two distinct $k$-simplices meet in a face of dimension less than $k$. Hence $[s]_j=\Lambda([s]_{j-1})$, and likewise for the facets of $s$. By induction on $j$,
+\begin{equation*}
+ \partial[s]_j=\Lambda(\partial[s]_{j-1})=\Lambda\Bigl(\sum_{s'}[s']_{j-1}\Bigr)=\sum_{s'}[s']_j.\qedhere
+\end{equation*}
+\end{proof}
+
+\subsection{Generic placements}
+
+Let $Q$ be a finite set. A \emph{placement} of $Q$ is a map $y:Q\to\R^d$, $q\mapsto y_q$; placements form the space $(\R^d)^Q$. For $A\subseteq Q$ write $y(A)=\{y_q:q\in A\}$.
+
+\begin{lemma}\label{lem:generic}
+Let $\mathcal S$ be a family of nonempty subsets of $Q$ with at most $d+1$ elements each, and let $\mathcal T$ be a finite set of simplices in $\R^d$. Each of the following conditions on a placement $y$ defines an open dense subset of $(\R^d)^Q$.
+\begin{enumerate}[label=\textup{(G\arabic*)}]
+\item\label{G:sgp} For pairwise disjoint $A_1,\ldots,A_s\in\mathcal S$ with $s\ge2$ and $\sum_j(|A_j|-1)<d(s-1)$, the intersection $\bigcap_j\conv y(A_j)$ is empty.
+\item\label{G:ind} For every $A\in\mathcal S$, the points $y_q$, $q\in A$, are pairwise distinct and affinely independent.
+\item\label{G:empty} For $A\in\mathcal S$ and $\tau\in\mathcal T$ with $|A|-1+\dim\tau<d$, the set $\conv y(A)\cap\tau$ is empty.
+\item\label{G:span} For $A=\{q_0,\ldots,q_k\}\in\mathcal S$ and $\tau\in\mathcal T$ with $k+\dim\tau\ge d$, the vectors $y_{q_i}-y_{q_0}$, $1\le i\le k$, together with the vectors $w-w_0$, for the vertices $w$ of $\tau$ and a fixed vertex $w_0$ of $\tau$, span~$\R^d$.
+\end{enumerate}
+Consequently, for every placement $y$, every $\varepsilon>0$, and every choice among these conditions, there is a placement $y'$ satisfying the chosen conditions with $|y'_q-y_q|<\varepsilon$ for all $q\in Q$.
+\end{lemma}
+\begin{proof}
+Each condition is a conjunction of finitely many conditions, one for each tuple of sets in $\mathcal S$ and simplices in $\mathcal T$ involved; it suffices to show that each of these defines an open dense set, since finite intersections of open dense sets are open and dense.
+
+\emph{Openness.} Suppose placements $y^{(l)}\to y$ violate a condition of type~\ref{G:sgp}, so that there are points $x^{(l)}$ with $x^{(l)}=\sum_{q\in A_j}\lambda^{(l)}_{j,q}y^{(l)}_q$ for every $j$, with convex coefficients $\lambda^{(l)}_{j,q}$. Passing to a subsequence along which all coefficients converge, the limit point lies in $\bigcap_j\conv y(A_j)$. Thus the violating set is closed. The same argument applies to~\ref{G:empty}, with $\tau$ fixed. Conditions~\ref{G:ind} and~\ref{G:span} state that certain matrices whose entries depend continuously on $y$ have full rank; a nonzero minor remains nonzero under small perturbations.
+
+\emph{Density of~\ref{G:sgp}.} Let $y$ be a placement and, for $c=(c_1,\ldots,c_s)\in(\R^d)^s$, let $y^c$ agree with $y$ except that $y^c_q=y_q+c_j$ for $q\in A_j$. The intersection $\bigcap_j(\conv y(A_j)+c_j)$ is nonempty only if there are $x\in\R^d$ and $x_j\in\aff y(A_j)$ with $c_j=x-x_j$ for all $j$. These vectors $c$ lie in the image of an affine map defined on an affine space of dimension at most $d+\sum_j(|A_j|-1)<ds$, and this image has empty interior in $(\R^d)^s$. Hence there are arbitrarily small $c$ for which $y^c$ satisfies the condition.
+
+\emph{Density of~\ref{G:empty}.} Similarly, $(\conv y(A)+c)\cap\tau\ne\varnothing$ only if $c\in\aff\tau-\aff y(A)$, an affine subspace of dimension at most $\dim\tau+|A|-1<d$.
+
+\emph{Density of~\ref{G:ind}.} Let $A=\{q_0,\ldots,q_k\}$, where $k\le d$, let $g_1,\ldots,g_d$ be the standard basis of $\R^d$, and for $\lambda\in\R$ let $y^\lambda$ agree with $y$ except that $y^\lambda_{q_i}=y_{q_i}+\lambda g_i$ for $1\le i\le k$. The $k\times k$ minor formed by the first $k$ coordinates of the vectors $y^\lambda_{q_i}-y^\lambda_{q_0}$ is a polynomial in $\lambda$ with coefficient $1$ at $\lambda^k$, so it is nonzero for all but finitely many~$\lambda$.
+
+\emph{Density of~\ref{G:span}.} Let $b=\dim\tau\le d$, let $w_0,\ldots,w_b$ be the vertices of $\tau$, and extend $w_1-w_0,\ldots,w_b-w_0$ by vectors $g'_1,\ldots,g'_{d-b}$ to a basis of $\R^d$. Since $k\ge d-b$, we may let $y^\lambda$ agree with $y$ except that $y^\lambda_{q_i}=y_{q_i}+\lambda g'_i$ for $1\le i\le d-b$. The determinant of the matrix with columns $y^\lambda_{q_i}-y^\lambda_{q_0}$ ($1\le i\le d-b$) and $w_l-w_0$ ($1\le l\le b$) is a polynomial in $\lambda$ whose coefficient at $\lambda^{d-b}$ is $\det(g'_1,\ldots,g'_{d-b},w_1-w_0,\ldots,w_b-w_0)\ne0$, so it is nonzero for all but finitely many~$\lambda$.
+\end{proof}
+
+\subsection{Construction}
+
+For a geometric simplicial complex $X'$ and a placement $y$ of its vertex set, the \emph{affine interpolation} of $y$ is the map $|X'|\to\R^d$, $z\mapsto\sum_w\beta_w(z)y_w$, with the barycentric coordinates $\beta_w$ of $X'$. It is continuous, and it is affine on every simplex $r$ of $X'$, mapping it onto $\conv y(A)$, where $A$ is the vertex set of~$r$.
+
+For a continuous map $\varphi:|X|\to\R^d$ there is $\varepsilon(\varphi)>0$ with the following property: if $\mathcal F$ is a family of faces of $X$ with $\bigcap_{\sigma\in\mathcal F}\varphi(|\sigma|)=\varnothing$, and $y_\sigma\in\varphi(|\sigma|)$ for $\sigma\in\mathcal F$, then $|y_\sigma-y_{\sigma'}|\ge\varepsilon(\varphi)$ for some $\sigma,\sigma'\in\mathcal F$. Indeed, for each such family the maximum pairwise distance is a continuous positive function on the compact set $\prod_{\sigma\in\mathcal F}\varphi(|\sigma|)$, hence has a positive minimum, and there are finitely many families.
+
+\emph{Step 1: a map in strong general position.} Put $\varepsilon_1=\varepsilon(f)$. By uniform continuity choose $\delta_1>0$ such that $|f(z)-f(z')|<\varepsilon_1/4$ whenever $|z-z'|<\delta_1$, and by Lemma~\ref{lem:sd}(c) choose $j$ such that the simplices of $X'=X_0^{(j)}$ have diameter less than $\delta_1$. Let $Q$ be the vertex set of $X'$ and $\mathcal S$ the family of vertex sets of simplices of $X'$; it consists of sets with at most $d+1$ elements and is closed under taking nonempty subsets. If $z$ lies in a simplex $r$ of $X'$, then $\sum_w\beta_w(z)f(w)$, the sum over the vertices $w$ of $r$, differs from $f(z)$ by at most $\sum_w\beta_w(z)|f(w)-f(z)|<\varepsilon_1/4$. By Lemma~\ref{lem:generic}, choose a placement $y'$ satisfying~\ref{G:sgp} with $|y'_w-f(w)|<\varepsilon_1/4$ for all $w\in Q$, and let $g$ be its affine interpolation. Then $|g(z)-f(z)|<\varepsilon_1/2$ for all $z\in|X|$, and:
+\begin{enumerate}[label=\textup{(A\arabic*)}]
+\item\label{A:gf} \emph{If the $g$-images of a family of faces of $X$ have a common point, then so do their $f$-images.} Indeed, if $g(z_\sigma)$ is a common point with $z_\sigma\in|\sigma|$, the points $f(z_\sigma)$ are pairwise at distance less than $\varepsilon_1$.
+\item\label{A:sgp} \emph{If $\sigma_1,\ldots,\sigma_s\in X$, $s\ge2$, are pairwise vertex-disjoint and $\sum_j\dim\sigma_j<d(s-1)$, then $\bigcap_jg(|\sigma_j|)=\varnothing$.} Indeed, by Lemma~\ref{lem:sd}(b), $|\sigma_j|$ is the union of the simplices of $X'$ contained in it, so a common point would lie in $\bigcap_j\conv y'(A_j)$ for the vertex sets $A_j$ of some simplices $r_j\subseteq|\sigma_j|$ of $X'$. These sets are pairwise disjoint, because the sets $|\sigma_j|$ are, and $|A_j|-1=\dim r_j\le\dim\sigma_j$. This contradicts~\ref{G:sgp}.
+\end{enumerate}
+
+\emph{Step 2: the target triangulation.} Put $\varepsilon_2=\varepsilon(g)$. Let $D\subset\R^d$ be a $d$-simplex whose interior contains the closed $\varepsilon_2/3$-neighborhood of the compact set $g(|X|)$, let $D_0$ be the geometric simplicial complex of the faces of $D$, and by Lemma~\ref{lem:sd}(c) choose $i$ such that the simplices of $T_D=D_0^{(i)}$ have diameter less than $\varepsilon_2/3$. Let $\partial D$ be the union of the facets of~$D$.
+
+\emph{Step 3: general position with respect to $T_D$.} By Lemma~\ref{lem:generic} with $\mathcal T=T_D$, choose a placement $y''$ satisfying~\ref{G:ind}, \ref{G:empty}, and~\ref{G:span}, with $|y''_w-y'_w|<\varepsilon_2/3$ for all $w\in Q$, and let $h$ be its affine interpolation. Then $|h(z)-g(z)|<\varepsilon_2/3$ for all $z$, so $h(|X|)$ lies in the interior of~$D$. By~\ref{G:ind}, $h$ maps every simplex $r$ of $X'$ affinely and injectively onto a simplex $h(r)$ of the same dimension, whose faces are the images of the faces of~$r$.
+\begin{enumerate}[label=\textup{(A\arabic*)},resume]
+\item\label{A:hg} \emph{If the $h$-images of a family of faces of $X$ all meet one simplex $\eta$ of $T_D$, then the $g$-images of the family have a common point, and so do the $f$-images.} Indeed, choose $z_\sigma\in|\sigma|$ with $h(z_\sigma)\in\eta$; then $|g(z_\sigma)-g(z_{\sigma'})|<\varepsilon_2/3+\operatorname{diam}\eta+\varepsilon_2/3<\varepsilon_2$, and~\ref{A:gf} applies.
+\item\label{A:point} \emph{Let $r\in X'$ and $\tau\in T_D$. If $\dim r+\dim\tau<d$, then $h(r)\cap\tau=\varnothing$. If $\dim r+\dim\tau=d$, then $\aff h(r)\cap\aff\tau$ is a single point, and $h(r)\cap\tau$ is empty or consists of this point, which then lies in the open simplices of $h(r)$ and of~$\tau$.} The first assertion is~\ref{G:empty}. In the second case the direction spaces of $\aff h(r)$ and $\aff\tau$ span $\R^d$ by~\ref{G:span}, and their dimensions add up to $d$, so they meet only in $0$ and the affine hulls meet in one point. If this point lay in a proper face $h(r')$ of $h(r)$ or a proper face $\tau'$ of $\tau$, then $h(r')\cap\tau$ or $h(r)\cap\tau'$ would be nonempty with dimensions adding up to less than~$d$.
+\end{enumerate}
+
+\emph{Step 4: the cochains.} For $\sigma\in X$ write $[\sigma]=[\,|\sigma|\,]_j\in C_{\dim\sigma}(X')$ (Lemma~\ref{lem:fundamental} for $K=X_0$). For a simplex $\tau\in T_D$ of dimension $k$ and a $(d-k)$-face $\sigma$ of $X$, put
+\begin{equation*}
+ a_\tau(\sigma)=\sum_{r\in[\sigma]}|h(r)\cap\tau|\pmod 2,
+\end{equation*}
+where each term is $0$ or $1$ by~\ref{A:point}. This defines $a_\tau\in C^{d-k}(\Delta([n]))$. If $a_\tau(\sigma)=1$, then $h(|\sigma|)$ meets~$\tau$. If $\tau\subseteq\partial D$, then $a_\tau=0$, since $h(|X|)$ lies in the interior of~$D$.
+
+\emph{Step 5: the complex $T$ and the cycle $\zeta$.} Let $v_\infty$ be a new element, and let $T$ be the simplicial complex on the set of vertices of $T_D$ together with $v_\infty$ whose faces are the vertex sets of the simplices of $T_D$, the set $\{v_\infty\}$, and the sets $\{v_\infty\}\cup t$ for the vertex sets $t$ of the simplices of $T_D$ contained in $\partial D$. It has dimension $d$. We identify simplices of $T_D$ with their vertex sets, put $a_\tau=0$ for the faces $\tau$ of $T$ containing $v_\infty$, and keep the cochains of Step~4 for the other faces. Let
+\begin{equation*}
+ \zeta=[D]_i+\sum_{t\in[\partial D]_i}\bigl(\{v_\infty\}\cup t\bigr),\qquad [\partial D]_i=\sum_{F}[F]_i,
+\end{equation*}
+the sum over the facets $F$ of $D$. A $(d-1)$-simplex of $T_D$ lies in at most one facet of $D$, because two facets meet in a face of dimension $d-2$; so $[\partial D]_i$ is the set of $(d-1)$-simplices of $T_D$ contained in facets of~$D$. By Lemma~\ref{lem:fundamental}, $\partial[D]_i=[\partial D]_i$ and $\partial[\partial D]_i=\sum_F\sum_G[G]_i=0$, where $G$ runs over the facets of $F$, since every $(d-2)$-face of $D$ lies in exactly two facets. For a $(d-1)$-simplex $t$, $\partial(\{v_\infty\}\cup t)=t+\sum_{w\in t}\{v_\infty\}\cup(t\setminus\{w\})$, because $d-1\ge1$. Hence $\partial\sum_{t\in[\partial D]_i}(\{v_\infty\}\cup t)=[\partial D]_i+\sum_{t'\in\partial[\partial D]_i}\{v_\infty\}\cup t'=[\partial D]_i$, and $\partial\zeta=0$.
+
+\emph{Step 6: verification.} We check properties~\ref{I:bd}--\ref{I:gp} of Lemma~\ref{lem:intersection}.
+
+\ref{I:bd} Let $\tau\in T$ with $\dim\tau\ge1$. If $v_\infty\in\tau$, then $\tau=\{v_\infty\}\cup t$ with $t\subseteq\partial D$ a simplex of $T_D$; the facets of $\tau$ other than $t$ contain $v_\infty$, and $a_t=0$ by Step~4, so both sides of~\ref{I:bd} vanish. Let $\tau\in T_D$ have dimension $k\ge1$, and let $\sigma$ be a $(d-k+1)$-face of $X$. We show $(\delta a_\tau)(\sigma)=\sum_{\tau'}a_{\tau'}(\sigma)$, the sum over the facets $\tau'$ of $\tau$. Let $r\in[\sigma]$, a $(d-k+1)$-simplex of $X'$, and $I=h(r)\cap\tau$. By~\ref{G:span} and the dimensions, $\ell=\aff h(r)\cap\aff\tau$ is a line, and $I$ is a compact convex subset of $\ell$. Every point $y\in I$ is of exactly one of the following types.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $y$ lies in the open simplices of $h(r)$ and of $\tau$. These are open in the respective affine hulls, so $I$ contains a neighborhood of $y$ in~$\ell$.
+\item $y\in h(r')$ for a facet $r'$ of $r$. By~\ref{A:point} for $(r',\tau)$, $y$ is the unique point of $h(r')\cap\tau$, and it lies in the open simplices of $h(r')$ and of $\tau$; in particular $y$ lies in no other facet of $h(r)$ and in no facet of $\tau$. Let $\beta$ be the barycentric coordinate on $\aff h(r)$ with respect to the vertex of $h(r)$ opposite to $h(r')$. The other barycentric coordinates are positive at $y$, so near $y$ the simplex $h(r)$ coincides with $\{\beta\ge0\}$. The line $\ell$ is not contained in $\aff h(r')=\{\beta=0\}$, because $\aff h(r')\cap\aff\tau$ is a single point by~\ref{A:point}; hence $\beta$ restricted to $\ell$ is a nonconstant affine function vanishing at $y$. Since $\tau$ contains a neighborhood of $y$ in $\ell$, near $y$ the set $I$ coincides with the half-line $\{\beta\ge0\}\cap\ell$. Thus $y$ is an endpoint of $I$, and $I\ne\{y\}$.
+\item $y\in\tau'$ for a facet $\tau'$ of $\tau$. Symmetrically, by~\ref{A:point} for $(r,\tau')$, $y$ is an endpoint of $I$, $I\ne\{y\}$, and $y$ lies in no other facet of $\tau$ and in no facet of~$h(r)$.
+\end{enumerate}
+If $I$ is nonempty, it is a segment whose endpoints are not of type~(i), hence of type~(ii) or~(iii); then $I$ is not a point, so it has exactly two endpoints, and these are exactly the points of types~(ii) and~(iii). Since each point of type~(ii) lies in exactly one facet of $h(r)$ and each point of type~(iii) in exactly one facet of $\tau$,
+\begin{equation*}
+ \sum_{r'}|h(r')\cap\tau|+\sum_{\tau'}|h(r)\cap\tau'|\in\{0,2\},
+\end{equation*}
+the sums over the facets $r'$ of $r$ and $\tau'$ of $\tau$. Summing over $r\in[\sigma]$ modulo $2$, and using $\partial[\sigma]=\sum_{v\in\sigma}[\sigma\setminus\{v\}]$ from Lemma~\ref{lem:fundamental}, we obtain
+\begin{equation*}
+ 0=\sum_{v\in\sigma}\ \sum_{r'\in[\sigma\setminus\{v\}]}|h(r')\cap\tau|+\sum_{\tau'}\ \sum_{r\in[\sigma]}|h(r)\cap\tau'|=(\delta a_\tau)(\sigma)+\sum_{\tau'}a_{\tau'}(\sigma)\pmod2.
+\end{equation*}
+
+\ref{I:top} Let $x\in[n]$. Then $[\{x\}]=e_x$ is a vertex of $X'$, and $h(e_x)$ lies in the interior of $D$. By~\ref{A:point}, $h(e_x)$ lies in no simplex of $T_D$ of dimension less than $d$. Since $D=|T_D|$ is the disjoint union of the open simplices of $T_D$, the point $h(e_x)$ lies in the open simplex of a unique simplex $\tau_x\in T_D$, of dimension $d$. If a $d$-simplex $\tau$ of $T_D$ contains $h(e_x)$, it meets the open simplex of $\tau_x$, so $\tau=\tau_x$. Hence, among the $d$-simplices $\tau$ of $T_D$, $a_\tau(x)=1$ exactly for $\tau=\tau_x$. The $d$-simplices of $\zeta$ are those of $T_D$ and simplices containing $v_\infty$, whose cochains vanish. Thus $\sum_{\tau\in\zeta}a_\tau(x)=1$.
+
+\ref{I:vert} We have $a_{v_\infty}=0$. Every vertex $v$ of $T_D$ is joined to a vertex of $T_D$ in $\partial D$ by a sequence of edges of $T_D$. Indeed, let $W$ be the set of vertices of $T_D$ so joined. Every simplex of $T_D$ has all its vertices in $W$ or none, since its vertices are pairwise joined by edges. Let $D_1$ and $D_2$ be the unions of the simplices of the first and of the second kind. They are closed, cover $D$, and are disjoint, since two simplices of $T_D$ that meet share a vertex. The set $D_1$ contains the vertices of $D$, which are vertices of $T_D$ in $\partial D$, and $D$ is connected, so $D_2=\varnothing$. Since $v_\infty$ is joined by an edge of $T$ to every vertex of $T_D$ in $\partial D$, there are vertices $v=w_0,w_1,\ldots,w_l=v_\infty$ of $T$ with $\{w_{i-1},w_i\}\in T$. By~\ref{I:bd},
+\begin{equation*}
+ a_v=a_v+a_{v_\infty}=\sum_{i=1}^l\bigl(a_{w_{i-1}}+a_{w_i}\bigr)=\delta\Bigl(\sum_{i=1}^la_{\{w_{i-1},w_i\}}\Bigr),
+\end{equation*}
+and therefore $\delta a_v=0$ in $C^{d+1}(\Delta([n]))$.
+
+\ref{I:ov} If $v_\infty\in\tau$, every face $\eta$ of $\tau$ contains $v_\infty$ or lies in $\partial D$, so $a_\eta=0$ and there is nothing to prove. Let $\tau\in T_D$. If a $d$-face $\sigma$ of $X$ contains a face $\sigma'$ with $a_\eta(\sigma')=1$ for a face $\eta$ of $\tau$, then $h(|\sigma|)\supseteq h(|\sigma'|)$ meets $\eta\subseteq\tau$ by Step~4. By~\ref{A:hg}, the $f$-images of all such $d$-faces have a common point.
+
+\ref{I:gp} Let $\tau\in T$ have dimension $p\ge1$, and let $\sigma_1,\ldots,\sigma_s$, $s\ge1$, be pairwise vertex-disjoint faces in the support of $a_\tau$; then $\tau\in T_D$, and each $\sigma_j$ has dimension $d-p$. Their $h$-images meet $\tau$, so by~\ref{A:hg} their $g$-images have a common point. If $s\ge2$, then~\ref{A:sgp} gives $s(d-p)\ge d(s-1)$, that is, $sp\le d$; if $s=1$, then $sp\le d$ as well. Hence $s\le\lfloor d/p\rfloor$.
+
+This completes the proof of Lemma~\ref{lem:intersection}.\qed
+
+\begin{thebibliography}{99}
+
+\bibitem{BMN}
+B.~Bukh, J.~Matou\v{s}ek, and G.~Nivasch,
+\emph{Stabbing simplices by points and flats},
+Discrete Comput.\ Geom.\ \textbf{43} (2010), 321--338.
+Locators refer to the \href{https://kam.mff.cuni.cz/~matousek/first_sel_lemma.pdf}{author's manuscript}.
+
+\bibitem{Coste}
+M.~Coste,
+\emph{An Introduction to Semialgebraic Geometry}, 2002,
+\href{https://perso.univ-rennes1.fr/michel.coste/polyens/SAG.pdf}{author's text}; HAL Id hal-05407113. Page numbers are the printed ones.
+
+\bibitem{DKW}
+D.~Dotterrer, T.~Kaufman, and U.~Wagner,
+\emph{On expansion and topological overlap},
+Geom.\ Dedicata \textbf{195} (2018), 307--317.
+Locators refer to \href{https://arxiv.org/abs/1506.04558}{arXiv:1506.04558}.
+
+\bibitem{Goresky}
+M.~Goresky,
+\emph{Morse theory, stratifications and sheaves}, version of 8 October 2019,
+\href{https://www.math.ias.edu/~goresky/pdf/ShMo.pdf}{author's text}.
+
+\bibitem{Gromov}
+M.~Gromov,
+\emph{Singularities, expanders and topology of maps. Part~2: From combinatorics to topology via algebraic isoperimetry},
+Geom.\ Funct.\ Anal.\ \textbf{20} (2010), 416--526.
+
+\bibitem{Hatcher}
+A.~Hatcher,
+\emph{Algebraic Topology}, Cambridge University Press, 2002,
+\href{https://pi.math.cornell.edu/~hatcher/AT/AT.pdf}{author's text}.
+
+\bibitem{MW}
+J.~Matou\v{s}ek and U.~Wagner,
+\emph{On Gromov's method of selecting heavily covered points},
+Discrete Comput.\ Geom.\ \textbf{52} (2014), 1--33.
+
+\bibitem{Milnor}
+J.~Milnor,
+\emph{Morse Theory}, based on lecture notes by M.~Spivak and R.~Wells,
+Annals of Mathematics Studies~51, Princeton University Press, 1963.
+
+\end{thebibliography}
+\end{document}
