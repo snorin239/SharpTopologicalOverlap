@@ -2,7 +2,7 @@
 
 This blueprint follows the 9 November 2026 [manuscript](../paper/sharp_topological_overlap.pdf) and [TeX source](../paper/sharp_topological_overlap.tex). It covers the finite overlap theorem and every ingredient used to prove it. The [dependency assessment](dependency-assessment.md) records the inspected external libraries and the completed import checks. References to section symbols and numbered mathematical results below use the manuscript's numbering.
 
-The foundation block in §3 now has implementations for probability simplices, faces, the realized skeleton, overlap, and finite chains and cochains. See [the formalization status](../FORMALIZATION.md) for the checked declarations and [the foundation plan](foundation-plan.md) for the work division. The root also imports the relevant TauCeti modules, and a temporary downstream check specialized the Morse band theorem to `ZMod 2`. The later comparison, intersection, spectral, and analytic branches remain to be formalized. **Module and declaration names below are proposed unless recorded as implemented in the formalization status.**
+The foundation block in §3 implements probability simplices, faces, the realized skeleton, overlap, and finite chains and cochains. See [the formalization status](../FORMALIZATION.md) for the checked declarations and [the foundation plan](foundation-plan.md) for the work division. Block G is complete: `exists_intersectionData` proves Lemma 3.1, constructing a finite target of dimension exactly `d` and all five cochain properties from the continuous map. Its [implementation plan](intersection-plan.md) and [verification record](intersection-verification.md) describe the actual subdivision, placement, parity and cochain construction. The root also imports the relevant TauCeti modules, and a temporary downstream check specialized the Morse band theorem to `ZMod 2`. The comparison, spectral, and analytic branches remain to be formalized. **Module and declaration names below are proposed unless recorded as implemented in the formalization status.**
 
 ## 1. Target and conventions
 
@@ -78,10 +78,10 @@ Use modules with the following responsibilities. Split a module further when its
 | `Simplicial/Subcomplex.lean` | Ambient chains/cochains, inclusion, restriction and evaluation for vertex-omitting subcomplexes | `Simplicial` |
 | `Singular.lean` | Carried chains, relative-cycle filling criterion, support-controlled prism | `Simplex` |
 | `Comparison.lean` | Canonical affine comparison and the supported maps $\rho,Q$ | `Simplicial`, `Singular` |
-| `Geometry/Subdivision.lean` | Geometric subdivision, restrictions, mesh and fundamental chains | `Simplex`, `Simplicial` |
-| `Geometry/Placements.lean` | Four generic-placement conditions and approximation by interpolation | `Geometry/Subdivision` |
-| `Geometry/Intersections.lean` | Complementary point counts and segment endpoint parity | `Geometry/Placements` |
-| `Intersection.lean` | Lemma 3.1 with all five properties | The three geometry modules |
+| `Geometry/Subdivision.lean`, `Geometry/Barycentric*.lean`, `Geometry/TargetCycle.lean` | Indexed affine chains and the actual iterated simplicial model, mesh, interpolation and subdivision chain map | `Simplex`, `Simplicial` |
+| `Geometry/GenericPlacements.lean`, `Geometry/SourceApproximation.lean` | Four simultaneous generic-placement conditions and actual first/second source approximations | Barycentric geometry and the four placement modules |
+| `Geometry/Intersections.lean`, `Geometry/SimplexParity.lean` | Complementary point counts and geometric facet parity | Generic placements, segments and affine-constraint parity |
+| `Intersection.lean`, `Intersection/Existence.lean` | Five-property interface and the proved existence theorem of Lemma 3.1 | Actual target geometry, local indicators, chain pullback and normalization |
 | `Polynomial.lean` | Weight sums, differential formulas, bounds and independence complexes | `Simplex`, `Simplicial` |
 | `Spectral.lean` | Lemma 4.1 and Corollary 4.2 | `Polynomial` |
 | `Barrier.lean` | Open-simplex coordinates, generic Morse tilt and Lemma 5.7 | `Spectral` |
@@ -204,7 +204,15 @@ The output `supportedComparison` must give one map $\rho$ that preserves **every
 
 ## 5. Intersection cochains from Appendix A
 
-The proposed `IntersectionData` records a finite target complex $T$ with faces of dimension at most $d$, a $d$-cycle $\zeta$, and $a_\tau\in C^{d-\dim\tau}(\Delta([n]))$. Its proof fields are exactly the following statements.
+**Completed.** `exists_intersectionData` in `Intersection/Existence.lean`
+proves Lemma 3.1 from $2\le d$, $n\ge d+1$ and an arbitrary continuous map.
+`IntersectionWitness` bundles the constructed finite target, its
+`IntersectionData`, and an actual top cell, proving dimension exactly $d$.
+All subdivisions, approximations, placements, cycles and local intersection
+counts are constructed in its checked dependencies. See [the current mapping](../FORMALIZATION.md)
+and [independent verification](intersection-verification.md).
+
+`IntersectionData` records a finite target complex $T$ with faces of dimension at most $d$, a $d$-cycle $\zeta$, and $a_\tau\in C^{d-\dim\tau}(\Delta([n]))$. Its proved fields are exactly the following statements.
 
 1. For every positive-dimensional $\tau$,
    $\delta a_\tau=\sum_{\eta\text{ facet of }\tau}a_\eta$.
@@ -213,37 +221,37 @@ The proposed `IntersectionData` records a finite target complex $T$ with faces o
 4. For each $\tau$, the original images of all source $d$-faces containing any support face of any $a_\eta$, $\eta\le\tau$, have one common point.
 5. For each $\tau$ of dimension $p>0$, a pairwise vertex-disjoint family in $\operatorname{supp}a_\tau$ has size at most $d/p$.
 
-These inputs suffice for §6. Appendix A also constructs $T$ with dimension exactly $d$. Establish its full Lemma 3.1 statement, then extract the bounded-dimension interface.
+These fields suffice for §6. The witness includes a top cell; alternatively, normalization forces one whenever the source has a vertex.
 
 ### Subdivision and fundamental chains
 
-For a geometric complex and each original simplex $s$, prove the three parts of Lemma 2.1. Iterated subdivision covers the same space, respects every original face, and has mesh tending to zero. Track which original open face contains each open child simplex.
+The completed route uses `barycentricModel K j`, with a realization homeomorphism, physical vertex positions and original-face carriers. Its actual abstract cells are used by both interpolation and chains. Coverage follows from the homeomorphism; original-face support and the shrinking mesh are proved in `BarycentricGeometry` and `BarycentricApproximation`.
 
-For a $k$-simplex $s$, define $[s]_j$ as the sum of its $k$-dimensional children in subdivision $j$. Prove Lemma A.1 first for one subdivision by counting maximal chains of faces. A child facet on an original facet occurs once. Each interior child facet occurs twice. Extend subdivision linearly as a chain map and iterate.
+`iteratedSubdivision K j k` is constructed directly on those actual cells by recursively coning the subdivided boundary to the full-face vertex. Its boundary identity and carrier property are proved. Unique parent-facet and flag-cardinality lemmas establish coefficient one on every top child. The earlier affine-chain and one-step bridge developments remain auxiliary; the existence proof does not require a converse identification with their permutation indexing.
 
 The metric donor in DifferentialGeometry gives the bound
 $$
  \operatorname{mesh}(K^{(j)})
  \le\left(\frac m{m+1}\right)^j\operatorname{mesh}(K)
 $$
-from a bound of $m+1$ vertices per simplex, even when the ambient Euclidean dimension is larger. Port the needed lemmas with their prerequisites if using this geometric representation. TauCeti already supplies the abstract subdivision homeomorphism and affine-chain mesh estimates. Establish the relation between the chosen child simplices and the source faces. [Subdivision homeomorphism][subdivision] · [Geometric subdivision donor][mesh] · [Affine-chain mesh][chainmesh]
+from a bound of $m+1$ vertices per simplex, even when the ambient Euclidean dimension is larger. The corresponding estimate is proved on the actual model, together with uniform interpolation approximation and small physical hull images for continuous maps. [Subdivision homeomorphism][subdivision] · [Geometric subdivision donor][mesh] · [Affine-chain mesh][chainmesh]
 
 ### Generic placements and approximation
 
-Formalize the four conditions of Lemma A.2 separately.
+The four conditions of Lemma A.2 are proved separately and combined in `exists_genericPlacement`.
 
-| Condition | Required statement | Proof to formalize |
+| Condition | Proved statement | Proof method |
 | --- | --- | --- |
 | G1 | Disjoint source vertex sets have no common hull intersection when the sum of their dimensions is less than $d(s-1)$ for $s$ sets | Openness from compact barycentric coefficients, density by independent translations outside a proper affine image |
-| G2 | Each source simplex has affine-independent vertex images | A nonzero minor under a univariate perturbation |
+| G2 | Each source simplex has affine-independent vertex images | Successive avoidance of proper affine spans |
 | G3 | A source hull misses a fixed target simplex below complementary dimension | Compactness for openness and translations outside a proper affine subspace for density |
-| G4 | Source and target direction spaces span $\mathbb R^d$ at or above complementary dimension | A determinant polynomial with nonzero leading coefficient |
+| G4 | Source and target direction spaces span $\mathbb R^d$ at or above complementary dimension | Successive rank growth modulo fixed target directions, with openness from a nearby basis |
 
 There are finitely many tuples in these conditions. Their open dense loci have open dense intersection, giving a placement arbitrarily close to a prescribed one. DifferentialGeometry's finite-placement theorem supplies the affine-independence part. [Placement donor][placements]
 
-Prove the compact separation lemma for a continuous map $\varphi$ before making either perturbation. A single positive $\varepsilon(\varphi)$ must work for all families of original faces with empty joint image intersection. If there are no such families, choose any positive tolerance.
+The compact separation lemmas choose a single positive tolerance for all families of original closed faces, including empty families. The first tolerance transfers common-image properties from $g$ to $f$. The second, chosen after $g$, transfers a family whose $h$-images meet a small target carrier to a common point for $g$.
 
-Prove the continuity, hull-image identity, and uniform error bound for barycentric interpolation on a subdivision. Follow the paper's parameter order
+The proved continuity, hull-image identity and interpolation error bounds give `exists_first_source_approximation` and `exists_second_source_approximation`. The existence proof follows the paper's parameter order
 $$
  f\longrightarrow g\text{ satisfying G1}
  \longrightarrow\varepsilon(g),D,T_D
@@ -253,23 +261,23 @@ The G1 argument is applied to $g$. The estimates for $h$ transfer a family meeti
 
 ### Intersection parity and the five properties
 
-Under G2–G4, for source and target simplices with dimensions summing to $d$, prove their hull intersection is empty or a single point, and that a meeting point lies in both open simplices. Define its mod-two contribution by the indicator of nonempty intersection.
+Under G2–G4, `Intersections` proves uniqueness of complementary intersections and exclusion of proper faces. `localIndicator` is the `ZMod 2` indicator of nonempty hull intersection.
 
-Under the same placement hypotheses, for dimensions summing to $d+1$, prove that a nonempty intersection is a nondegenerate segment in the common affine line. Each endpoint lies in exactly one source facet or exactly one target facet. Prove uniqueness of the incident facet, then deduce that the total facet-intersection count is zero modulo two.
+For dimensions summing to $d+1$, `SimplexParity` proves geometric facet parity. Barycentric coordinates on the common affine line turn the hull intersection into a compact feasible parameter set. Lower-face avoidance gives a unique active constraint and spanning directions give nonzero active slopes. The endpoint theorem then proves that the total facet-intersection count is zero modulo two, including the empty case. No scalar or geometric parity hypothesis remains in the final existence theorem.
 
 Keep source simplices as indices in these sums. The map $h$ is injective on each source child simplex, while images of different child simplices may overlap.
 
-Choose a full-dimensional target simplex $D$ whose interior contains the closed $\varepsilon(g)/3$-neighborhood of $g(|X|)$, and give its subdivision $T_D$ mesh below $\varepsilon(g)/3$. The second interpolation then satisfies $h(|X|)\subseteq\operatorname{int}D$. Form the abstract cone on the subdivided boundary with a new vertex. Define $\zeta$ from the subdivided fundamental chain and its coned boundary. Lemma A.1 proves $\partial\zeta=0$. Sum complementary point contributions over $[\sigma]_j$ to define $a_\tau$. Prove that every target-boundary cochain vanishes because its simplex misses $h(|X|)$, then extend all cone cochains by zero. This vanishing also verifies the facet identity on cone simplices.
+The actual target is a barycentric subdivision of the boundary of a standard $(d+1)$-simplex. One distinguished facet is physically realized as an enclosing simplex $D$; the remaining facets contain an infinity vertex. `refinedCycle` is closed and has coefficient one on every top cell. `targetCells` uses the hull of patch vertices in each cell, so carriers stay monotone on outer cells as well as inner ones. Outer carriers lie in proper faces of $D$ and miss $h(|X|)$; the infinity carrier is empty. The chosen tolerance already incorporates the separation factor of three, so the proof encloses the closed $\varepsilon_g$-neighborhood and takes mesh and perturbation below $\varepsilon_g$. Pulling local indicators back through the actual source subdivision chain map defines the full source cochains.
 
-Establish the five fields in the following order.
+The five fields are proved as follows.
 
-- Sum the segment-parity identity and apply Lemma A.1 to obtain the facet coboundary identity.
-- Each source vertex image belongs to a unique open target $d$-simplex, giving normalization.
-- A target edge path to the boundary and cone vertex expresses $a_v$ as a coboundary. Applying $\delta^2=0$ gives its full-simplex cocycle identity.
-- Use the joint compact separation estimates for all subface supports at once to prove the common-point property.
+- Sum geometric facet parity and commute the actual subdivision map with boundary to obtain the facet coboundary identity; outer-cell identities follow from vanishing and monotonicity.
+- `TargetCoverage` and generic avoidance give unique top-cell incidence at each original source vertex. Coefficient one in the actual cycle gives normalization.
+- Every target vertex has an edge path to the zero infinity cochain. The facet identity and $\delta^2=0$ give the cocycle equation in degree $d+1$ on the full source simplex.
+- `SupportMeets`, target-carrier monotonicity and the two compact separation estimates give one common point for all upward support faces simultaneously.
 - If $s$ disjoint support faces occur at a target $p$-face, the transfer to $g$ and G1 give $s(d-p)\ge d(s-1)$, hence $sp\le d$. Handle $s=1$ using $p\le d$, and conclude $s\le d/p$ with $p>0$.
 
-**Completion check.** Prove `exists_intersectionData` from $2\le d$, an arbitrary continuous $f$, and $n\ge d+1$. The point/segment parity lemma is an earlier milestone that should compile before the entire construction is assembled. [Lemma 3.1 and Appendix A](../paper/sharp_topological_overlap.tex#L216)
+**Completed endpoint.** `exists_intersectionData` has exactly $2\le d$, $n\ge d+1$ and the continuous map as inputs. Its transitive axiom audit contains only `propext`, `Classical.choice` and `Quot.sound`; no placeholders or project axioms supply any construction. [Lemma 3.1 and Appendix A](../paper/sharp_topological_overlap.tex#L216)
 
 ## 6. Weight polynomials and spectral rigidity
 
@@ -478,7 +486,7 @@ The table lists the endpoint to record when each item is implemented. The import
 | Lemma 2.2, `lem:prism` | `prism_supported`, retract and filtration consequences | `Singular` |
 | Theorem 2.3, `thm:hatcher` | `affineChainMap_homology_isIso` | `Comparison` |
 | Lemma 2.4, `lem:comparison` | `supportedComparison` | `Comparison` |
-| Lemma 3.1, `lem:intersection` | `exists_intersectionData` | `Intersection` |
+| Lemma 3.1, `lem:intersection` | `exists_intersectionData` (proved) | `Intersection/Existence` |
 | Lemma 4.1, `lem:spectral` | `spectral_index_rigidity` | `Spectral` |
 | Corollary 4.2, `cor:index` | `faceCritical_index_ge` | `Spectral` |
 | Theorem 5.1, `thm:weights` | `sublevel_relative_vanishing`, `sublevel_cycle_fills` | `Sublevel` |
@@ -490,8 +498,8 @@ The table lists the endpoint to record when each item is implemented. The import
 | Lemma 5.7, `lem:persistence` | `barrier_index_persists` | `Barrier` |
 | Lemma 6.1, `lem:covers` | `exceptional_vertices` and its five conclusions | `Deletion` |
 | Lemma 6.2, `lem:carriers` | `weightSpace_inclusions`, `uniform_mem_weightSpace`, `weightSpace_cycle_fills` | `WeightSpaces` |
-| Lemma A.1, `lem:fundamental` | `fundamentalChain_boundary` | `Geometry/Subdivision` |
-| Lemma A.2, `lem:generic` | `dense_generic_placements` | `Geometry/Placements` |
+| Lemma A.1, `lem:fundamental` | `boundary_fundamentalChain`, `boundary_iteratedSubdivision` (proved) | `Geometry/Subdivision`, `Geometry/TargetCycle` |
+| Lemma A.2, `lem:generic` | `exists_genericPlacement`, `open_dense_genericPlacement` (proved) | `Geometry/GenericPlacements` |
 | Theorem 1.2, `thm:finite` | `finite_overlap_bound` | `Finite` |
 
 ## 11. Execution order and completion criteria
@@ -506,11 +514,11 @@ Start with the following deliverables, each ending in checked Lean declarations.
 | 4 | Canonical affine comparison and $\rho$ | Prove the two carrier-wise comparison corollaries, then a single $\rho$ preserving every subcomplex and the prescribed uniform-point value. |
 | 5 | Weight polynomial and spectral branch | Prove Lemma 4.1 including rigidity, then Corollary 4.2 on every support. |
 | 6 | Barrier and sublevel branch | Prove properness, genericity, index persistence and Theorem 5.1, exporting actual fillers. |
-| 7 | Appendix A branch | Prove subdivision-chain and segment-parity lemmas first, then all five properties of Lemma 3.1 for arbitrary continuous maps. This branch can proceed alongside orders 4–6 after orders 1–2. |
+| 7 | Appendix A branch — complete | `exists_intersectionData` constructs all five properties for arbitrary continuous maps; actual subdivision chains and geometric facet parity are proved. |
 | 8 | Deletion and weight spaces | Prove Lemmas 6.1–6.2, including global matching choices and ambient carrier statements. The finite counting part can proceed earlier from the intersection-data interface. |
 | 9 | Final assembly | Derive the unconditional finite overlap theorem and complete its dependency and axiom audit. |
 
-The principal risks are the canonical affine-generator identification, the point/segment parity development in arbitrary dimension, and the open-simplex/Hessian transport needed for index persistence. Their earlier acceptance lemmas make each risk independently reviewable.
+The remaining principal risks are the canonical affine-generator identification and the open-simplex/Hessian transport needed for index persistence. The arbitrary-dimensional point/segment parity development is now checked in block G.
 
 For each new module, run `lake env lean SharpTopologicalOverlap/<module>.lean` and then `lake build`. Include it through the project root. Keep actual proved status in [FORMALIZATION.md](../FORMALIZATION.md). Proposed contracts in this document become completed milestones only after their proofs and dependencies are checked. Keep the dependency graph free of `sorry`, `admit`, and project axioms replacing the required providers. Use `#print axioms` on the completed major endpoints and on `finite_overlap_bound`.
 

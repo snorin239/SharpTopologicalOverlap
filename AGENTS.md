@@ -25,6 +25,16 @@ and its accompanying TeX source for mathematical intent and numbering.
   inspect and adapt their implementations rather than rebuilding everything
   from scratch.
 
+## Work on flowchart blocks
+
+- Before implementing each further block, plan the proof dependencies and the
+  division of work between subagents carefully, then begin implementation.
+- Use subagents throughout the block, keeping them occupied with useful,
+  nonoverlapping implementation or verification tasks when possible; reassign
+  them when their current tasks finish.
+- Keep the user updated on progress, findings, and remaining proof gaps.
+- These directions apply to subsequent flowchart blocks as well as block G.
+
 ## Mathematical skill routing
 
 - When asked to prove or disprove a nontrivial mathematical statement,

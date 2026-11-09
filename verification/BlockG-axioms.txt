@@ -1,0 +1,811 @@
+'SharpTopologicalOverlap.Geometry.BarycentricModel.coordinateMap_single' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_vertexPoint_val' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_coordinates_centroid' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_faceCardBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_dist_le_of_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_mesh' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.barycentricModel_faceCardBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.barycentricModel_mesh' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.continuous_interpolation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.interpolation_map' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.interpolation_vertexPoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.norm_interpolation_sub_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.interpolation_linearMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.interpolation_mem_convexHull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.continuous_facePoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.facePoint_support_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.interpolation_facePoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.linearMap_facePoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_barycentric_interpolation_approx' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_barycentric_vertex_image_mesh_lt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_barycentric_hull_image_mesh_lt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.affineMapMk_sourceVertices_eq_map' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.permutationFace_antitone' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.permutationFace_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.permutationFace_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.affine_child_vertex_eq_subBarycenter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.subBarycenter_weights_eq_faceBarycenter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.affine_child_vertex_weights_eq_faceBarycenter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.permutationPoint_val' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.barycentricRealization_permutationPoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.exists_permutation_of_mem_support_subdivision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricBridge.fundamentalChain_one_child_represented' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.support_subset_of_vertices' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.faceInclusion_support_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.cell_affineIndependent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.card_le_of_support_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.full_face_mem_of_card' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.exists_max_face' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.exists_unique_parent_facet' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_lt_of_card_lt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.vertexPoint_val' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.linearMap_eq_vertexPoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.homeomorph_val_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.active_vertex_support_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.homeomorph_support_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_vertexPoint_support_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.exists_originalFace_carrier' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.barycentricModel_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.barycentricModel_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.mem_activeConstraints' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.feasibleParameters_both_sides' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_distinct_feasibleParameter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_active_of_isLeast' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_active_of_isGreatest' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.feasibleParameters_eq_Icc' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.activeParameter_eq_endpoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.finite_affine_constraints_endpoints' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.card_activeConstraints_eq_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.activeConstraints_card_mod_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.activeConstraints_eq_empty_of_empty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.card_activeConstraints_eq_zero_or_two' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.sum_activeConstraint_indicators_eq_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_enclosing_affineBasis' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_enclosing_simplex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_enclosing_simplex_cthickening' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.interpolate_faceInclusion' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.image_interpolate_faceInclusion' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.hull_subset_original_face_image' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_compl_affineSubspace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_disjoint_affineSubspace_translations' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_small_disjoint_affineSubspace_translations' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_near_avoiding_affineSpans' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_generalPositionOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_generalPosition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_generalPosition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_generalPosition' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.GenericPlacement.source_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.GenericPlacement.affineDirections_span' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_independentOnFamily' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_independentOnFamily' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.open_dense_avoidanceOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.open_dense_spanningOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.open_dense_genericPlacement' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_genericPlacement' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.disjoint_of_sup_eq_top_of_finrank_add' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.affineSpan_inter_eq_singleton' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.convexHull_inter_subsingleton' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.mem_intrinsicInterior_of_notMem_opposite_faces' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.inter_subset_intrinsicInterior_inter' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.convexHull_range_eq_range_affineMapMk' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_hull_avoidance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_near_hull_avoidance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.open_dense_hull_avoidance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.interpolate_eq_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.continuous_interpolate' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.interpolate_vertex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.interpolate_sub' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.norm_interpolate_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.interpolate_mem_convexHull' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.continuous_edgewiseInterpolate' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.edgewiseInterpolate_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.norm_edgewiseInterpolate_sub_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.edgewise_active_vertex_entries_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.edgewiseInterpolate_mem_convexHull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.norm_edgewisePoint_sub_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_edgewiseInterpolate_approx' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.finrank_direction_inf_eq_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_eq_segment_of_isCompact_convex_collinear' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_eq_segment_of_isCompact_convex_subset_affineLine' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.simplex_finrank_direction_inf_eq_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.simplex_convexHull_inter_eq_segment' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_nonzero_strict_finite_affine_constraints' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.LowerFaceAvoidance.symm' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.FaceSpanning.symm' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.eq_of_two_zero_source_coordinates' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.false_of_zero_source_target_coordinates' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.source_coord_slope_ne_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.facet_intersection_parity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.erased_vertex_image_eq_range_succAbove' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.facet_intersection_parity_succAbove' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.source_facet_count_eq_target_facet_count' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.exists_coordinates' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.sum_coord' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.affineCombination_coord' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.coord_nonneg_of_mem_hull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.coord_zero_of_mem_face_span' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.sum_face_coord' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.sum_face_coord_smul' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.mem_face_span_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.mem_face_hull_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.mem_hull_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.mem_erased_face_hull_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.mem_erased_face_span_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Coordinates.mem_double_erased_face_hull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.exists_line' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Line.point_mem' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Line.point_surjective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Line.isClosedEmbedding_point' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.SimplexParity.Line.coord_point' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.mem_faceFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.continuous_barycentricSourceMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.barycentricSourceMap_facePoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.fine_hull_subset_sourceFace_image' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.sourceStrongGeneralPosition_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.StrongGeneralPositionOn.no_common_hulls_indexed' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.sourceStrong_of_modelStrong' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_first_source_approximation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_second_source_approximation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.range_subset_of_near_cthickening' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.exists_compact_family_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.exists_compact_subfamily_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.exists_faceImage_separation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.exists_faceImage_perturbation_tolerance' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.exists_faceImage_cluster_tolerance' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.exists_faceImage_two_stage_tolerances' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_independent_affineSubspace_translations' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_small_independent_affineSubspace_translations' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.translateDisjointFamily_on' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_perturb_disjoint_family_affineSpans' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_no_common_hulls' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.mem_strongFamilies' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.StrongGeneralPositionOn.no_common_hulls' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_admissibleStrongFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_admissibleStrongFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_strongGeneralPositionOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_strongGeneralPositionOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_strongGeneralPositionOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.subdivide_eq_pow' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.subdivide_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.subdivide_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.boundary_subdivide' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.subdivide_degree_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.affineMapMk_mem_closedFace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.subdivision_carried' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.subdivide_carried' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.subdivide_vertex_dist_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.subdivide_dist_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_subdivide_dist_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.reduceModTwo_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.reduceModTwo_single' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.reduceModTwo_surjective' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.support_reduceModTwo_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.affineBoundary_single' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.affineBoundary_reduceModTwo' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.affineBoundary_affineBoundary_reduced' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.affineBoundary_affineBoundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.sourceVertices_face' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.fundamentalChain_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.boundary_fundamentalChain' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.fundamentalChain_degree_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.fundamentalChain_carried' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.fundamentalChain_dist_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_fundamentalChain_dist_lt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCoverage.lift_hull_point' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCoverage.physical_mem_support_hull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCoverage.lift_top_hull_point' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCoverage.sphere_face_card_bound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCoverage.existsUnique_top_patch_cell' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCoverage.existsUnique_top_targetCells' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCoverage.existsUnique_top_targetCells_of_cell_avoidance' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.include_facet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.facet_injective' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.include_cycle' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.boundary_cycle' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.dimension_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.exists_facet' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.cycle_apply_facet' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.cycle_apply' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.edge_of_ne' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.path_to_infinity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.subdivisionMap_single' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.subdividedCell_carried' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.subdividedBoundary_cone_admissible' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.subdivisionMap_boundary_single' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.boundary_subdivisionMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.subdividedCell_apply_of_carried' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.subdivisionMap_top_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.singletonVertex_val' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_path_of_nested' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_path_of_edge' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_lift_path' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.step_paths_to_anchor' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.subdivisionMap_support' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.BarycentricModel.singletonVertex_point' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.boundary_iteratedSubdivision' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.originalVertex_point' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.iteratedSubdivision_vertex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.iteratedSubdivision_carried' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.iteratedSubdivision_facePoint_carried' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.sphere_faceCardBound' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.refined_dimension_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.refinedCycle_apply' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.boundary_refinedCycle' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetCycle.refined_path_to_infinity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.affineMap_eq_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.position_eq_sum' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.InPatch.mono' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.last_eq_zero_of_support_subset_patch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.sum_castSucc_eq_one' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.affineMap_injective_on_patch_vectors' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.position_mem_target_hull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.patch_cell_affineIndependent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.continuous_targetMap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.patch_mem_sphere' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.patchPoint_castSucc' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.patchPoint_last' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.patchPoint_support_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.affineMap_patchPoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.mem_patchVertices' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.patchVertices_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.patchVertices_mono' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.patchVertices_eq_self' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.targetCells_mono' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.targetCells_eq_hull_of_inPatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.targetCells_subset_full_hull' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.isCompact_targetCells' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.affineMap_mem_target_face' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.targetCells_subset_target_face_of_not_inPatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.target_face_disjoint_interior' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.targetCells_disjoint_interior_of_not_inPatch' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.refinedInfinity_point' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.targetCells_refinedInfinity_eq_empty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.sphere_face_card_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.TargetGeometry.exists_targetCells_mesh_lt' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_near_spanning_modulo' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_near_spanningDirections' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_spanningDirections' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_finite_family_span_top' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_finite_family_span_sup' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_spanningDirections' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.vectorSpan_range_fin_succ' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_near_spanningDirectionsOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.isOpen_spanningDirectionsOn' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.dense_spanningDirectionsOn' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.mem_upwardSupport' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.upwardSupport_uniform' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.upwardSupport_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.IntersectionData.upwardSupport_card_le_overlap' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.IntersectionData.exists_top_cell' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Simplicial.coboundary_eq_of_add_eq_coboundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Simplicial.coboundary_eq_of_edgePath' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Simplicial.isCocycle_of_edgePath_to_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Simplicial.boundary_add_cone_boundary_eq_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.barycentricCochainFamily_eq_zero_of_empty' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.barycentricCochainFamily_supportMeets' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.barycentricSourceMap_original_vertex' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.barycentricCochainFamily_vertex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.barycentricCochainFamily_vertex_map' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.barycentricCochainFamily_facet_coboundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.barycentricCochainFamily_normalization' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.barycentricCochainFamily_target_normalization' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.affineEvaluation_single' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.affineEvaluation_coboundary' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.coboundary_intersectionCochain' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.coboundary_intersectionCochain_of_local_identity' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.exists_supported_child_of_intersectionCochain_ne_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.intersectionCochain_degree_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.sum_intersectionCochain_degree_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.sum_intersectionCochain_degree_zero_of_unique' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.facet_coboundary_intersectionCochainFamily' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.exists_intersectionData' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.localIndicator_ne_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.localIndicator_empty' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.localIndicator_vertex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.localIndicator_eq_zero_of_range_disjoint' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.localIndicator_eq_zero_of_range_subset' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.refinedIndicator_support_incidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.barycentric_local_facet_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.barycentric_family_facet_coboundary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.barycentric_family_anchor_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.barycentric_family_vertex_cocycle' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.placed_cell_affineIndependent' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.range_placed_vertices' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.localIndicator_coboundary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.card_mul_le_of_strongGeneralPosition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.card_le_div_of_strongGeneralPosition' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.unique_top_incidence_of_generic_vertex' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.unique_original_vertex_top_incidence' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.barycentric_family_normalization' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Simplicial.evaluation_pullbackCochain' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Simplicial.coboundary_pullbackCochain' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Simplicial.exists_supported_cell_of_pullbackCochain_ne_zero' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Simplicial.skeletonCellEquiv_vertices' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Simplicial.skeletonCellEquiv_face' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Simplicial.coboundary_extendSkeletonCochain' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.skeletonFace_mono' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.SupportMeets.upwardSupport' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.SupportMeets.subfamily' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.exists_support_transfer_tolerances' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.barycentricTargetCells_mono' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.Geometry.targetSimplexFamily_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.Geometry.localIndicator_coboundary_of_generic' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SharpTopologicalOverlap.exists_edge_with_facets' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.sum_edge_facets' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SharpTopologicalOverlap.vertex_cocycles_of_facet_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
