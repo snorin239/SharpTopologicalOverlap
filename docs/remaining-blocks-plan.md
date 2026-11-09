@@ -43,6 +43,16 @@ explicitly. This depends only on finite sums and real arithmetic. Its
 library spectral/signature adapter will be inspected alongside that proof;
 it does not yet claim the matrix or cocycle rigidity theorem.
 
+Block P is implemented and independently inspected in `Polynomial.lean`.
+Its first and second derivatives are identified with Frechet derivatives;
+all counting, positivity, zero-set and restriction endpoints are checked.
+The polynomial agent now owns `Spectral/Normalization.lean` and
+`Spectral/Covariance.lean`: constant partials at a critical point, the
+normalized Hessian eigenvector, and the finite covariance sum of squares.
+These use P directly. The counting agent owns only `Spectral/Counting.lean`
+and its real symmetric-operator adapter. The cocycle equality case and
+final index/signature integration remain explicit subsequent tasks.
+
 After P, implement spectral rigidity (including equality), then the
 logarithmic barrier and index persistence. H and the barrier supply sublevel
 relative vanishing. D, P, and sublevel vanishing supply the nested weight
