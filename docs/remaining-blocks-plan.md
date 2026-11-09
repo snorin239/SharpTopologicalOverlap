@@ -31,6 +31,23 @@ theorem.
 
 ## Subsequent dependencies
 
+Block H is implemented: support equivalence, compact chain images,
+injective inclusion, actual relative fillings in all nonnegative degrees,
+carrier-controlled prism, deformation-retract fillings and nested-pair
+composition. The modules are `Singular.lean`, `Singular/Relative.lean`,
+`Singular/Prism.lean`, and `Singular/Deformation.lean`.
+
+Before starting block F, its algebraic work is divided as follows. The
+primary agent first implements the finite target incidence transpose and
+its square-zero and evaluation identities in `Descending/Incidence.lean`.
+This uses only the checked target simplicial boundary/coboundary API and
+finite face types. It will then support the descending induction on source
+degree and the evaluation contradiction. The comparison agent remains
+responsible for C's supported inverse; the spectral agents remain occupied
+with the count/signature and covariance branches. F's input data will be
+explicit, and F is conditional until all geometric and analytic providers
+are constructed in the final assembly.
+
 Block D is implemented in `Deletion.lean`: all five parts of Lemma 6.1,
 including the actual remaining-vertex subtype and the exact family-image
 identity, are checked. The independent review checked the global matching
