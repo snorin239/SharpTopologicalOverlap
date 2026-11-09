@@ -1,17 +1,25 @@
 # Sharp topological overlap in Lean
 
 This project formalizes *Sharp topological overlap in every dimension* in Lean 4
-with Mathlib. The targets, in order, are Theorem 1.2 (the finite overlap bound)
+with Mathlib and TauCeti. The targets, in order, are Theorem 1.2 (the finite overlap bound)
 and Theorem 1.1 (the sharp asymptotic constant). The reference is the
 [9 November 2026 manuscript](paper/sharp_topological_overlap.pdf).
 
 ## Build
 
-With Git and Elan installed, run these commands from the repository root on a
-fresh checkout. Lean and Mathlib are pinned to `v4.32.1`.
+The project uses Lean `v4.36.0-rc2`, TauCeti `1e668f5e55bc`, and its matching
+mathlib revision `1b1ccf4b088b`. The [Lake manifest](lake-manifest.json) locks
+the full revisions.
+
+With Git and Elan installed, run the following from the repository root.
+The first line selects the [public TauCeti cache](lake-cache.toml) for this
+shell. In PowerShell, use
+`$env:LAKE_CONFIG = (Resolve-Path lake-cache.toml).Path` for that line.
 
 ```sh
+export LAKE_CONFIG="$PWD/lake-cache.toml"
 lake exe cache get
+lake cache get --package=TauCeti --service=tauceti-public --repo=TauCetiProject/TauCeti --mappings-only
 lake build
 ```
 
@@ -21,6 +29,7 @@ write `import SharpTopologicalOverlap`.
 ## Working on the formalization
 
 The [formalization status](FORMALIZATION.md) lists the checked declarations.
-The [blueprint](docs/blueprint.md) gives the target statements and maps their
-proofs to sections of the paper. The [LaTeX source](paper/sharp_topological_overlap.tex)
+The [blueprint](docs/blueprint.md) details the remaining formalization of
+Theorem 1.2, with proposed modules, proof dependencies, and completion checks.
+The [LaTeX source](paper/sharp_topological_overlap.tex)
 provides stable labels for those results.

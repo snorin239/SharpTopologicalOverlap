@@ -17,6 +17,14 @@ and its accompanying TeX source for mathematical intent and numbering.
   such as `sorry`, `admit`, or project axioms standing in for proofs.
 - Preserve the reference manuscript unless the user asks to edit it.
 
+## Project-wide formalization choices
+
+- Theorems 1.1 and 1.2 must be proved as stated. Intermediate results may
+  be reformulated or replaced when a different route simplifies formalization.
+- Reuse exact library results when available. When only similar results exist,
+  inspect and adapt their implementations rather than rebuilding everything
+  from scratch.
+
 ## Mathematical skill routing
 
 - When asked to prove or disprove a nontrivial mathematical statement,

@@ -1,5 +1,8 @@
 # Lean formalization assessment for Theorem 1.2
 
+> **Historical draft.** The [current dependency assessment](dependency-assessment.md)
+> supersedes this November 8 analysis and covers both theorems in the November 9 manuscript.
+
 Assessment date: 8 November 2026.
 
 Source manuscript: `C:\Users\snori\Documents\Projects\High Dimensional Brambles\research_20261108_general\sharp_topological_overlap.pdf`
