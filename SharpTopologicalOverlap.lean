@@ -51,6 +51,7 @@ public import SharpTopologicalOverlap.Singular.Relative
 public import SharpTopologicalOverlap.Singular.Prism
 public import SharpTopologicalOverlap.Singular.Deformation
 public import SharpTopologicalOverlap.Descending
+public import SharpTopologicalOverlap.Spectral
 public import TauCeti.AlgebraicTopology.SimplicialComplex.Realization.CWComplex.OrderedChainComplex
 public import TauCeti.AlgebraicTopology.SimplicialComplex.Subdivision.IteratedNeighborhood
 public import TauCeti.AlgebraicTopology.Singular.ModuleChains.Basic
