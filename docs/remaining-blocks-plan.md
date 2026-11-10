@@ -105,6 +105,37 @@ homotopy, followed by transport of actual finite-subtype sublevel fillers.
 The comparison agent continues C, while the other agents continue B and
 spectral equality, so no module ownership overlaps.
 
+For the W/V interface, the primary agent will define the strict polynomial
+sublevel, zero set, and their actual topological pair in
+`Sublevel/Definitions.lean`. These are definitions only. Theorem 5.1 must
+later prove vanishing for that pair from the cocycle hypotheses, without
+an imported vanishing premise. W will transport this pair through the
+checked closed-face homeomorphism before using its deletion deformation.
+
+Block V now starts its neighborhood branch: the barrier agent, after
+freezing the checked coordinates, logarithmic estimates, properness and
+generic tilt modules, owns `Sublevel/Neighborhood.lean`. It will transport
+TauCeti's exact iterated-neighborhood retraction through the full-simplex
+realization homeomorphism and the independence zero-set identification.
+The required output is an actual open neighborhood inside the strict
+sublevel with a continuous retraction and `HomotopyRel`. The same agent
+then owns `Sublevel/PushInside.lean`, for the uniform interior push,
+coordinate lower bound and uniform polynomial control. The polynomial
+agent owns C's precomplex transport, then B's persistence; the comparison
+agent continues the canonical homology identification. The primary agent
+owns W and later V's chain-filling assembly.
+
+For the remaining barrier persistence proof, the primary agent now owns
+`Barrier/CriticalLimit.lean`: limits of perturbed critical points are
+face-critical on their positive support, and the quantitative logarithmic
+estimate makes barrier values converge to polynomial values. The fixed
+support form will then use TauCeti's exact lower semicontinuity theorem
+`ContinuousLinearMap.eventually_sigNeg_toBilinForm_le_of_continuousAt`.
+After C's precomplex transport, the polynomial agent owns the uniform
+delta/compactness assembly in `Barrier/Persistence.lean`, using these limit
+lemmas. The barrier/sublevel agent continues V's independent neighborhood
+and interior-push branch.
+
 The abstract block F construction is now implemented in
 `Descending/Incidence.lean`, `Descending/Algebra.lean`, and
 `Descending/Fillings.lean`. Its endpoint is

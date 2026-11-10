@@ -2,7 +2,7 @@
 
 This blueprint follows the 9 November 2026 [manuscript](../paper/sharp_topological_overlap.pdf) and [TeX source](../paper/sharp_topological_overlap.tex). It covers the finite overlap theorem and every ingredient used to prove it. The [dependency assessment](dependency-assessment.md) records the inspected external libraries and the completed import checks. References to section symbols and numbered mathematical results below use the manuscript's numbering.
 
-The foundation block in §3 implements probability simplices, faces, the realized skeleton, overlap, and finite chains and cochains. See [the formalization status](../FORMALIZATION.md) for the checked declarations and [the foundation plan](foundation-plan.md) for the work division. Block G is complete: `exists_intersectionData` proves Lemma 3.1, constructing a finite target of dimension exactly `d` and all five cochain properties from the continuous map. Its [implementation plan](intersection-plan.md) and [verification record](intersection-verification.md) describe the actual subdivision, placement, parity and cochain construction. The root also imports the relevant TauCeti modules, and a temporary downstream check specialized the Morse band theorem to `ZMod 2`. The singular support, deletion, polynomial, and spectral branches and the abstract descending contradiction are also complete. The canonical comparison and analytic sublevel branches remain open. **Module and declaration names below are proposed unless recorded as implemented in the formalization status.**
+The foundation block in §3 implements probability simplices, faces, the realized skeleton, overlap, and finite chains and cochains. See [the formalization status](../FORMALIZATION.md) for the checked declarations and [the foundation plan](foundation-plan.md) for the work division. Block G is complete: `exists_intersectionData` proves Lemma 3.1, constructing a finite target of dimension exactly `d` and all five cochain properties from the continuous map. Its [implementation plan](intersection-plan.md) and [verification record](intersection-verification.md) describe the actual subdivision, placement, parity and cochain construction. The singular support, deletion, polynomial, spectral, and canonical comparison branches and the abstract descending contradiction are also complete. The analytic sublevel branch remains open. **Module and declaration names below are proposed unless recorded as implemented in the formalization status.**
 
 ## 1. Target and conventions
 
@@ -50,22 +50,50 @@ The final proof has three substantial branches. Appendix A constructs the inters
 
 ```mermaid
 flowchart TD
-  S["Simplex, faces, chains and cochains"] --> C["Affine chain comparison and rho"]
-  S --> G["Subdivision, placements and intersection cochains"]
-  S --> P["Weight polynomials and spectral rigidity"]
-  S --> H["Singular support, relative fillings and prism"]
-  P --> B["Logarithmic barrier and index persistence"]
-  H --> B
-  B --> V["Sublevel relative vanishing"]
-  G --> D["Exceptional vertices and restricted cocycles"]
-  D --> W["Nested weight spaces"]
-  V --> W
-  C --> F["Descending fillings and evaluation"]
-  H --> F
-  W --> F
-  G --> F
-  F --> T["Theorem 1.2"]
+  S["✓ S: Simplex, faces, chains and cochains"]:::done
+  G["✓ G: Intersection cochains — Lemma 3.1"]:::done
+  H["✓ H: Singular carriers, fillings and prism"]:::done
+  P["✓ P: Polynomials and spectral rigidity<br/>Lemma 4.1 + Corollary 4.2"]:::done
+  D["✓ D: Exceptional vertices — Lemma 6.1"]:::done
+  C0["✓ C: Canonical affine homology comparison"]:::done
+  C1["✓ C: Unconditional supported inverse rho"]:::done
+  B0["✓ B: Barrier calculus, properness and generic Morse tilt"]:::done
+  B1["B: Uniform index persistence — Lemma 5.7"]:::hard
+  V0["✓ V: Retracting neighborhood and interior push"]:::done
+  V1["V: Morse-band parameters and relative vanishing — Theorem 5.1"]:::working
+  W["W: Nested weight spaces — geometry checked; awaiting vanishing"]:::working
+  F["✓ F: Descending contradiction — proved from explicit inputs"]:::done
+  T["Theorem 1.2: Unconditional final assembly"]:::pending
+  S --> G
+  S --> H
+  S --> P
+  S --> C0
+  G --> D
+  C0 --> C1
+  H --> C1
+  P --> B0
+  B0 --> B1
+  P --> B1
+  B1 --> V1
+  V0 --> V1
+  H --> V1
+  D --> W
+  P --> W
+  V1 --> W
+  C1 --> T
+  W --> T
+  F --> T
+  G --> T
+  classDef done fill:#dff0d8,stroke:#367b35,color:#173b17
+  classDef working fill:#fff2cc,stroke:#ad8700,color:#4b3900
+  classDef hard fill:#f8d7da,stroke:#b02a37,color:#641820
+  classDef pending fill:#eeeeee,stroke:#777777,color:#333333
 ```
+
+Green means checked in Lean, yellow means active assembly, and red marks the
+main remaining technical bottleneck. Some checked subblocks are awaiting
+the commit of their larger block. Theorem 1.2 remains open. This chart was
+updated during the autonomous implementation on 9 November 2026.
 
 Use modules with the following responsibilities. Split a module further when its proof grows, while retaining these interfaces.
 
