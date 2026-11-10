@@ -58,7 +58,7 @@ flowchart TD
   C0["✓ C: Canonical affine homology comparison"]:::done
   C1["✓ C: Unconditional supported inverse rho"]:::done
   B0["✓ B: Barrier calculus, properness and generic Morse tilt"]:::done
-  B1["B: Uniform index persistence — Lemma 5.7"]:::hard
+  B1["✓ B: Uniform index persistence — Lemma 5.7"]:::done
   V0["✓ V: Retracting neighborhood and interior push"]:::done
   V1["V: Morse-band parameters and relative vanishing — Theorem 5.1"]:::working
   W["W: Nested weight spaces — geometry checked; awaiting vanishing"]:::working
