@@ -8,9 +8,12 @@ See the [final verification record](docs/finite-verification.md).
 including convex position, affine independence and an explicit uniform
 error. Its continuous-map corollary and factorial normalization are proved
 as well; see the [verification record](docs/bmn-verification.md).
-Theorem 1.1 remains open: the minimum-over-maps definition and final
-lower-bound/liminf assembly are the subsequent work described in
-[blueprint §12](docs/blueprint.md#12-bmn-upper-bound-and-the-asymptotic-constant).
+**Theorem 1.1 and its affine strengthening are proved** in
+`SharpTopologicalOverlap.Asymptotic`: the independently defined topological
+and affine constants both equal `(d+1)!/(d+1)^(d+1)` for `d ≥ 2`.
+Both normalized finite minimum sequences also converge to this value.
+See the [implementation plan](docs/theorem11-plan.md) and
+[verification record](docs/theorem11-verification.md).
 
 | Paper item | Lean declaration | Status |
 | --- | --- | --- |
@@ -65,7 +68,10 @@ lower-bound/liminf assembly are the subsequent work described in
 | BMN type lemma (BMN Lemma 2.2) | `BMN.type_of_mem_convexHull`, `BMN.hullCount_le_of_separated` in [`BMN/Types.lean`](SharpTopologicalOverlap/BMN/Types.lean) | Proved from the explicit separated geometry. Closed-hull replacement determinants are nonnegative; the adjacent-swap contradictions prove strict interleaving after deleting at most `2*d` vertices. |
 | Affine upper-bound maps (§7) | `affineSkeletonMap`, `image_affineSkeletonMap_face`, `BMN.exists_affine_overlap_bound`, `BMN.exists_continuous_overlap_bound` | Proved with exact closed-face hull images and the same finite error; no geometric provider premise remains. |
 | BMN normalization from `n^(d+1)` to `choose(n,d+1)` | `BMN.normalized_error_eq`, `BMN.tendsto_choose_div_pow`, `BMN.tendsto_normalized_bmn_bound`, `BMN.eventually_exists_normalized_overlap_lt` | Proved: the normalized error is exactly `2*d*(d+1)/n` on the positive-denominator tail, and the upper bound converges to the existing `overlapThreshold d`. |
-| Theorem 1.1 (`thm:main`) | — | Open; unconditional finite lower bound and normalized asymptotic upper maps are available. Minimum-over-maps definition and lower-bound/liminf assembly remain. |
+| Topological and affine finite minima and constants (Introduction; affine strengthening) | `minimumOverlap`, `affineMinimumOverlap`, `normalizedMinimumOverlap`, `normalizedAffineMinimumOverlap`, `topologicalOverlapConstant`, `affineOverlapConstant` in [`Overlap/Minimum.lean`](SharpTopologicalOverlap/Overlap/Minimum.lean) | Defined independently as attained natural minima and real liminfs; the affine minimum ranges over all vertex placements and their affine interpolation. Finite comparison and `[0,1]` bounds are proved. |
+| Normalized finite lower bound and its limit | `normalized_finite_overlap_bound`, `tendsto_normalized_finite_bound` in [`Overlap/Lower.lean`](SharpTopologicalOverlap/Overlap/Lower.lean) | The finite theorem is divided by `choose(n,d+1)`, and its numerical lower bound converges to `overlapThreshold d`. |
+| Convergence of both normalized finite minimum sequences | `tendsto_normalizedMinimumOverlap`, `tendsto_normalizedAffineMinimumOverlap` in [`Asymptotic.lean`](SharpTopologicalOverlap/Asymptotic.lean) | Squeezed between the normalized finite lower bound and the affine BMN upper bound. |
+| Theorem 1.1 (`thm:main`) and affine strengthening | `topologicalOverlapConstant_eq_threshold`, `affineOverlapConstant_eq_threshold`, `sharp_overlap_constants` in [`Asymptotic.lean`](SharpTopologicalOverlap/Asymptotic.lean) | The liminf values follow from convergence. The combined endpoint expands the factorial threshold and states `c_top = c_aff` and `c_aff = (d+1)!/(d+1)^(d+1)` for every `d ≥ 2`. |
 | Canonical comparison, Theorem 2.3 (`thm:hatcher`), block C | `Comparison.isIso_homologyMap_affineChainComplexMapIn`, `canonicalHomologyComparison` in [`Comparison/Canonical.lean`](SharpTopologicalOverlap/Comparison/Canonical.lean) and [`Provider.lean`](SharpTopologicalOverlap/Comparison/Provider.lean) | Proved for the actual affine generator map, via its cellular basis classes and naturality. Includes arbitrary ambient precomplexes, with their actual vertex subtype and empty carriers. |
 | Supported inverse, Lemma 2.4, block C | `Comparison.supportedComparison`, `supportedQ`, `supportedQ_carriedBy`, `boundary_supportedQ_zero`, `boundary_supportedQ_succ` in [`Comparison/Supported.lean`](SharpTopologicalOverlap/Comparison/Supported.lean) | Proved unconditionally. The chain map preserves all simplicial carriers simultaneously and sends the uniform point chain to the prescribed vertex; the chain homotopy preserves those same carriers. |
 | Logarithmic barrier and generic perturbation (§5), block B | `Barrier.barrier_critical_iff`, `manifoldMorseIndex_barrier`, `isCompact_barrierSublevel`, `exists_small_morse_tilt` in [`Barrier/Basic.lean`](SharpTopologicalOverlap/Barrier/Basic.lean) and [`Generic.lean`](SharpTopologicalOverlap/Barrier/Generic.lean) | Proved for the actual open-simplex manifold. Includes smoothness, critical multiplier estimates, properness, the Hessian/index identification and arbitrarily small Morse tilts. |
@@ -92,8 +98,9 @@ actual construction and work division; the [independent verification](docs/inter
 records the build, transitive axiom audit and boundary cases. The complete
 existence theorem constructs its subdivisions, placements, target cycle and
 intersection cochains from the continuous map. Blocks C, B, V, W and the
-final assembly now complete Theorem 1.2. Each completed block has its own
-commit. Theorem 1.1 remains open.
+final assembly now complete Theorem 1.2. Each of those completed blocks has
+its own commit. The subsequent asymptotic assembly adds Theorem 1.1 and
+the equality with the independently defined affine constant.
 
 The 10 November 2026 maintenance pass removed the build warnings without
 disabling linters. `lake --wfail build` passed (9789 jobs) with no warnings.
@@ -108,3 +115,11 @@ both passed with `-DwarningAsError=true`; all reported dependencies use only
 `propext`, `Classical.choice`, and `Quot.sound`. The BMN finite construction,
 continuous-map bound and factorial-normalized eventual upper bound have no
 remaining proof gaps or provider premises.
+
+The strengthened Theorem 1.1 assembly passed `lake --wfail build` (9831
+jobs). Its root-only `verification/Theorem11.lean` and the existing
+Theorem 1.2 and Theorem 7.1 audits passed with `-DwarningAsError=true`.
+Both full sequence limits, both independently defined constants, and the
+expanded factorial endpoint use only `propext`, `Classical.choice`, and
+`Quot.sound`. No placeholders or project proof axioms were introduced.
+The reference manuscript remains unchanged.

@@ -58,6 +58,7 @@ public import SharpTopologicalOverlap.Sublevel
 public import SharpTopologicalOverlap.WeightSpaces.Vanishing
 public import SharpTopologicalOverlap.Finite
 public import SharpTopologicalOverlap.BMN
+public import SharpTopologicalOverlap.Asymptotic
 public import TauCeti.AlgebraicTopology.SimplicialComplex.Realization.CWComplex.OrderedChainComplex
 public import TauCeti.AlgebraicTopology.SimplicialComplex.Subdivision.IteratedNeighborhood
 public import TauCeti.AlgebraicTopology.Singular.ModuleChains.Basic

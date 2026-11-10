@@ -31,12 +31,17 @@ write `import SharpTopologicalOverlap`.
 Theorem 1.2 is proved as `SharpTopologicalOverlap.finite_overlap_bound`,
 with no placeholders or project proof axioms. Its transitive axiom audit
 reports only `propext`, `Classical.choice`, and `Quot.sound`.
-Theorem 1.1 remains open.
+Theorem 1.1 is proved and strengthened to include the affine constant:
+`SharpTopologicalOverlap.sharp_overlap_constants` states
+`c_top = c_aff = (d+1)!/(d+1)^(d+1)` for every `d ≥ 2`.
+Both normalized finite minimum sequences also converge to this value.
 
 The [formalization status](FORMALIZATION.md) lists the checked declarations.
 The [blueprint](docs/blueprint.md) gives the proof-block flowchart and dependencies;
-the [verification record](docs/finite-verification.md) records the final checks.
-Run `lake env lean verification/Theorem12.lean` to reproduce the final
-statement and axiom audit after building the project.
+the verification records for [Theorem 1.2](docs/finite-verification.md) and
+[Theorem 1.1](docs/theorem11-verification.md) record the final checks.
+Run `lake env lean verification/Theorem12.lean` and
+`lake env lean verification/Theorem11.lean` to reproduce the statement
+and axiom audits after building the project.
 The [LaTeX source](paper/sharp_topological_overlap.tex)
 provides stable labels for those results.

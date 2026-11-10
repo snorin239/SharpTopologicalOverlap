@@ -65,8 +65,9 @@ product of factors `1-i/n`. Consequently
 `BMN.eventually_exists_normalized_overlap_lt` states that for each
 `ε > 0`, every sufficiently large `n` has a continuous map whose
 binomially normalized overlap is below `overlapThreshold d + ε`.
-The minimum-over-maps definition and final liminf equality of Theorem 1.1
-are subsequent work.
+The subsequent minimum definitions and liminf assembly now prove
+Theorem 1.1 and its affine strengthening; see the
+[Theorem 1.1 verification](theorem11-verification.md).
 
 ## Reproduction and axiom audit
 

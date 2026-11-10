@@ -5,7 +5,9 @@ This blueprint follows the 9 November 2026 [manuscript](../paper/sharp_topologic
 Section 12 records the BMN construction in Theorem 7.1 and its factorial
 normalization for the upper bound in Theorem 1.1. The finite construction,
 affine-map bridge and asymptotic upper-map bound are implemented. The
-minimum-over-maps definition and final Theorem 1.1 assembly remain open.
+minimum-over-maps definitions and final Theorem 1.1 assembly are proved
+as well, including the affine strengthening `c_top = c_aff` and convergence
+of both normalized finite minimum sequences.
 
 The foundation block in §3 implements probability simplices, faces, the realized skeleton, overlap, and finite chains and cochains. See [the formalization status](../FORMALIZATION.md) for the checked declarations and [the foundation plan](foundation-plan.md) for the work division. Block G is complete: `exists_intersectionData` proves Lemma 3.1, constructing a finite target of dimension exactly `d` and all five cochain properties from the continuous map. Its [implementation plan](intersection-plan.md) and [verification record](intersection-verification.md) describe the actual subdivision, placement, parity and cochain construction. The singular support, deletion, polynomial, spectral, and canonical comparison branches and the abstract descending contradiction are also complete. The analytic sublevel and weight-space branches and final assembly are complete as well: Theorem 1.2 is proved. The detailed design instructions below record the implementation plan; the flowchart and paper-to-Lean table give the completed status.
 
@@ -72,8 +74,8 @@ flowchart TD
   U["✓ BMN construction — Theorem 7.1"]:::done
   A["✓ Affine map and finite upper bound"]:::done
   N0["✓ Factorial normalization and asymptotic upper maps"]:::done
-  N["Minimum overlap and asymptotic lower bound"]:::pending
-  T1["Theorem 1.1: Sharp topological overlap"]:::pending
+  N["✓ Topological and affine minima; asymptotic lower bound"]:::done
+  T1["✓ Theorem 1.1: Sharp topological and affine overlap"]:::done
   S --> G
   S --> H
   S --> P
@@ -111,8 +113,8 @@ Green and ✓ mean checked in Lean. ★ marks substantial completed blocks.
 All Theorem 1.2 blocks have been committed, and that theorem is proved
 without additional provider premises. Its final root build and standard-axiom
 audit pass. The BMN and asymptotic upper-map blocks are complete as well;
-§12 records their construction. The grey minimum-over-maps and final
-asymptotic assembly blocks remain open.
+§12 records their construction. The minimum-over-maps and final asymptotic
+assembly blocks also include the affine constant and are proved.
 This chart was updated on 10 November 2026.
 
 Use modules with the following responsibilities. Split a module further when its proof grows, while retaining these interfaces.
@@ -571,7 +573,8 @@ Start with the following deliverables, each ending in checked Lean declarations.
 All nine deliverables are complete. The canonical affine-generator
 identification, open-simplex/Hessian transport, uniform index persistence,
 and final finite-overlap theorem have passed their builds and transitive
-axiom audits. Theorem 1.1 is the next formalization target.
+axiom audits. Theorem 1.1 and its affine strengthening are also proved;
+§12 records their additional dependencies and final assembly.
 
 For each new module, run `lake env lean SharpTopologicalOverlap/<module>.lean` and then `lake build`. Include it through the project root. Keep actual proved status in [FORMALIZATION.md](../FORMALIZATION.md). Proposed contracts in this document become completed milestones only after their proofs and dependencies are checked. Keep the dependency graph free of `sorry`, `admit`, and project axioms replacing the required providers. Use `#print axioms` on the completed major endpoints and on `finite_overlap_bound`.
 
@@ -810,11 +813,12 @@ its affine-map corollary, following `verification/Theorem12.lean`.
 
 ### Subsequent assembly of Theorem 1.1
 
-The affine-map and numerical-limit steps below are implemented as
+The affine-map and upper numerical-limit steps are implemented as
 `affineSkeletonMap`, `image_affineSkeletonMap_face`,
 `BMN.tendsto_normalized_bmn_bound`, and
-`BMN.eventually_exists_normalized_overlap_lt`. The remaining work is the
-minimum-over-maps definition and the lower-bound/liminf assembly.
+`BMN.eventually_exists_normalized_overlap_lt`. The minimum definitions,
+lower-bound limit and final assembly are implemented in
+`Overlap/Minimum.lean`, `Overlap/Lower.lean`, and `Asymptotic.lean`.
 
 In `Overlap/Affine.lean`, define the map `μ ↦ ∑ i, μ.weights i • p i`
 on `Skeleton (Fin n) d` and prove that each closed source face maps onto
@@ -826,28 +830,37 @@ using it requires the face-preserving `skeletonRealizationHomeomorph`.
 Alternatively, use the direct probability-simplex hull-range lemma and
 restrict the weights to the source face.
 
-No current project declaration defines the topological constant. Define
-`minimumOverlap d n` as the natural-number infimum of the range of
-`overlap` over continuous maps. Constant maps make this range nonempty,
-and `Nat.sInf_mem` and `Nat.sInf_le` supply attainment and comparison.
-Divide its real cast by `n.choose m` to obtain
-`normalizedMinimumOverlap d n`, and define `topologicalOverlapConstant d`
-as its real `liminf` at `atTop`. Values for `n < m` do not affect the limit;
-establish all denominator-positivity facts on the eventual tail `m ≤ n`.
-The normalized sequence lies in `[0,1]`; use these bounds to discharge
-the order-boundedness hypotheses of `Filter.liminf_le_liminf`, together
-with `Filter.Tendsto.liminf_eq` for convergent bounding sequences.
+`minimumOverlap d n` is the natural-number infimum of the range of
+`overlap` over continuous maps. `affineMinimumOverlap d n` uses the same
+construction over vertex placements and `affineSkeletonMap` instead.
+Constant-zero maps and placements make both ranges nonempty;
+`Nat.sInf_mem` and `Nat.sInf_le` give attainment and comparison. Every
+affine interpolation is continuous, so the topological minimum is at most
+the affine minimum. Placements may have repeated vertex images, and source
+faces are counted separately.
 
-Use `Nat.descFactorial_eq_factorial_mul_choose` and
-`Nat.descFactorial_eq_prod_range` to prove the factorial normalization by
-a finite product of factors `1-i/n`. Use `Nat.add_one_mul_choose_eq` for
-the exact normalized error `2dm/n`. The upper bound follows from the
-constructed maps and the convergent numerical bound above. Independently,
-`finite_overlap_bound` and `m!*n.choose m ≤ n^m` give the lower bound
-`overlapThreshold d * (1-deletionBound d/n)^m` on the eventual tail.
-Its limit is `overlapThreshold d`, yielding Theorem 1.1 as stated.
-The BMN construction does not depend on Theorem 1.1 or on its lower-bound
-proof.
+`normalizedMinimumOverlap` and `normalizedAffineMinimumOverlap` divide
+the real casts by `n.choose (d + 1)`. Their liminfs define
+`topologicalOverlapConstant` and `affineOverlapConstant` independently.
+Both sequences lie in `[0,1]`; the finitely many initial zero denominators
+give zero terms and have no effect on the limits.
+
+The lower-limit proof factors the normalized finite lower bound as
+`(1-deletionBound d/n)^(d+1)` times the existing normalized BMN leading
+term on the tail `1 ≤ n`. The first factor tends to one and the second to
+`overlapThreshold d`, with the factorial normalization already checked.
+Applying `finite_overlap_bound` to an attained minimum bounds the
+topological sequence from below. The affine BMN construction bounds the
+affine sequence from above, and the comparison of minima lies between.
+The squeeze theorem therefore proves convergence of both sequences;
+`Filter.Tendsto.liminf_eq` yields both constants. The endpoint
+`sharp_overlap_constants` states `c_top = c_aff = (d+1)!/(d+1)^(d+1)`
+for `d ≥ 2`. No liminf monotonicity or additional boundedness assumption
+is needed for this route. The BMN construction does not depend on
+Theorem 1.1 or on its lower-bound proof.
+
+See the [implementation plan](theorem11-plan.md) and
+[verification record](theorem11-verification.md).
 
 [simplex]: https://github.com/leanprover-community/mathlib4/blob/1b1ccf4b088b32fa3f23f2de1127433254a81e1e/Mathlib/Geometry/Convex/ConvexSpace/Defs.lean#L51-L66
 [chains]: https://github.com/TauCetiProject/TauCeti/blob/1e668f5e55bc20f2eb87f4ba49b48833470290d1/TauCeti/AlgebraicTopology/SimplicialComplex/ChainComplex.lean
