@@ -1,6 +1,11 @@
-# Blueprint for Theorem 1.2
+# Blueprint for Theorems 1.2 and 1.1
 
 This blueprint follows the 9 November 2026 [manuscript](../paper/sharp_topological_overlap.pdf) and [TeX source](../paper/sharp_topological_overlap.tex). It covers the finite overlap theorem and every ingredient used to prove it. The [dependency assessment](dependency-assessment.md) records the inspected external libraries and the completed import checks. References to section symbols and numbered mathematical results below use the manuscript's numbering.
+
+Section 12 records the BMN construction in Theorem 7.1 and its factorial
+normalization for the upper bound in Theorem 1.1. The finite construction,
+affine-map bridge and asymptotic upper-map bound are implemented. The
+minimum-over-maps definition and final Theorem 1.1 assembly remain open.
 
 The foundation block in §3 implements probability simplices, faces, the realized skeleton, overlap, and finite chains and cochains. See [the formalization status](../FORMALIZATION.md) for the checked declarations and [the foundation plan](foundation-plan.md) for the work division. Block G is complete: `exists_intersectionData` proves Lemma 3.1, constructing a finite target of dimension exactly `d` and all five cochain properties from the continuous map. Its [implementation plan](intersection-plan.md) and [verification record](intersection-verification.md) describe the actual subdivision, placement, parity and cochain construction. The singular support, deletion, polynomial, spectral, and canonical comparison branches and the abstract descending contradiction are also complete. The analytic sublevel and weight-space branches and final assembly are complete as well: Theorem 1.2 is proved. The detailed design instructions below record the implementation plan; the flowchart and paper-to-Lean table give the completed status.
 
@@ -64,6 +69,11 @@ flowchart TD
   W["✓ W: Nested weight spaces and relative vanishing — Lemma 6.2"]:::done
   F["✓ F: Descending contradiction — proved from explicit inputs"]:::done
   T["✓ Theorem 1.2: Unconditional final assembly"]:::done
+  U["✓ BMN construction — Theorem 7.1"]:::done
+  A["✓ Affine map and finite upper bound"]:::done
+  N0["✓ Factorial normalization and asymptotic upper maps"]:::done
+  N["Minimum overlap and asymptotic lower bound"]:::pending
+  T1["Theorem 1.1: Sharp topological overlap"]:::pending
   S --> G
   S --> H
   S --> P
@@ -84,17 +94,26 @@ flowchart TD
   W --> T
   F --> T
   G --> T
+  S --> U
+  S --> A
+  U --> A
+  A --> N0
+  N0 --> N
+  T --> N
+  N --> T1
   classDef done fill:#dff0d8,stroke:#367b35,color:#173b17
   classDef working fill:#fff2cc,stroke:#ad8700,color:#4b3900
   classDef hard fill:#f8d7da,stroke:#b02a37,color:#641820
   classDef pending fill:#eeeeee,stroke:#777777,color:#333333
 ```
 
-Green and ✓ mean checked in Lean. ★ marks the substantial technical blocks;
-they too are complete. All blocks have been committed, and Theorem 1.2 is
-proved without additional provider premises. The final root build passes,
-and its axiom audit contains only Lean's three standard axioms. This chart
-was updated on 9 November 2026.
+Green and ✓ mean checked in Lean. ★ marks substantial completed blocks.
+All Theorem 1.2 blocks have been committed, and that theorem is proved
+without additional provider premises. Its final root build and standard-axiom
+audit pass. The BMN and asymptotic upper-map blocks are complete as well;
+§12 records their construction. The grey minimum-over-maps and final
+asymptotic assembly blocks remain open.
+This chart was updated on 10 November 2026.
 
 Use modules with the following responsibilities. Split a module further when its proof grows, while retaining these interfaces.
 
@@ -557,6 +576,278 @@ axiom audits. Theorem 1.1 is the next formalization target.
 For each new module, run `lake env lean SharpTopologicalOverlap/<module>.lean` and then `lake build`. Include it through the project root. Keep actual proved status in [FORMALIZATION.md](../FORMALIZATION.md). Proposed contracts in this document become completed milestones only after their proofs and dependencies are checked. Keep the dependency graph free of `sorry`, `admit`, and project axioms replacing the required providers. Use `#print axioms` on the completed major endpoints and on `finite_overlap_bound`.
 
 Local builds are the verification path during formalization. The Linux workflow is deferred until formalization is complete.
+
+## 12. BMN upper bound and the asymptotic constant
+
+Theorem 7.1 (`thm:bmn`), including its convex-position clause, is proved as
+`BMN.exists_configuration` in `SharpTopologicalOverlap/BMN.lean`.
+The construction and its verification were completed on 10 November 2026;
+see the [verification record](bmn-verification.md). The source is
+Bukh, Matoušek and Nivasch, *Stabbing simplices by points and flats*,
+[author's manuscript](https://kam.mff.cuni.cz/~matousek/first_sel_lemma.pdf):
+Theorem 1.3 on printed p. 3 and its proof in §2, printed pp. 4–7.
+The implementation choices and explicit finite error below refine that proof.
+The dependency design is retained below, with the actual module ownership
+and subsequent Theorem 1.1 work distinguished explicitly.
+
+### Target and normalization
+
+Put `m = d + 1`. For a placement `p : Fin n → EuclideanSpace ℝ (Fin d)`,
+let `hullFacesAt p r` be the filter of `Finset.univ.powersetCard m` by
+`r ∈ convexHull ℝ (p '' (σ : Set (Fin n)))`, and let `hullCount p r`
+be its cardinality. These definitions in `BMN/Basic.lean` count source subsets.
+The finite endpoint `BMN.exists_configuration` asserts, for every
+`d ≥ 2` and every `n : ℕ`, the existence of `p` with:
+
+1. `ConvexIndependent ℝ p`, which also supplies injectivity and hence an
+   actual set of exactly `n` points in convex position;
+2. affine independence of `fun i : σ => p i` for every `σ.card = m`;
+3. uniformly for every query `r`, the real inequality
+   $$
+   (\operatorname{hullCount}(p,r):\mathbb R)
+   \le \left(\frac{n}{m}\right)^m
+      +2d\binom{n-1}{d}.
+   $$
+
+The last term is at most `2*d*n^d`, so this implies the manuscript's
+`O_d(n^d)` statement with a constant independent of both `n` and `r`.
+Retain the sharper binomial error for the normalization step. For `n = 0`
+and for `n < m`, the counted family is empty; handle these cases before
+selecting coordinate extrema or dividing by a binomial coefficient.
+
+BMN's selection constant is normalized by `n^m`. Its upper coefficient is
+`1/m^m`. Our overlap constant is normalized by `n.choose m`, so the factor
+`m!` is essential:
+$$
+\frac{n^m}{\binom nm}\longrightarrow m!,\qquad
+\frac{(n/m)^m+2d\binom{n-1}{d}}{\binom nm}
+ =\frac{(n/m)^m}{\binom nm}+\frac{2dm}{n}
+ \longrightarrow \frac{m!}{m^m}.
+$$
+The displayed equality is used only for `m ≤ n`. The limiting value is
+exactly the existing `overlapThreshold d`; do not introduce a second
+definition of the same real constant.
+
+### Construction and determinant lemmas
+
+Use ordinary real coordinates for the matrix calculations and the existing
+`euclideanCoordinates` equivalence when needed for the public target.
+Define `K = (m.factorial : ℝ)`, `F(t) = K*t^m`, and a real sequence
+`a 0 = 2`, `a (k+1) = F(a k) + 1`. Set
+$$
+p_i(j)=a_{jn+i}\qquad(0\le i<n,\ 0\le j<d).
+$$
+Prove `1 < a k`, strict monotonicity, and `F(a k) < a l` for `k < l`.
+This supplies BMN's coordinate-first separation: order by coordinate `j`
+first, then vertex `i`. For `d ≥ 2` and `t > 1`, `F(t) > 4*t^2`.
+The configuration is chosen before the query point.
+
+The main new algebra lemma should accept a **supplied permutation** `g`
+of the rows of an `m × m` matrix `A`. Its hypotheses are:
+
+- column zero consists of ones and all positive-column entries exceed one;
+- every entry in an earlier column is smaller than every entry in a later
+  column;
+- for `j > 0`, if `i ≠ g j` and row `i` was not chosen by `g` in a column
+  greater than `j`, then `K*(A i j)^m < A (g j) j`.
+
+Its conclusion is that `det A` has the sign of `g`. Prove this by comparing
+`g` with any other permutation at their largest differing column `j`.
+This column is positive: bijections agreeing on all positive columns must
+also agree at column zero.
+They agree in later columns, so cancel that common positive product.
+Every remaining competing factor is at most `A i j`; its residual product
+is at most `(A i j)^m`. The selected residual product is at least
+`A (g j) j`. Thus the selected product exceeds `m!` times every competing
+product. There are only `m! - 1` competing terms, and `Matrix.det_apply'`
+gives the sign conclusion by bounding their absolute sum.
+
+Only the identity and adjacent transpositions are needed as `g`. Avoid a
+recursive greedy algorithm, changing submatrix index types, a general
+tropical determinant library, and inversion-count formulas. Mathlib uses
+column-to-row permutations in `Matrix.det_apply'`; keep this convention
+throughout and use `Equiv.Perm.sign_swap` for transpositions.
+
+For sorted source indices `i₀ < ⋯ < i_d`, let `q_l = p_(i_l)` and let
+`M` have rows `(1,q_l)`. The identity satisfies the lemma's hypotheses,
+giving `0 < det M`. Derive the required affine independence from linear
+independence of these augmented rows.
+
+For a point `r` in the **closed** convex hull, obtain nonnegative weights
+`λ_l` summing to one. If `M_k` replaces row `k` by `(1,r)`, the existing
+`Matrix.det_updateRow_sum` yields
+$$
+\det M_k=\lambda_k\det M\ge0.
+$$
+This is the boundary-safe containment input. Do not assume all `λ_k > 0`
+or assert strict positivity of replacement determinants merely from
+closed-hull membership. Negative-determinant contradictions suffice;
+nonvanishing of every replacement matrix is unnecessary.
+
+### Query deletion and the type lemma
+
+If `r` lies outside the coordinate bounding box, coordinate halfspaces
+show that `hullCount p r = 0`. Inside the box, for each coordinate remove
+the last vertex with `p_i(j) ≤ r(j)` and the first with `r(j) ≤ p_i(j)`.
+Their union `D` has cardinality at most `2*d`; repeated choices count once.
+Prove that every surviving vertex satisfies either
+`F(p_i(j)) < r(j)` or `F(r(j)) < p_i(j)` in each coordinate. Equality with
+a source coordinate is covered by the deletion rule. Ordinary
+cross-column ordering in each replacement matrix follows from the bounding
+box; strong separation between different query coordinates is not needed.
+
+For a surviving point, define its type as the length of the initial segment
+of coordinates satisfying `r(j) < p_i(j)`. First prove existence and
+uniqueness of the predicate
+$$
+\operatorname{HasType}(p_i,r,k)\iff
+(\forall j<k,\ r(j)<p_i(j))\ \land\
+(k<d\Rightarrow p_i(k)\le r(k)),\qquad 0\le k\le d,
+$$
+then choose a color in `Fin (d+1)`. This includes type zero and type `d`.
+
+The key endpoint `BMN.type_of_mem_convexHull` says that the sorted vertices
+of a surviving containing simplex have types `0,…,d`. Use mathematical
+coordinate indices `1,…,d` temporarily in its proof, with column zero
+homogenizing. Establish `q_(j-1),j < r_j < q_jj` in two stages:
+
+1. If an upper inequality fails, take the largest failing `j`. In
+   `M_(j-1)`, the supplied permutation is `swap (j-1) j`: higher columns
+   choose their diagonal rows, column `j` chooses the query row, column
+   `j-1` chooses source row `j`, and lower columns are diagonal. Its
+   determinant is negative, contradicting nonnegativity.
+2. Having all upper inequalities, take the smallest failing lower `j`.
+   In `M_j`, the same transposition chooses source row `j-1` in column `j`
+   and the query row in column `j-1`. Minimality gives the needed comparison
+   in the latter column. Again the determinant is negative. At `j=1`,
+   column zero is the remaining column of ones; no query coordinate zero
+   is introduced.
+
+Coordinate monotonicity in the source indices then gives the stated types.
+Record the conversion between these paper indices and `Fin d` explicitly.
+
+### Convex position and counting
+
+The convex-position branch can avoid BMN's slope argument. Write
+`x_i = p_i(0)`, `y_i = p_i(1)` and use the linear functional
+$$
+L_i(z)=x_i z(1)-2y_i z(0),\qquad L_i(p_i)=-x_i y_i.
+$$
+For `k < i`, separation gives `2*x_k < x_i`, so
+`L_i(p_k) > -2*y_i*x_k > L_i(p_i)`. For `i < k`, it gives
+`x_k < y_i`, `4*y_i^2 < y_k`, and `1 < x_i`, so
+`L_i(p_k) > 0 > L_i(p_i)`. Thus each vertex uniquely minimizes `L_i`.
+Use the convexity of the strict halfspace and `convexHull_min` to prove
+`ConvexIndependent ℝ p`. This also handles small vertex sets without
+polygon or adjacent-neighbor constructions.
+
+For each query, split containing source faces into those meeting `D`
+and those avoiding `D`. A fixed vertex belongs to exactly
+`(n-1).choose d` source faces, so a finite-union bound gives
+`D.card * (n-1).choose d` bad faces. The type lemma injects each good face
+into a choice of one vertex from each type class. If those classes have
+sizes `b_0,…,b_d`, their sum is `n-D.card ≤ n`, and AM–GM gives
+`∏ b_k ≤ (n/m)^m`. Empty classes simply make this product zero.
+
+### Reuse, ownership and acceptance criteria
+
+The pinned Mathlib already supplies `ConvexIndependent` and its `.injective`
+and `.mem_convexHull_iff` lemmas, `convex_halfSpace_gt`, `convexHull_min`,
+`Matrix.det_apply'`, `Matrix.det_updateRow_sum`, permutation signs, and
+`Real.geom_mean_le_arith_mean`. Add a natural-exponent AM–GM wrapper by
+specializing the latter with unit weights; an exact product-versus-average
+wrapper was not found in the inspected sources. The determinant sign and
+type lemmas are new project work. Generic general-position approximation
+does not supply their ordered sign pattern.
+
+Existing project reuse includes:
+
+- `Geometry.convexHull_range_eq_range_affineMapMk` in
+  `Geometry/PlacementAvoidance.lean` and the closed-face image theorem
+  `Geometry.image_interpolate_faceInclusion` in
+  `Geometry/FaceInterpolation.lean`;
+- `Convexity.StdSimplex.affineMapMk_apply_eq_sum_of_fintype` and
+  `Convexity.StdSimplex.continuous_of_affineMap` for the direct map on the
+  probability simplex. Import
+  `Mathlib.Geometry.Convex.ConvexSpace.ModuleTopology` directly and enable
+  `Convexity.ConvexSpace.ofModule` as a local instance, following
+  `PlacementAvoidance.lean`; it is not a global instance;
+- `Spectral.transversalChoiceEquiv` and
+  `Spectral.sum_monomial_eq_prod_classMass` in `Spectral/Partite.lean` for
+  counting one-choice-per-color source faces. Reuse these directly or
+  extract their elementary combinatorics to a shared module if that avoids
+  unnecessary spectral imports; preserve their current clients.
+
+| Workstream | Implemented modules under `SharpTopologicalOverlap/` | Concrete responsibility |
+| --- | --- | --- |
+| Primary agent | `BMN/Basic.lean`, `BMN/Determinant.lean`, `BMN/MatrixQuery.lean`, `BMN/Upper.lean` | Shared interfaces, supplied-permutation dominance, upper adjacent-swap contradiction |
+| Subagent A | `BMN/Configuration.lean`, `BMN/ConvexPosition.lean`, `BMN/Augmented.lean`, `BMN/Transport.lean` | Explicit rapid sequence, convex position, affine independence, closed-containment determinant formula, Euclidean transport |
+| Subagent B | `BMN/Counting.lean`, `BMN/Color.lean`, `BMN/Types.lean` | Exact exceptional-face count, AM–GM, types, concrete matrix provider, interleaving and uniform query bound |
+| Subagent C | `Overlap/Affine.lean`, `BMN/Query.lean`, `BMN/Lower.lean`, `BMN/Normalization.lean` | Affine face images, deletion, lower adjacent-swap contradiction, exact error normalization and finite-product limits |
+| Primary integration | `BMN.lean`, root imports, `verification/Theorem71.lean`, status documentation | Full finite BMN theorem, polynomial-error form, continuous-map and normalized eventual upper bounds |
+
+Initially agree on the separation predicate and determinant/type contracts;
+configuration, abstract counting, and affine-map infrastructure can then
+proceed independently. Counting may temporarily take the proved-to-be-needed
+coloring property as an explicit hypothesis. The final endpoint must
+construct and discharge it. Reassign finished agents to review the
+determinant boundary/index cases and independent endpoint audits. Each
+shared file has one owner.
+
+The generic determinant lemma can start independently of configuration.
+The application order is configuration → determinant identity and query
+deletion → type lemma → counting → finite BMN theorem. Convex position
+depends only on configuration; the affine-map bridge is independent.
+Accept the finite theorem only after all `n`, all query points, convex
+position and affine independence are present, with no provider premise
+remaining. Expose modules through the project root, check individual files,
+run `lake --wfail build`, and audit the endpoint axioms. Include regression
+checks for empty/small configurations, query points on source coordinates
+and simplex facets, empty type classes, and the `j=1` transposition case.
+Add a root-import-only `verification/Theorem71.lean` harness with the
+expanded finite statement and axiom reports for the finite endpoint and
+its affine-map corollary, following `verification/Theorem12.lean`.
+
+### Subsequent assembly of Theorem 1.1
+
+The affine-map and numerical-limit steps below are implemented as
+`affineSkeletonMap`, `image_affineSkeletonMap_face`,
+`BMN.tendsto_normalized_bmn_bound`, and
+`BMN.eventually_exists_normalized_overlap_lt`. The remaining work is the
+minimum-over-maps definition and the lower-bound/liminf assembly.
+
+In `Overlap/Affine.lean`, define the map `μ ↦ ∑ i, μ.weights i • p i`
+on `Skeleton (Fin n) d` and prove that each closed source face maps onto
+the hull of its placed vertices. This identifies `facesAt` with
+`hullFacesAt`, including coincident images. The finite BMN endpoint then
+produces a continuous map with the same overlap bound.
+The existing interpolation image theorem is on the abstract realization;
+using it requires the face-preserving `skeletonRealizationHomeomorph`.
+Alternatively, use the direct probability-simplex hull-range lemma and
+restrict the weights to the source face.
+
+No current project declaration defines the topological constant. Define
+`minimumOverlap d n` as the natural-number infimum of the range of
+`overlap` over continuous maps. Constant maps make this range nonempty,
+and `Nat.sInf_mem` and `Nat.sInf_le` supply attainment and comparison.
+Divide its real cast by `n.choose m` to obtain
+`normalizedMinimumOverlap d n`, and define `topologicalOverlapConstant d`
+as its real `liminf` at `atTop`. Values for `n < m` do not affect the limit;
+establish all denominator-positivity facts on the eventual tail `m ≤ n`.
+The normalized sequence lies in `[0,1]`; use these bounds to discharge
+the order-boundedness hypotheses of `Filter.liminf_le_liminf`, together
+with `Filter.Tendsto.liminf_eq` for convergent bounding sequences.
+
+Use `Nat.descFactorial_eq_factorial_mul_choose` and
+`Nat.descFactorial_eq_prod_range` to prove the factorial normalization by
+a finite product of factors `1-i/n`. Use `Nat.add_one_mul_choose_eq` for
+the exact normalized error `2dm/n`. The upper bound follows from the
+constructed maps and the convergent numerical bound above. Independently,
+`finite_overlap_bound` and `m!*n.choose m ≤ n^m` give the lower bound
+`overlapThreshold d * (1-deletionBound d/n)^m` on the eventual tail.
+Its limit is `overlapThreshold d`, yielding Theorem 1.1 as stated.
+The BMN construction does not depend on Theorem 1.1 or on its lower-bound
+proof.
 
 [simplex]: https://github.com/leanprover-community/mathlib4/blob/1b1ccf4b088b32fa3f23f2de1127433254a81e1e/Mathlib/Geometry/Convex/ConvexSpace/Defs.lean#L51-L66
 [chains]: https://github.com/TauCetiProject/TauCeti/blob/1e668f5e55bc20f2eb87f4ba49b48833470290d1/TauCeti/AlgebraicTopology/SimplicialComplex/ChainComplex.lean

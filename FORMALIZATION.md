@@ -4,7 +4,13 @@
 The full project build and transitive axiom audit pass; the theorem depends
 only on `propext`, `Classical.choice`, and `Quot.sound`.
 See the [final verification record](docs/finite-verification.md).
-Theorem 1.1 is the subsequent target and remains open.
+**Theorem 7.1 is proved** as `SharpTopologicalOverlap.BMN.exists_configuration`,
+including convex position, affine independence and an explicit uniform
+error. Its continuous-map corollary and factorial normalization are proved
+as well; see the [verification record](docs/bmn-verification.md).
+Theorem 1.1 remains open: the minimum-over-maps definition and final
+lower-bound/liminf assembly are the subsequent work described in
+[blueprint §12](docs/blueprint.md#12-bmn-upper-bound-and-the-asymptotic-constant).
 
 | Paper item | Lean declaration | Status |
 | --- | --- | --- |
@@ -54,7 +60,12 @@ Theorem 1.1 is the subsequent target and remains open.
 | Lemma 2.2, prism and deformation retracts (`lem:prism`), block H | `Singular.boundary_prism_zero`, `boundary_prism_succ`, `carriedBy_prism`, `image_prism_subset`, `fills_of_homotopyRel` in [`Singular/Prism.lean`](SharpTopologicalOverlap/Singular/Prism.lean), [`Singular/Deformation.lean`](SharpTopologicalOverlap/Singular/Deformation.lean) | Proved using the library chain homotopy, its naturality for restricted pairs, and the checked relative-homology bridge. |
 | Weight polynomials (§2.4), block P | `WeightPolynomial.weightPolynomial`, `contDiff`, `hasFDerivAt`, `hessian_eq_fderiv_fderiv`, `euler`, `partial_euler`, `le_sum_pow`, `simplex_le_one`, `simplex_partial_le`, `uniform_value`, `realized_independenceComplex`, `hessian_restrict_eq` in [`Polynomial.lean`](SharpTopologicalOverlap/Polynomial.lean) | Proved. The degree parameter is the edge cardinality (`d+1` in the paper). Includes the filtered-family convention, actual Frechet derivatives, symmetric zero-diagonal Hessian, independence-precomplex zero set, and active-coordinate restrictions. |
 | Lemma 6.1, compatible exceptional vertices (`lem:covers`), block D | `IntersectionData.exceptionalSet_card_le`, `exceptionalSet_mono`, `remainingVertices_nonempty`, `cochain_eq_zero_on_remaining`, `vertex_cochain_eq_on_remaining`, `remainingFamily_hasCocycleParity`, `remainingFamily_image` in [`Deletion.lean`](SharpTopologicalOverlap/Deletion.lean) | Proved from the checked intersection data. Choices of maximal disjoint support families are global per target face. The common cocycle is on the actual subtype of remaining vertices; its ambient image is exactly upward support restricted to those vertices. |
-| Theorem 1.1 (`thm:main`) | — | Open |
+| Theorem 7.1 (`thm:bmn`), BMN Theorem 1.3 | `BMN.exists_configuration`, `BMN.exists_configuration_polynomial_error` in [`BMN.lean`](SharpTopologicalOverlap/BMN.lean) | Proved for every `d ≥ 2` and every `n`, in Euclidean space: convex position, every top face affine independent, and a uniform error `2*d*choose(n-1,d) ≤ 2*d*n^d`. |
+| BMN convex-position and nondegeneracy inputs (§2, Lemma 2.1 and proof of Lemma 2.2) | `BMN.configuration_separated`, `BMN.convexIndependent_of_separated`, `BMN.Separated.affineIndependent_face`, `BMN.convexHull_injective_of_convexIndependent` | Proved using an explicit recursive configuration, supporting linear functionals, positive augmented determinants and coordinate transport; different source subsets span different geometric hulls. |
+| BMN type lemma (BMN Lemma 2.2) | `BMN.type_of_mem_convexHull`, `BMN.hullCount_le_of_separated` in [`BMN/Types.lean`](SharpTopologicalOverlap/BMN/Types.lean) | Proved from the explicit separated geometry. Closed-hull replacement determinants are nonnegative; the adjacent-swap contradictions prove strict interleaving after deleting at most `2*d` vertices. |
+| Affine upper-bound maps (§7) | `affineSkeletonMap`, `image_affineSkeletonMap_face`, `BMN.exists_affine_overlap_bound`, `BMN.exists_continuous_overlap_bound` | Proved with exact closed-face hull images and the same finite error; no geometric provider premise remains. |
+| BMN normalization from `n^(d+1)` to `choose(n,d+1)` | `BMN.normalized_error_eq`, `BMN.tendsto_choose_div_pow`, `BMN.tendsto_normalized_bmn_bound`, `BMN.eventually_exists_normalized_overlap_lt` | Proved: the normalized error is exactly `2*d*(d+1)/n` on the positive-denominator tail, and the upper bound converges to the existing `overlapThreshold d`. |
+| Theorem 1.1 (`thm:main`) | — | Open; unconditional finite lower bound and normalized asymptotic upper maps are available. Minimum-over-maps definition and lower-bound/liminf assembly remain. |
 | Canonical comparison, Theorem 2.3 (`thm:hatcher`), block C | `Comparison.isIso_homologyMap_affineChainComplexMapIn`, `canonicalHomologyComparison` in [`Comparison/Canonical.lean`](SharpTopologicalOverlap/Comparison/Canonical.lean) and [`Provider.lean`](SharpTopologicalOverlap/Comparison/Provider.lean) | Proved for the actual affine generator map, via its cellular basis classes and naturality. Includes arbitrary ambient precomplexes, with their actual vertex subtype and empty carriers. |
 | Supported inverse, Lemma 2.4, block C | `Comparison.supportedComparison`, `supportedQ`, `supportedQ_carriedBy`, `boundary_supportedQ_zero`, `boundary_supportedQ_succ` in [`Comparison/Supported.lean`](SharpTopologicalOverlap/Comparison/Supported.lean) | Proved unconditionally. The chain map preserves all simplicial carriers simultaneously and sends the uniform point chain to the prescribed vertex; the chain homotopy preserves those same carriers. |
 | Logarithmic barrier and generic perturbation (§5), block B | `Barrier.barrier_critical_iff`, `manifoldMorseIndex_barrier`, `isCompact_barrierSublevel`, `exists_small_morse_tilt` in [`Barrier/Basic.lean`](SharpTopologicalOverlap/Barrier/Basic.lean) and [`Generic.lean`](SharpTopologicalOverlap/Barrier/Generic.lean) | Proved for the actual open-simplex manifold. Includes smoothness, critical multiplier estimates, properness, the Hessian/index identification and arbitrarily small Morse tilts. |
@@ -90,3 +101,10 @@ Both persistent audits, `verification/BlockG.lean` and
 `verification/Theorem12.lean`, passed with `-DwarningAsError=true`; their
 axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`.
 The public Theorem 1.2 statement and the reference manuscript are unchanged.
+
+The Theorem 7.1 implementation also passed `lake --wfail build` (9825 jobs).
+The root-only `verification/Theorem71.lean` and existing Theorem 1.2 harness
+both passed with `-DwarningAsError=true`; all reported dependencies use only
+`propext`, `Classical.choice`, and `Quot.sound`. The BMN finite construction,
+continuous-map bound and factorial-normalized eventual upper bound have no
+remaining proof gaps or provider premises.
