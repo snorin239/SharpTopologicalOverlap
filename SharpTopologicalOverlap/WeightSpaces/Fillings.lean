@@ -16,7 +16,7 @@ open CategoryTheory.Limits
 
 namespace SharpTopologicalOverlap.IntersectionData
 
-open Simplicial WeightPolynomial
+open _root_.SharpTopologicalOverlap.Simplicial WeightPolynomial
 
 variable {n d : ℕ} {W : Type} [Fintype W] [LinearOrder W]
   {T : AbstractSimplicialComplex W}

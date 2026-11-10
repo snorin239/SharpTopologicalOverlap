@@ -11,7 +11,7 @@ open CategoryTheory.Limits
 
 namespace SharpTopologicalOverlap.IntersectionData
 
-open Simplicial
+open _root_.SharpTopologicalOverlap.Simplicial
 
 variable {n d : ℕ} {W : Type} [Fintype W] [LinearOrder W]
   {T : AbstractSimplicialComplex W}
@@ -24,7 +24,7 @@ theorem weightSpace_fills {p : ℕ} (τ : Cell T p) (hd : 0 < d)
     Singular.Fills (X := TopCat.of (Simplex (Fin n)))
       (I.weightSpace τ) (I.independentSpace τ) j := by
   obtain ⟨i, hi⟩ := I.remainingVertices_nonempty τ hn
-  letI : Nonempty (I.remainingVertices τ) := ⟨⟨i, hi⟩⟩
+  let : Nonempty (I.remainingVertices τ) := ⟨⟨i, hi⟩⟩
   exact I.weightSpace_fills_of_sublevel τ hd j
     (Sublevel.sublevel_homology_vanishes d (I.remainingFamily τ)
       (I.remainingFamily_uniform τ) (I.remainingFamily_hasCocycleParity τ) j hj)

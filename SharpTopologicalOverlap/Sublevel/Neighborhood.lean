@@ -16,8 +16,9 @@ open SharpTopologicalOverlap.WeightPolynomial
 
 namespace SharpTopologicalOverlap.Sublevel
 
-variable {V : Type} [Fintype V] [DecidableEq V]
+variable {V : Type} [Fintype V]
 
+omit [Fintype V] in
 theorem realizedComplex_top :
     realizedComplex (⊤ : AbstractSimplicialComplex V).toPreAbstractSimplicialComplex = Set.univ := by
   ext μ

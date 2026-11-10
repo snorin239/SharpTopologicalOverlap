@@ -23,6 +23,7 @@ abbrev chainAsCochain (K : AbstractSimplicialComplex V) (k : ℕ) :
     Chain K k ≃ₗ[Coeff] Cochain K k :=
   Finsupp.linearEquivFunOnFinite Coeff Coeff (Cell K k)
 
+omit [LinearOrder V] in
 @[simp] theorem chainAsCochain_apply (c : Chain K k) (s : Cell K k) :
     chainAsCochain K k c s = c s := rfl
 
@@ -132,6 +133,7 @@ theorem cofaceSum_add (c b : Cell K (k + 1) → M) (s : Cell K k) :
   intro t _
   split_ifs <;> simp
 
+omit [LinearOrder V] in
 theorem evaluation_symmetric (b c : Chain K k) :
     evaluation (chainAsCochain K k b) c = evaluation (chainAsCochain K k c) b := by
   classical
@@ -142,6 +144,7 @@ theorem evaluation_symmetric (b c : Chain K k) :
   intro s _
   exact mul_comm _ _
 
+omit [Fintype V] [LinearOrder V] in
 theorem linearCombination_smul (a : Cochain K k) (b : Chain K k) (u : M) :
     Finsupp.linearCombination Coeff (fun s => a s • u) b = evaluation a b • u := by
   have h : Finsupp.linearCombination Coeff (fun s => a s • u) =
@@ -164,6 +167,7 @@ theorem cofaceSum_cycle (ζ : Chain K (k + 1)) (hζ : boundary k ζ = 0)
     (transposeBoundary k (Finsupp.single s 1)) • u = 0
   rw [h, zero_smul]
 
+omit [Module Coeff M] in
 /-- Rewrite the ordered facets as the finite set of codimension-one subfaces. -/
 theorem sum_facets_eq (t : Cell K (k + 1)) (a : Cell K k → M) :
     ∑ j : Fin (k + 2), a (t.face j) =

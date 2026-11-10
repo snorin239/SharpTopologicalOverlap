@@ -185,6 +185,7 @@ theorem chain_eq_sum_simplexChain {X : TopCat.{0}} {k : ℕ} (c : Singular.Chain
   simp only [map_sum, hcoeff]
   exact (Singular.coefficients X k c).sum_single.symm
 
+omit [LinearOrder V] in
 /-- Degree zero preserves every ambient subcomplex simultaneously. -/
 theorem rhoZero_carriedBy (x : V) (L : PreAbstractSimplicialComplex V)
     (c : SingularChain V 0) (hc : Singular.CarriedBy (realizedComplex L) c) :

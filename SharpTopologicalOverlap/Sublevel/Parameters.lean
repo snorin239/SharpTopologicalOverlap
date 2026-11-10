@@ -21,7 +21,7 @@ namespace SharpTopologicalOverlap.Sublevel
 
 open Barrier
 
-variable {V : Type} [Fintype V] [DecidableEq V] [Nonempty V]
+variable {V : Type} [Fintype V] [Nonempty V]
 
 /-- The endpoint of the uniform push as a map of topological spaces. -/
 def pushInsideMap (t : unitInterval) : TopCat.of (Simplex V) ⟶ TopCat.of (Simplex V) :=

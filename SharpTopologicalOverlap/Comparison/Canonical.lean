@@ -42,23 +42,25 @@ def affineChainComplexMapIn (K : AbstractSimplicialComplex V) :
     eqToHom (TauCeti.orderedSimplicialChainComplex_X Coeff n) ≫
       ModuleCat.ofHom (affineChainMapIn K n)) fun n => by
     simp only [TauCeti.orderedSimplicialChainComplex_d, Category.assoc,
-      eqToHom_trans_assoc, eqToHom_refl, Category.id_comp]
+      eqToHom_refl, Category.id_comp]
     apply ModuleCat.hom_ext
     apply LinearMap.ext
     intro c
     exact boundary_affineChainMapIn c
 
+omit [Fintype V] in
 theorem affineChainComplexMapIn_f (K : AbstractSimplicialComplex V) (n : ℕ) :
     (affineChainComplexMapIn K).f n =
       eqToHom (TauCeti.orderedSimplicialChainComplex_X Coeff n) ≫
         ModuleCat.ofHom (affineChainMapIn K n) := rfl
 
+omit [Fintype V] in
 theorem affineChainComplexMapIn_apply (K : AbstractSimplicialComplex V) (n : ℕ)
     (c : Chain K n) : (affineChainComplexMapIn K).f n
       ((eqToHom (TauCeti.orderedSimplicialChainComplex_X Coeff n).symm) c) =
         affineChainMapIn K n c := by
   rw [affineChainComplexMapIn_f, ← ModuleCat.comp_apply, ← Category.assoc]
-  simp only [eqToHom_trans, eqToHom_refl]
+  simp only [eqToHom_refl]
   erw [Category.id_comp]
   rfl
 
@@ -156,7 +158,7 @@ theorem boundary_affineSkeletalChains (c : Chain K (n + 1)) :
     change Singular.boundary n (affineSkeletalChains K (n + 1) (Finsupp.single s 1)) =
       Singular.pushforward (TauCeti.skeletonPair (Set.univ : Set K.Realization) (n + 1)).map n
         (affineSkeletalChains K n (boundary n (Finsupp.single s 1)))
-    simp only [LinearMap.comp_apply, Finsupp.lsingle_apply, affineSkeletalChains_single,
+    simp only [affineSkeletalChains_single,
       Singular.boundary, TauCeti.singularChains_d_simplexChain, boundary_single,
       map_sum, affineSkeletalChains_single]
     simp only [← Int.cast_smul_eq_zsmul Coeff, Int.cast_pow, Int.cast_neg, Int.cast_one,
@@ -253,8 +255,8 @@ theorem affineSkeletal_cycles_condition (K : AbstractSimplicialComplex V) (n : �
     have hc := congrArg (fun f => f ≫
       eqToHom (TauCeti.orderedSimplicialChainComplex_X (K := K) Coeff n))
         ((TauCeti.orderedSimplicialChainComplex K Coeff).iCycles_d (n + 1) n)
-    simp only [TauCeti.orderedSimplicialChainComplex_d, Category.assoc,
-      eqToHom_trans_assoc, eqToHom_refl, Category.comp_id, zero_comp] at hc
+    simp only [TauCeti.orderedSimplicialChainComplex_d,
+      eqToHom_refl, Category.comp_id] at hc
     apply ModuleCat.hom_ext
     apply LinearMap.ext
     intro z
@@ -311,6 +313,7 @@ theorem affineCyclesInBasePair_projection (K : AbstractSimplicialComplex V) (n :
   erw [CategoryTheory.Functor.map_id, SSet.homologyMap_id, Category.id_comp]
   exact affineCyclesInSkeleton_relative K n
 
+omit [Fintype V] in
 theorem cellularCyclesIso_hom_projection (K : AbstractSimplicialComplex V) (n : ℕ) :
     (TauCeti.cellularCyclesIso (Set.univ : Set K.Realization) (ModuleCat.of Coeff Coeff) n).hom ≫
       (TauCeti.skeletonBasePair (Set.univ : Set K.Realization) n).singularHomologyMap
@@ -336,7 +339,7 @@ theorem affineCyclesInBasePair_eq (K : AbstractSimplicialComplex V) (n : ℕ) :
   rw [Category.assoc, cellularCyclesIso_hom_projection, ← Category.assoc,
     HomologicalComplex.cyclesMap_i, affineCyclesInBasePair_projection,
     affineSkeletalClassMap_eq, TauCeti.cellularChainComplexRealizationIso_inv_f]
-  simp only [Category.assoc, eqToHom_trans_assoc, eqToHom_refl, Category.comp_id, Category.id_comp]
+  simp only [eqToHom_refl, Category.comp_id, Category.id_comp]
 
 /-- Singular chains of the realization and relative chains modulo its empty CW base. -/
 def wholePairComparison (K : AbstractSimplicialComplex V) :
@@ -350,8 +353,8 @@ def wholePairComparison (K : AbstractSimplicialComplex V) :
 instance isIso_wholePairComparison (K : AbstractSimplicialComplex V) :
     IsIso (wholePairComparison K) := by
   let P := TauCeti.complexBasePair (Set.univ : Set K.Realization)
-  haveI : IsEmpty P.snd := inferInstance
-  haveI : IsIso (P.singularChainComplexπ (ModuleCat.of Coeff Coeff)) := inferInstance
+  have : IsEmpty P.snd := inferInstance
+  have : IsIso (P.singularChainComplexπ (ModuleCat.of Coeff Coeff)) := inferInstance
   unfold wholePairComparison
   infer_instance
 
@@ -446,7 +449,7 @@ instance isIso_homologyMap_affineWholePairComplexMap (K : AbstractSimplicialComp
 
 instance isIso_homologyMap_affineRealizationComplexMap (K : AbstractSimplicialComplex V) (n : ℕ) :
     IsIso (HomologicalComplex.homologyMap (affineRealizationComplexMap K) n) := by
-  haveI := isIso_homologyMap_affineWholePairComplexMap K n
+  have := isIso_homologyMap_affineWholePairComplexMap K n
   change IsIso (HomologicalComplex.homologyMap
     (affineRealizationComplexMap K ≫ wholePairComparison K) n) at this
   rw [HomologicalComplex.homologyMap_comp] at this
@@ -455,7 +458,7 @@ instance isIso_homologyMap_affineRealizationComplexMap (K : AbstractSimplicialCo
 /-- The canonical affine comparison is a homology isomorphism, with its exact coordinate target. -/
 instance isIso_homologyMap_affineChainComplexMapIn (K : AbstractSimplicialComplex V) (n : ℕ) :
     IsIso (HomologicalComplex.homologyMap (affineChainComplexMapIn K) n) := by
-  haveI := isIso_homologyMap_affineRealizationComplexMap K n
+  have := isIso_homologyMap_affineRealizationComplexMap K n
   change IsIso (HomologicalComplex.homologyMap
     (affineChainComplexMapIn K ≫ (TauCeti.singularChains Coeff).map (coordinatesToRealization K)) n) at this
   rw [HomologicalComplex.homologyMap_comp] at this

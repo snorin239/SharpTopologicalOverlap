@@ -99,6 +99,7 @@ structure GeneratorStep (k : ℕ) (old : ComparisonStage V k)
     TauCeti.simplexChain s 1 + old.Q (singularBoundary k (TauCeti.simplexChain s 1)) +
       affineChainMap (k + 1) rho
 
+omit [Fintype V] [Nonempty V] in
 theorem exists_generatorStep (cmp : CanonicalHomologyComparison V)
     (k : ℕ) (old : ComparisonStage V k)
     (s : Singular.Simplex (TopCat.of (Simplex V)) (k + 1)) :
@@ -169,6 +170,7 @@ theorem chainsDesc_mem_submodule {X : TopCat.{0}} {k : ℕ} {M : Type}
   rw [TauCeti.chainsDesc_simplexChain]
   exact P.smul_mem _ (hf s (hc' s hs))
 
+omit [Fintype V] [Nonempty V] in
 theorem nextRho_carriedBy (cmp : CanonicalHomologyComparison V) (k : ℕ)
     (old : ComparisonStage V k) (L : PreAbstractSimplicialComplex V)
     (c : SingularChain V (k + 1)) (hc : Singular.CarriedBy (realizedComplex L) c) :
@@ -185,6 +187,7 @@ theorem nextRho_carriedBy (cmp : CanonicalHomologyComparison V) (k : ℕ)
   exact carriedBy_mono (simplexCarrier_le s L (fun μ => hc' s hs ⟨μ, rfl⟩))
     (chosenGeneratorStep cmp k old s).rho_carried
 
+omit [Fintype V] [Nonempty V] in
 theorem nextQ_carriedBy (cmp : CanonicalHomologyComparison V) (k : ℕ)
     (old : ComparisonStage V k) (L : PreAbstractSimplicialComplex V)
     (c : SingularChain V (k + 1)) (hc : Singular.CarriedBy (realizedComplex L) c) :
@@ -201,6 +204,7 @@ theorem nextQ_carriedBy (cmp : CanonicalHomologyComparison V) (k : ℕ)
   exact Singular.carriedBy_mono (fun μ hμ => hL hμ)
     (chosenGeneratorStep cmp k old s).Q_carried
 
+omit [Fintype V] [Nonempty V] in
 theorem boundary_nextRho (cmp : CanonicalHomologyComparison V) (k : ℕ)
     (old : ComparisonStage V k) (c : SingularChain V (k + 1)) :
     boundary k (nextRho cmp k old c) = old.rho (singularBoundary k c) := by
@@ -212,6 +216,7 @@ theorem boundary_nextRho (cmp : CanonicalHomologyComparison V) (k : ℕ)
     exact (chosenGeneratorStep cmp k old s).boundary_rho
   exact LinearMap.congr_fun he c
 
+omit [Fintype V] [Nonempty V] in
 theorem boundary_nextQ (cmp : CanonicalHomologyComparison V) (k : ℕ)
     (old : ComparisonStage V k) (c : SingularChain V (k + 1)) :
     singularBoundary (k + 1) (nextQ cmp k old c) =

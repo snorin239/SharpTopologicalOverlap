@@ -67,7 +67,7 @@ theorem openSubtype_manifoldMorseIndex (U : TopologicalSpace.Opens E) (F : E →
 
 end OpenSubtype
 
-variable {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
+variable {V : Type*} [Fintype V] [Nonempty V]
 
 theorem hasFDerivAt_affineCoordinates (z : euclideanZeroSumSpace (V := V)) :
     HasFDerivAt affineCoordinates tangentCoordinates z := by
@@ -101,7 +101,7 @@ theorem second_derivative_comp_affine (F : (V → ℝ) → ℝ)
   have h := TauCeti.fderiv_fderiv_comp_apply hF
     (contDiff_affineCoordinates 2).contDiffAt x y
   simpa only [fderiv_affineCoordinates, second_fderiv_affineCoordinates,
-    ContinuousLinearMap.zero_apply, map_zero, add_zero] using h
+    zero_apply, map_zero, add_zero] using h
 
 /-- The weight polynomial in the Euclidean zero-sum affine chart. -/
 def coordinatePolynomial (d : ℕ) (G : Finset (Finset V)) : euclideanZeroSumSpace (V := V) → ℝ :=
@@ -110,6 +110,8 @@ def coordinatePolynomial (d : ℕ) (G : Finset (Finset V)) : euclideanZeroSumSpa
 theorem contDiff_coordinatePolynomial (d : ℕ) (G : Finset (Finset V)) (n : ℕ∞ω) :
     ContDiff ℝ n (coordinatePolynomial d G) :=
   (WeightPolynomial.contDiff (d + 1) G n).comp (contDiff_affineCoordinates n)
+
+variable [DecidableEq V]
 
 theorem hasFDerivAt_coordinatePolynomial (d : ℕ) (G : Finset (Finset V))
     (z : euclideanZeroSumSpace (V := V)) :
@@ -149,6 +151,7 @@ theorem coordinatePolynomial_critical_iff (d : ℕ) (G : Finset (Finset V))
     ext x
     exact hc (tangentCoordinates x) (sum_tangentCoordinates x)
 
+omit [DecidableEq V] in
 theorem affineCoordinates_eq_weights (z : openSimplexDomain (V := V)) :
     affineCoordinates z.1 = ((toPositiveSimplex z).1.weights : V → ℝ) := by
   ext i

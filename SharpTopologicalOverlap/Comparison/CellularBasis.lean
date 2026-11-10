@@ -47,13 +47,15 @@ def standardCellMap (s : Cell K n) :
       (⊤ : AbstractSimplicialComplex (Fin (n + 1))).toPreAbstractSimplicialComplex
       K.toPreAbstractSimplicialComplex where
   toFun := s.vertexEmbedding
-  map_face' τ hτ := K.isRelLowerSet_faces.mem_of_le s.1.2
+  map_face' _τ hτ := K.isRelLowerSet_faces.mem_of_le s.1.2
     (Finset.image_subset_iff.mpr fun _ _ => s.vertexEmbedding_mem _)
     (Finset.image_nonempty.mpr hτ)
 
+omit [Fintype V] in
 theorem standardCellMap_strictMono (s : Cell K n) : StrictMono (standardCellMap s) :=
   s.strictMono_vertexEmbedding
 
+omit [Fintype V] in
 theorem standardCell_map (s : Cell K n) :
     (standardCell n).map (standardCellMap s)
       (standardCellMap_strictMono s).injective.injOn = s := by
@@ -94,12 +96,12 @@ theorem skeletalAffineClass_zero_eq (s : Cell K 0) :
 /-- No zero-dimensional affine class vanishes. -/
 theorem skeletalAffineClass_zero_ne_zero (s : Cell K 0) : skeletalAffineClass s ≠ 0 := by
   let P := TauCeti.skeletonPair (Set.univ : Set K.Realization) 0
-  letI : IsEmpty (TauCeti.skeletonObj (Set.univ : Set K.Realization) 0) :=
+  let : IsEmpty (TauCeti.skeletonObj (Set.univ : Set K.Realization) 0) :=
     TauCeti.zeroSkeletonPreviousIsEmpty (Set.univ : Set K.Realization)
-  letI : IsEmpty P.snd := by
+  let : IsEmpty P.snd := by
     change IsEmpty (TauCeti.skeletonObj (Set.univ : Set K.Realization) 0)
     infer_instance
-  haveI : IsIso (P.singularHomologyπ (ModuleCat.of Coeff Coeff) 0) := inferInstance
+  have : IsIso (P.singularHomologyπ (ModuleCat.of Coeff Coeff) 0) := inferInstance
   intro hz
   rw [skeletalAffineClass_zero_eq] at hz
   have hp : TauCeti.singularHomology₀Section (ModuleCat.of Coeff Coeff)
@@ -137,6 +139,7 @@ theorem coeff_unit_coe_eq_one (u : Coeffˣ) : (u : Coeff) = 1 := by
   · exact (u.ne_zero h).elim
   · exact h
 
+omit [Fintype V] in
 /-- No orientation rescaling remains over `𝔽₂`. -/
 theorem coordinates_cellularChainBasis (s : Cell K n) :
     TauCeti.cellularChainRealizationLinearEquiv K Coeff n
@@ -168,7 +171,7 @@ theorem affineClassCoordinates_eq_single_of_standard (s : Cell K n)
     (hstd : affineClassCoordinates (standardCell n) = Finsupp.single (standardCell n) 1) :
     affineClassCoordinates s = Finsupp.single s 1 := by
   let M : AbstractSimplicialComplex (Fin (n + 1)) := ⊤
-  letI : CWComplex (Set.univ : Set M.Realization) :=
+  let : CWComplex (Set.univ : Set M.Realization) :=
     AbstractSimplicialComplex.realizationCWComplex M
   let f := standardCellMap s
   have hf : StrictMonoOn f (↑(standardCell n).1.1 : Set (Fin (n + 1))) :=
@@ -198,13 +201,14 @@ theorem affineClassCoordinates_eq_single_of_standard (s : Cell K n)
   exact (congrArg (TauCeti.cellularChainRealizationLinearEquiv K Coeff n) hcell).trans
     (coordinates_cellularChainBasis s)
 
+omit [Fintype V] in
 theorem sum_affineFacet_basis_ne_zero (s : Cell K (n + 1)) :
     (∑ j : Fin (n + 2), Finsupp.single (s.face j) (1 : Coeff)) ≠ 0 := by
   intro hz
   have h := congrArg (fun c : Chain K n => c (s.face 0)) hz
   have hinj (i j : Fin (n + 2)) : s.face i = s.face j ↔ i = j := s.face_injective.eq_iff
   simp only [Finsupp.finsetSum_apply, Finsupp.single_apply, hinj, Finsupp.zero_apply] at h
-  simpa using h
+  simp at h
 
 /-- The canonical affine class is exactly the cellular generator in every dimension. -/
 theorem affineClassCoordinates_eq_single (n : ℕ) :
@@ -222,7 +226,7 @@ theorem affineClassCoordinates_eq_single (n : ℕ) :
     intro hz
     let M : AbstractSimplicialComplex (Fin (n + 2)) := ⊤
     let t : Cell M (n + 1) := standardCell (n + 1)
-    letI : CWComplex (Set.univ : Set M.Realization) :=
+    let : CWComplex (Set.univ : Set M.Realization) :=
       AbstractSimplicialComplex.realizationCWComplex M
     have hsum : (∑ j : Fin (n + 2), (skeletalAffineClass (t.face j)).hom 1) = 0 := by
       have hd := ConcreteCategory.congr_hom (skeletalAffineClass_differential t) 1

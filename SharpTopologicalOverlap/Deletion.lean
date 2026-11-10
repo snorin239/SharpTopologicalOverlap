@@ -27,6 +27,7 @@ variable {V : Type*} [DecidableEq V]
 def IsMatching (M : Finset (Finset V)) : Prop :=
   ∀ s ∈ M, ∀ t ∈ M, s ≠ t → Disjoint s t
 
+omit [DecidableEq V] in
 /-- A maximum-cardinality matching exists in every finite family. -/
 theorem exists_maximumMatching (G : Finset (Finset V)) :
     ∃ M ⊆ G, IsMatching M ∧
@@ -44,13 +45,16 @@ theorem exists_maximumMatching (G : Finset (Finset V)) :
 def maximumMatching (G : Finset (Finset V)) : Finset (Finset V) :=
   (exists_maximumMatching G).choose
 
+omit [DecidableEq V] in
 theorem maximumMatching_subset (G : Finset (Finset V)) : maximumMatching G ⊆ G :=
   (exists_maximumMatching G).choose_spec.1
 
+omit [DecidableEq V] in
 theorem maximumMatching_isMatching (G : Finset (Finset V)) :
     IsMatching (maximumMatching G) :=
   (exists_maximumMatching G).choose_spec.2.1
 
+omit [DecidableEq V] in
 theorem maximumMatching_maximum (G : Finset (Finset V))
     (N : Finset (Finset V)) (hNG : N ⊆ G) (hN : IsMatching N) :
     N.card ≤ (maximumMatching G).card :=

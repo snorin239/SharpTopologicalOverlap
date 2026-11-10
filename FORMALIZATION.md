@@ -83,3 +83,10 @@ existence theorem constructs its subdivisions, placements, target cycle and
 intersection cochains from the continuous map. Blocks C, B, V, W and the
 final assembly now complete Theorem 1.2. Each completed block has its own
 commit. Theorem 1.1 remains open.
+
+The 10 November 2026 maintenance pass removed the build warnings without
+disabling linters. `lake --wfail build` passed (9789 jobs) with no warnings.
+Both persistent audits, `verification/BlockG.lean` and
+`verification/Theorem12.lean`, passed with `-DwarningAsError=true`; their
+axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`.
+The public Theorem 1.2 statement and the reference manuscript are unchanged.

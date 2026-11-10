@@ -17,7 +17,7 @@ open SharpTopologicalOverlap.WeightPolynomial
 
 namespace SharpTopologicalOverlap.Spectral
 
-variable {V : Type*} [Fintype V] [DecidableEq V] {k : ℕ}
+variable {V : Type*} [DecidableEq V] {k : ℕ}
 
 /-- A choice of one vertex in each color class. -/
 abbrev TransversalChoice (color : V → Fin k) := ∀ a : Fin k, {i : V // color i = a}
@@ -25,6 +25,7 @@ abbrev TransversalChoice (color : V → Fin k) := ∀ a : Fin k, {i : V // color
 def choiceFace {color : V → Fin k} (f : TransversalChoice color) : Finset V :=
   Finset.univ.image fun a => (f a).1
 
+omit [DecidableEq V] in
 theorem choice_injective {color : V → Fin k} (f : TransversalChoice color) :
     Function.Injective (fun a => (f a).1) := by
   intro a b hab
@@ -44,6 +45,7 @@ theorem choiceFace_injOn_color {color : V → Fin k} (f : TransversalChoice colo
   have hab : a = b := by simpa only [(f a).2, (f b).2] using hij
   rw [hab]
 
+omit [DecidableEq V] in
 theorem colorImage_eq_univ {color : V → Fin k} {e : Finset V}
     (hcard : e.card = k) (hinj : Set.InjOn color (e : Set V)) :
     e.image color = Finset.univ := by
@@ -102,9 +104,12 @@ theorem monomial_choiceFace {color : V → Fin k} (f : TransversalChoice color) 
   rw [monomial, choiceFace, Finset.prod_image]
   exact fun _ _ _ _ h => choice_injective f h
 
+variable [Fintype V]
+
 def classMass (color : V → Fin k) (x : V → ℝ) (a : Fin k) : ℝ :=
   ∑ i ∈ Finset.univ.filter (color · = a), x i
 
+omit [DecidableEq V] in
 theorem classMass_eq_sum_subtype (color : V → Fin k) (x : V → ℝ) (a : Fin k) :
     classMass color x a = ∑ i : {i : V // color i = a}, x i.1 := by
   exact Finset.sum_subtype _ (by simp) _
@@ -132,6 +137,7 @@ theorem weightPolynomial_eq_prod_classMass {color : V → Fin k} {G : Finset (Fi
   have hunif : Simplicial.IsUniform k G := fun e he => ((hG e).mp he).1
   rw [weightPolynomial_of_uniform hunif, sum_monomial_eq_prod_classMass hG]
 
+omit [DecidableEq V] [Fintype V] in
 theorem transversal_color_count {color : V → Fin k} {e : Finset V}
     (hcard : e.card = k) (hinj : Set.InjOn color (e : Set V)) (a : Fin k) :
     (e.filter (color · = a)).card = 1 := by
@@ -197,7 +203,7 @@ theorem weightPolynomial_stationary_partite {color : V → Fin k} {G : Finset (F
     weightPolynomial k G (μ.weights : V → ℝ) = (k.factorial : ℝ) / (k : ℝ) ^ k := by
   rw [weightPolynomial_eq_prod_classMass hG]
   simp_rw [classMass_stationary hk hG μ hp hc]
-  simp [div_eq_mul_inv, inv_pow]
+  simp [div_eq_mul_inv]
 
 section Cocycle
 
@@ -230,6 +236,7 @@ theorem exists_partite_of_tangentIndex_eq (d : ℕ) (G : Finset (Finset V))
   · simpa only [Nat.cast_add, Nat.cast_one] using
       weightPolynomial_stationary_partite (by omega) hcolor μ (ne_of_gt hp) hc
 
+omit [Fintype V] [DecidableEq V] [LinearOrder V] in
 theorem weightPolynomial_pos_of_nonempty {d : ℕ} {G : Finset (Finset V)}
     (hG : Simplicial.IsUniform (d + 1) G) (hne : G.Nonempty)
     (μ : Simplex V) (hμ : ∀ i, 0 < μ.weights i) :

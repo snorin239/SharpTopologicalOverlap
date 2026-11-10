@@ -106,7 +106,7 @@ theorem homologyMap_cycle_injective [Mono (HomologicalComplex.homologyMap f k)]
   have hprev : (ComplexShape.down ℕ).prev k = k + 1 :=
     (ComplexShape.down ℕ).prev_eq' rfl
   let φ := (HomologicalComplex.shortComplexFunctor (ModuleCat.{0} Coeff) (ComplexShape.down ℕ) k).map f
-  letI : Mono (ShortComplex.homologyMap φ) := by
+  let : Mono (ShortComplex.homologyMap φ) := by
     change Mono (HomologicalComplex.homologyMap f k)
     infer_instance
   have hw' : ∃ w : (L.sc k).X₁, (L.sc k).f w = φ.τ₂ c := by
@@ -128,7 +128,7 @@ theorem homologyMap_cycle_surjective [Epi (HomologicalComplex.homologyMap f k)]
   have hprev : (ComplexShape.down ℕ).prev k = k + 1 :=
     (ComplexShape.down ℕ).prev_eq' rfl
   let φ := (HomologicalComplex.shortComplexFunctor (ModuleCat.{0} Coeff) (ComplexShape.down ℕ) k).map f
-  letI : Epi (ShortComplex.homologyMap φ) := by
+  let : Epi (ShortComplex.homologyMap φ) := by
     change Epi (HomologicalComplex.homologyMap f k)
     infer_instance
   have h := shortMap_cycle_surjective_of_epi_homologyMap φ z hz

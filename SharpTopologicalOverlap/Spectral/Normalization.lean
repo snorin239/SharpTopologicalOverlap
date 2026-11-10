@@ -49,16 +49,20 @@ theorem stationary_partial {k : ℕ} {G : Finset (Finset V)} (μ : Simplex V)
 /-- The unit vector with coordinates the square roots of the masses. -/
 def rootVector (μ : Simplex V) : V → ℝ := fun i => Real.sqrt (μ.weights i)
 
+omit [Fintype V] [DecidableEq V] in
 @[simp] theorem rootVector_sq (μ : Simplex V) (i : V) :
     rootVector μ i ^ 2 = μ.weights i := Real.sq_sqrt (coordinate_nonneg μ i)
 
+omit [Fintype V] [DecidableEq V] in
 @[simp] theorem rootVector_mul_self (μ : Simplex V) (i : V) :
     rootVector μ i * rootVector μ i = μ.weights i := by
   simpa only [pow_two] using rootVector_sq μ i
 
+omit [DecidableEq V] in
 theorem rootVector_dot_self (μ : Simplex V) : rootVector μ ⬝ᵥ rootVector μ = 1 := by
   simp only [dotProduct, rootVector_mul_self, sum_coordinates]
 
+omit [Fintype V] [DecidableEq V] in
 theorem rootVector_ne_zero (μ : Simplex V) (hμ : ∀ i, 0 < μ.weights i) (i : V) :
     rootVector μ i ≠ 0 := ne_of_gt (Real.sqrt_pos.mpr (hμ i))
 
@@ -127,6 +131,7 @@ theorem normalizedHessian_quadratic (k : ℕ) (G : Finset (Finset V))
   intro j _
   ring
 
+omit [DecidableEq V] in
 theorem rankOne_mulVec (v z : V → ℝ) :
     vecMulVec v v *ᵥ z = (v ⬝ᵥ z) • v := by
   ext i
@@ -186,9 +191,11 @@ def sqrtRescale (μ : Simplex V) (hμ : ∀ i, 0 < μ.weights i) :
   map_add' x y := by ext i; simp [add_div]
   map_smul' a x := by ext i; simp [mul_div_assoc]
 
+omit [Fintype V] [DecidableEq V] in
 @[simp] theorem sqrtRescale_apply (μ : Simplex V) (hμ : ∀ i, 0 < μ.weights i)
     (x : V → ℝ) (i : V) : sqrtRescale μ hμ x i = x i / rootVector μ i := rfl
 
+omit [DecidableEq V] in
 theorem sum_eq_root_dot_rescale (μ : Simplex V) (hμ : ∀ i, 0 < μ.weights i) (x : V → ℝ) :
     (∑ i, x i) = rootVector μ ⬝ᵥ sqrtRescale μ hμ x := by
   simp only [dotProduct, sqrtRescale_apply]

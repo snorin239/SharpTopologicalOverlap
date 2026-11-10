@@ -51,6 +51,7 @@ theorem sigNeg_comp_le (Q : QuadraticForm ℝ E) (f : F →ₗ[ℝ] E) :
   rw [hx] at hpos
   exact hpos
 
+omit [FiniteDimensional ℝ E] [FiniteDimensional ℝ F] in
 /-- An invertible linear change of coordinates preserves the negative index. -/
 theorem sigNeg_comp_linearEquiv (Q : QuadraticForm ℝ E) (e : F ≃ₗ[ℝ] E) :
     sigNeg (Q.comp e.toLinearMap) = sigNeg Q := by

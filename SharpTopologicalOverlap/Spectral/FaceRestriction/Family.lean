@@ -11,7 +11,7 @@ open SharpTopologicalOverlap.WeightPolynomial
 
 namespace SharpTopologicalOverlap.Spectral
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+variable {V : Type*} [DecidableEq V]
 
 /-- Restrict a family and reindex its actual vertices on the subtype `S`. -/
 def faceFamily (S : Finset V) (G : Finset (Finset V)) : Finset (Finset S) :=
@@ -27,6 +27,7 @@ theorem faceFamily_uniform {k : ℕ} {G : Finset (Finset V)}
   intro e he
   simpa only [Finset.card_map] using hG _ ((mem_faceFamily S G e).mp he)
 
+omit [DecidableEq V] in
 theorem map_subtype_subset_face (S : Finset V) (e : Finset S) :
     e.map (Function.Embedding.subtype (· ∈ S)) ⊆ S := by
   intro i hi
@@ -98,6 +99,8 @@ theorem weightPolynomial_faceFamily {k : ℕ} {G : Finset (Finset V)}
       exact (monomial_map_extend S e x).symm
   rw [hs, ← weightPolynomial_of_uniform hrestricted]
   exact restrict_eq k S G (fun i hi => extendCoordinates_apply_notMem S x hi)
+
+variable [Fintype V]
 
 theorem weightPolynomial_supportPoint {d : ℕ} {G : Finset (Finset V)}
     (hG : Simplicial.IsUniform (d + 1) G) (μ : Simplex V) :

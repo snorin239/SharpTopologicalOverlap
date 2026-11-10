@@ -17,7 +17,7 @@ namespace SharpTopologicalOverlap.Spectral
 
 open Simplicial
 
-variable {V A : Type*} [Fintype V] [LinearOrder V] [AddCommGroup A]
+variable {V A : Type*} [LinearOrder V] [AddCommGroup A]
   {k : ℕ} {G : Finset (Finset V)}
 
 /-- A cocycle cannot have exactly one edge in a one-size-larger set. -/
@@ -219,6 +219,8 @@ theorem mem_iff_card_eq_and_injOn_labels (hG : IsUniform k G)
   · rintro ⟨hcard, hsinj⟩
     exact mem_of_card_eq_and_injOn_labels hG hne hpar w hinj hsum s hcard hsinj
 
+variable [Fintype V]
+
 /-- The label fibres give an actual surjective coloring by `Fin k` whose
 transversals are exactly the edges of `G`. -/
 theorem exists_partite_coloring (hG : IsUniform k G)
@@ -230,7 +232,7 @@ theorem exists_partite_coloring (hG : IsUniform k G)
       ∀ s : Finset V, s ∈ G ↔ s.card = k ∧ Set.InjOn color (s : Set V) := by
   classical
   obtain ⟨e, he⟩ := hne
-  letI : Fintype (Set.range w) := Fintype.ofFinite _
+  let : Fintype (Set.range w) := Fintype.ofFinite _
   have hc : Fintype.card (Set.range w) = Fintype.card (Fin k) := by
     simpa only [Nat.card_eq_fintype_card, Fintype.card_fin] using card_range_labels hG hpar w hinj hsum he
   let α : Set.range w ≃ Fin k := Fintype.equivOfCardEq hc

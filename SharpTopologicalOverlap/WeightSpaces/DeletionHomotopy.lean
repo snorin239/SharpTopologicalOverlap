@@ -19,9 +19,11 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 
 def mass (S : Finset V) (μ : Simplex V) : ℝ := ∑ i ∈ S, μ.weights i
 
+omit [Fintype V] [DecidableEq V] in
 theorem mass_nonneg (S : Finset V) (μ : Simplex V) : 0 ≤ mass S μ :=
   Finset.sum_nonneg fun i _ => coordinate_nonneg μ i
 
+omit [DecidableEq V] in
 theorem mass_le_one (S : Finset V) (μ : Simplex V) : mass S μ ≤ 1 := by
   calc
     _ ≤ ∑ i, μ.weights i := Finset.sum_le_sum_of_subset_of_nonneg
@@ -78,6 +80,7 @@ theorem mass_homotopyPoint (S : Finset V) (μ : Simplex V) (ht : mass S μ < 1)
   intro i hi
   rw [homotopyPoint_coordinate, ite_eq_left hi]
 
+omit [Fintype V] [DecidableEq V] in
 theorem scale_pos (S : Finset V) (μ : Simplex V) (ht : mass S μ < 1) (r : unitInterval) :
     0 < (1 - (1 - (r : ℝ)) * mass S μ) / (1 - mass S μ) := by
   have hs : (1 - (r : ℝ)) * mass S μ ≤ mass S μ := by
@@ -133,6 +136,7 @@ theorem support_homotopyPoint_one (S : Finset V) (μ : Simplex V) (ht : mass S �
     simp
   exact (mem_support.mp hi) hz
 
+omit [Fintype V] [DecidableEq V] in
 theorem continuous_mass (S : Finset V) : Continuous (mass S) := by
   unfold mass
   fun_prop

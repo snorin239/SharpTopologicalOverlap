@@ -86,6 +86,7 @@ def rootProjection (μ : Simplex V) : (V → ℝ) →ₗ[ℝ] rootOrthogonal μ 
     rw [dotProduct_sub, dotProduct_smul, rootVector_dot_self]
     simp)
 
+omit [DecidableEq V] in
 @[simp] theorem rootProjection_apply (μ : Simplex V) (z : V → ℝ) :
     (rootProjection μ z).1 = z - (rootVector μ ⬝ᵥ z) • rootVector μ := rfl
 

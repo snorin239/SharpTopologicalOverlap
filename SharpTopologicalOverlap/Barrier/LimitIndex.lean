@@ -32,6 +32,7 @@ def faceToZeroSum (S : Finset V) : faceTangentSpace S →ₗ[ℝ] zeroSumSpace (
 def faceProjection (S : Finset V) (i : V) : faceTangentSpace S →L[ℝ] ℝ :=
   (ContinuousLinearMap.proj i).comp (faceTangentSpace S).subtypeL
 
+omit [DecidableEq V] in
 @[simp] theorem faceProjection_apply (S : Finset V) (i : V) (x : faceTangentSpace S) :
     faceProjection S i x = x.1 i := rfl
 

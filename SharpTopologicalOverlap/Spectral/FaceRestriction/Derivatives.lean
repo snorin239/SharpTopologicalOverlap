@@ -52,8 +52,8 @@ theorem hessian_faceFamily {k : ℕ} {G : Finset (Finset V)}
     differential k G (extendCoordinatesCLM S w) (extendCoordinates S z)) _ x at hright
   rw [← heq] at hright
   have h := congrArg (fun L : (S → ℝ) →L[ℝ] ℝ => L y) (hleft.unique hright)
-  simpa only [ContinuousLinearMap.add_apply, ContinuousLinearMap.comp_apply,
-    ContinuousLinearMap.zero_apply, map_zero, zero_add, ContinuousLinearMap.flip_apply,
+  simpa only [add_apply, ContinuousLinearMap.comp_apply,
+    zero_apply, map_zero, zero_add, ContinuousLinearMap.flip_apply,
     extendCoordinatesCLM_apply] using h
 
 /-- The Hessian restricted to the actual open face containing `μ`. -/

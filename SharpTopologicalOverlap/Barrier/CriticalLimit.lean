@@ -105,6 +105,7 @@ theorem tendsto_critical_logTerm_zero (d : ℕ) (G : Finset (Finset V))
     exact (critical_logBarrier_bounds d G ha.1 (α a) (ν a) ha.2.1 ha.2.2.1
       ha.2.2.2.1 ha.2.2.2.2).2
 
+omit [DecidableEq V] in
 theorem continuous_linearTilt_simplex :
     Continuous (fun p : (V → ℝ) × Simplex V => linearTilt p.1 (p.2.weights : V → ℝ)) := by
   unfold linearTilt

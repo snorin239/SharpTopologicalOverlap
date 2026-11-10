@@ -25,13 +25,16 @@ def orderedElementEquiv (K : AbstractSimplicialComplex V) (k : ℕ) :
     Chain K k ≃ₗ[Coeff] (TauCeti.orderedSimplicialChainComplex K Coeff).X k :=
   (eqToIso (TauCeti.orderedSimplicialChainComplex_X Coeff k).symm).toLinearEquiv
 
+omit [Fintype V] in
 @[simp] theorem orderedElementEquiv_apply (K : AbstractSimplicialComplex V) (k : ℕ) (c : Chain K k) :
     orderedElementEquiv K k c = (eqToHom (TauCeti.orderedSimplicialChainComplex_X Coeff k).symm) c := rfl
 
+omit [Fintype V] in
 @[simp] theorem orderedElementEquiv_symm_apply (K : AbstractSimplicialComplex V) (k : ℕ)
     (c : (TauCeti.orderedSimplicialChainComplex K Coeff).X k) :
     (orderedElementEquiv K k).symm c = (eqToHom (TauCeti.orderedSimplicialChainComplex_X Coeff k)) c := rfl
 
+omit [Fintype V] in
 theorem orderedElement_boundary (K : AbstractSimplicialComplex V) (k : ℕ) (c : Chain K (k + 1)) :
     (TauCeti.orderedSimplicialChainComplex K Coeff).d (k + 1) k (orderedElementEquiv K (k + 1) c) =
       orderedElementEquiv K k (boundary k c) := by
@@ -45,19 +48,23 @@ def actualAmbientChainMap (L : PreAbstractSimplicialComplex V) (k : ℕ) :
   (includeSubcomplexChain (K := (⊤ : AbstractSimplicialComplex V)) L).comp
     (actualChainEquiv L k).toLinearMap
 
+omit [Fintype V] in
 theorem actualAmbientChainMap_injective (L : PreAbstractSimplicialComplex V) (k : ℕ) :
     Function.Injective (actualAmbientChainMap L k) :=
   Subtype.val_injective.comp (actualChainEquiv L k).injective
 
+omit [Fintype V] in
 theorem actualAmbientChainMap_carried (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (c : Chain (actualComplex L) k) : CarriedBy L (actualAmbientChainMap L k c) :=
   (actualChainEquiv L k c).2
 
+omit [Fintype V] in
 theorem boundary_actualAmbientChainMap (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (c : Chain (actualComplex L) (k + 1)) :
     boundary k (actualAmbientChainMap L (k + 1) c) = actualAmbientChainMap L k (boundary k c) :=
   boundary_actualChainEquiv L k c
 
+omit [Fintype V] in
 theorem actualChain_cycle_d (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (c : Chain (actualComplex L) k) :
     (TauCeti.orderedSimplicialChainComplex (actualComplex L) Coeff).d k
@@ -75,6 +82,7 @@ theorem actualChain_cycle_d (L : PreAbstractSimplicialComplex V) (k : ℕ)
       exact ((orderedElementEquiv (actualComplex L) k).injective.eq_iff' (map_zero _)).trans
         ((actualAmbientChainMap_injective L k).eq_iff' (map_zero _)).symm
 
+omit [LinearOrder V] in
 theorem actualSingular_cycle_d (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (c : Singular.Chain (TopCat.of (realizedComplex (actualComplex L).toPreAbstractSimplicialComplex)) k) :
     ((TauCeti.singularChains Coeff).obj
@@ -168,8 +176,7 @@ theorem canonical_surjectivity (L : PreAbstractSimplicialComplex V) (k : ℕ)
 
 /-- The canonical affine comparison is injective and surjective on homology
 with every vertex-omitting ambient carrier retained. -/
-def canonicalHomologyComparison : CanonicalHomologyComparison V where
-  injectivity := canonical_injectivity
-  surjectivity := canonical_surjectivity
+theorem canonicalHomologyComparison : CanonicalHomologyComparison V :=
+  ⟨canonical_injectivity, canonical_surjectivity⟩
 
 end SharpTopologicalOverlap.Comparison

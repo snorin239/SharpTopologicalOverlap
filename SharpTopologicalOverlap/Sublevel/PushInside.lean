@@ -17,7 +17,7 @@ open SharpTopologicalOverlap.WeightPolynomial
 
 namespace SharpTopologicalOverlap.Sublevel
 
-variable {V : Type} [Fintype V] [DecidableEq V] [Nonempty V]
+variable {V : Type} [Fintype V] [Nonempty V]
 
 /-- The uniform interior push `ψ_t` of the manuscript. -/
 def pushInside (t : unitInterval) (μ : Simplex V) : Simplex V := by
@@ -71,6 +71,7 @@ def pushInsidePositive (t : unitInterval) (ht : 0 < (t : ℝ)) :
   ⟨fun μ => ⟨pushInside t μ, pushInside_positive ht μ⟩,
     (continuous_pushInside.comp (continuous_const.prodMk continuous_id)).subtype_mk _⟩
 
+omit [Nonempty V] in
 theorem continuous_simplexPolynomial (d : ℕ) (G : Finset (Finset V)) :
     Continuous (fun μ : Simplex V => weightPolynomial (d + 1) G (μ.weights : V → ℝ)) :=
   (WeightPolynomial.contDiff (d + 1) G 0).continuous.comp

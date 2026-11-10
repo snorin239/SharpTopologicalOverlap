@@ -9,7 +9,7 @@ public import SharpTopologicalOverlap.Singular
 
 namespace SharpTopologicalOverlap.Singular
 
-open CategoryTheory Simplicial
+open CategoryTheory _root_.SharpTopologicalOverlap.Simplicial
 
 theorem image_nonempty_of_ne_zero {X : TopCat.{0}} {k : ℕ} {c : Chain X k} (hc : c ≠ 0) :
     (image c).Nonempty := by
@@ -29,6 +29,7 @@ open WeightPolynomial
 
 variable {V : Type} [Fintype V] [DecidableEq V]
 
+omit [DecidableEq V] in
 theorem exists_chain_margin (d : ℕ) (G : Finset (Finset V)) {k : ℕ}
     (c : Singular.Chain (TopCat.of (Simplex V)) k)
     (hc : Singular.CarriedBy (strictSublevel d G) c) (hne : c ≠ 0) :

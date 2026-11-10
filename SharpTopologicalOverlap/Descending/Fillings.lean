@@ -16,7 +16,7 @@ open CategoryTheory
 
 namespace SharpTopologicalOverlap.Descending
 
-open Simplicial
+open SharpTopologicalOverlap.Simplicial
 
 variable {n d : ℕ} {W : Type} [Fintype W] [LinearOrder W]
   {T : AbstractSimplicialComplex W}

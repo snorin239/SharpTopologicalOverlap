@@ -19,7 +19,7 @@ open CategoryTheory.Limits
 
 namespace SharpTopologicalOverlap
 
-open Simplicial
+open _root_.SharpTopologicalOverlap.Simplicial
 
 variable {n d : ℕ} {W : Type} [Fintype W] [LinearOrder W]
   {T : AbstractSimplicialComplex W}
@@ -70,7 +70,7 @@ theorem finite_overlap_bound_of_providers {n d : ℕ} (hd : 2 ≤ d)
   by_contra hbound
   have hsmall := lt_of_not_ge hbound
   have hnpos : 0 < n := by omega
-  letI : NeZero n := ⟨by omega⟩
+  let : NeZero n := ⟨by omega⟩
   let x : Fin n := ⟨0, hnpos⟩
   let ρ := Comparison.supportedComparison_of_canonicalHomology cmp x
   obtain ⟨w⟩ := exists_intersectionData hd
@@ -81,7 +81,7 @@ theorem finite_overlap_bound_of_providers {n d : ℕ} (hd : 2 ≤ d)
         (ModuleCat.of Coeff Coeff) q) := by
     intro p q h τ
     obtain ⟨i, hi⟩ := I.remainingVertices_nonempty τ hn
-    letI : Nonempty (I.remainingVertices τ) := ⟨⟨i, hi⟩⟩
+    let : Nonempty (I.remainingVertices τ) := ⟨⟨i, hi⟩⟩
     exact hV (I.remainingVertices τ) (I.remainingFamily τ)
       (I.remainingFamily_uniform τ) (I.remainingFamily_hasCocycleParity τ) q (by omega)
   exact (I.fillingInputs_of_sublevel (by omega) hn x ρ hsmall hH).false

@@ -29,8 +29,9 @@ theorem isMorse_openSubtype {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ 
   rw [isManifoldNondegenerateCriticalPoint_iff, openSubtype_chart_point]
   exact hcrit.congr_of_eventuallyEq (openSubtype_coordinate_germ U F x).symm
 
-variable {V : Type*} [Fintype V] [DecidableEq V] [Nonempty V]
+variable {V : Type*} [Fintype V] [Nonempty V]
 
+omit [Nonempty V] in
 theorem tangentCoordinates_norm_le (v : euclideanZeroSumSpace (V := V)) :
     ‖tangentCoordinates v‖ ≤ ‖v‖ := by
   apply (pi_norm_le_iff_of_nonneg (norm_nonneg v)).mpr
@@ -47,8 +48,10 @@ theorem linearTilt_tangent_affine (v z : euclideanZeroSumSpace (V := V)) :
   simp only [star_trivial, dotProduct]
   exact Finset.sum_congr rfl fun i _ => mul_comm _ _
 
+omit [Nonempty V] in
 @[simp] theorem linearTilt_zero (x : V → ℝ) : linearTilt 0 x = 0 := by simp [linearTilt]
 
+omit [Nonempty V] in
 theorem linearTilt_neg_left (α x : V → ℝ) : linearTilt (-α) x = -linearTilt α x := by
   simp [linearTilt, Finset.sum_neg_distrib]
 

@@ -18,7 +18,7 @@ open SharpTopologicalOverlap.Spectral SharpTopologicalOverlap.WeightPolynomial
 
 namespace SharpTopologicalOverlap.Barrier
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+variable {V : Type*} [Fintype V]
 
 /-- The linear tilt in ordinary finite coordinates. -/
 def linearTilt (α x : V → ℝ) : ℝ := ∑ i, α i * x i
@@ -36,11 +36,13 @@ def coefficientForm (c : V → ℝ) : (V → ℝ) →L[ℝ] ℝ :=
 
 @[simp] theorem coefficientForm_apply (c x : V → ℝ) :
     coefficientForm c x = ∑ i, c i * x i := by
-  simp [coefficientForm, ContinuousLinearMap.sum_apply, smul_eq_mul]
+  simp [coefficientForm, smul_eq_mul]
 
 theorem coefficientForm_coe (c : V → ℝ) :
     (coefficientForm c : (V → ℝ) → ℝ) = linearTilt c :=
   funext fun x => coefficientForm_apply c x
+
+variable [DecidableEq V]
 
 /-- The first derivative specified by the coordinate formula in Lemma 5.6(a). -/
 def barrierDifferential (d : ℕ) (G : Finset (Finset V)) (ε : ℝ) (α x : V → ℝ) :
@@ -51,18 +53,20 @@ theorem barrierDifferential_apply (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
     (α x y : V → ℝ) :
     barrierDifferential d G ε α x y =
       ∑ i, (coordinatePartial (d + 1) G i x - ε / x i + α i) * y i := by
-  simp only [barrierDifferential, ContinuousLinearMap.add_apply, ContinuousLinearMap.sub_apply,
-    ContinuousLinearMap.smul_apply, coefficientForm_apply, differential_apply, smul_eq_mul,
+  simp only [barrierDifferential, add_apply, sub_apply,
+    smul_apply, coefficientForm_apply, differential_apply, smul_eq_mul,
     Finset.mul_sum, ← Finset.sum_sub_distrib, ← Finset.sum_add_distrib]
   apply Finset.sum_congr rfl
   intro i _
   rw [div_eq_mul_inv]
   ring
 
+omit [DecidableEq V] in
 theorem hasFDerivAt_linearTilt (α x : V → ℝ) :
     HasFDerivAt (linearTilt α) (coefficientForm α) x := by
   simpa only [coefficientForm_coe] using (coefficientForm α).hasFDerivAt (x := x)
 
+omit [DecidableEq V] in
 theorem hasFDerivAt_logBarrier {x : V → ℝ} (hx : ∀ i, x i ≠ 0) :
     HasFDerivAt logBarrier (-coefficientForm (fun i => (x i)⁻¹)) x := by
   have h := (HasFDerivAt.sum (fun i (_ : i ∈ (Finset.univ : Finset V)) =>
@@ -79,6 +83,7 @@ theorem hasFDerivAt_ambientBarrier (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
     ((hasFDerivAt_logBarrier hx).const_mul ε)).add (hasFDerivAt_linearTilt α x)
   simpa only [ambientBarrier, barrierDifferential, smul_neg, ← sub_eq_add_neg] using! h
 
+omit [DecidableEq V] in
 theorem contDiffAt_ambientBarrier (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
     (α : V → ℝ) {x : V → ℝ} (hx : ∀ i, x i ≠ 0) (n : ℕ∞ω) :
     ContDiffAt ℝ n (ambientBarrier d G ε α) x := by
@@ -92,6 +97,7 @@ def inverseCoefficientDerivative (x : V → ℝ) :
     (V → ℝ) →L[ℝ] ((V → ℝ) →L[ℝ] ℝ) :=
   ∑ i, (-((x i) ^ 2)⁻¹ • ContinuousLinearMap.proj i).smulRight (ContinuousLinearMap.proj i)
 
+omit [DecidableEq V] in
 theorem hasFDerivAt_inverseCoefficient {x : V → ℝ} (hx : ∀ i, x i ≠ 0) :
     HasFDerivAt (fun y : V → ℝ => coefficientForm (fun i => (y i)⁻¹))
       (inverseCoefficientDerivative x) x := by
@@ -144,6 +150,7 @@ theorem barrierHessian_apply (d : ℕ) (G : Finset (Finset V)) (ε : ℝ) (x y z
   simp only [div_eq_mul_inv]
   ring
 
+omit [DecidableEq V] in
 theorem linearTilt_abs_le_norm (α : V → ℝ) (μ : Simplex V) :
     |linearTilt α (μ.weights : V → ℝ)| ≤ ‖α‖ := by
   calc
@@ -157,10 +164,12 @@ theorem linearTilt_abs_le_norm (α : V → ℝ) (μ : Simplex V) :
       exact mul_le_mul_of_nonneg_right (norm_le_pi_norm α i) (coordinate_nonneg μ i)
     _ = ‖α‖ := by rw [← Finset.mul_sum, sum_coordinates, mul_one]
 
+omit [DecidableEq V] in
 theorem logBarrier_nonneg (μ : Simplex V) : 0 ≤ logBarrier (μ.weights : V → ℝ) := by
   apply neg_nonneg.mpr
   exact Finset.sum_nonpos fun i _ => Real.log_nonpos (coordinate_nonneg μ i) (coordinate_le_one μ i)
 
+omit [DecidableEq V] in
 theorem neg_log_coordinate_le_logBarrier (μ : Simplex V) (i : V) :
     -Real.log (μ.weights i) ≤ logBarrier (μ.weights : V → ℝ) := by
   unfold logBarrier
@@ -168,6 +177,7 @@ theorem neg_log_coordinate_le_logBarrier (μ : Simplex V) (i : V) :
   exact Finset.single_le_sum (fun j _ => neg_nonneg.mpr
     (Real.log_nonpos (coordinate_nonneg μ j) (coordinate_le_one μ j))) (Finset.mem_univ i)
 
+omit [DecidableEq V] in
 /-- Every point in a barrier sublevel stays a uniform positive distance from
 each coordinate face, the compactness estimate in Lemma 5.6(a). -/
 theorem coordinate_ge_exp_of_sublevel (d : ℕ) (G : Finset (Finset V))
@@ -197,7 +207,7 @@ theorem barrier_coefficient_eq_of_critical (d : ℕ) (G : Finset (Finset V)) (ε
   have h := hc _ hsum
   rw [barrierDifferential_apply] at h
   simp only [Pi.sub_apply, mul_sub, Finset.sum_sub_distrib, Pi.single_apply, mul_ite,
-    mul_one, mul_zero, Finset.sum_ite_eq, Finset.mem_univ, ite_true, sub_eq_zero] at h
+    mul_one, mul_zero, sub_eq_zero] at h
   simpa only [Finset.sum_ite_eq', Finset.mem_univ, ite_true] using h
 
 theorem critical_multiplier_eq (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
@@ -231,7 +241,7 @@ theorem critical_multiplier_eq (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
 
 /-- The coordinate estimate at critical points from Lemma 5.6(b). -/
 theorem coordinate_ge_of_critical (d : ℕ) (G : Finset (Finset V))
-    {ε : ℝ} (hε : 0 < ε) (α : V → ℝ) (μ : Simplex V)
+    {ε : ℝ} (_hε : 0 < ε) (α : V → ℝ) (μ : Simplex V)
     (hμ : ∀ i, 0 < μ.weights i) (hc : IsBarrierCritical d G ε α μ)
     (hNε : (Fintype.card V : ℝ) * ε ≤ 1) (hα : ‖α‖ ≤ 1) (i : V) :
     ε / (d + 4 : ℝ) ≤ μ.weights i := by
@@ -280,12 +290,14 @@ def coordinateBarrier (d : ℕ) (G : Finset (Finset V)) (ε : ℝ) (α : V → �
 def barrier (d : ℕ) (G : Finset (Finset V)) (ε : ℝ) (α : V → ℝ) :
     openSimplexDomain (V := V) → ℝ := coordinateBarrier d G ε α ∘ Subtype.val
 
+omit [DecidableEq V] in
 @[simp] theorem barrier_eq_ambient (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
     (α : V → ℝ) (z : openSimplexDomain (V := V)) :
     barrier d G ε α z = ambientBarrier d G ε α ((toPositiveSimplex z).1.weights : V → ℝ) := by
   change ambientBarrier d G ε α (affineCoordinates z.1) = _
   rw [affineCoordinates_eq_weights]
 
+omit [DecidableEq V] in
 theorem contDiffOn_coordinateBarrier (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
     (α : V → ℝ) (n : ℕ∞ω) :
     ContDiffOn ℝ n (coordinateBarrier d G ε α) (openSimplexDomain (V := V)) := by
@@ -300,12 +312,14 @@ theorem hasFDerivAt_coordinateBarrier (d : ℕ) (G : Finset (Finset V)) (ε : �
   (hasFDerivAt_ambientBarrier d G ε α (fun i => ne_of_gt (z.2 i))).comp z.1
     (hasFDerivAt_affineCoordinates z.1)
 
+omit [DecidableEq V] in
 theorem contMDiff_barrier (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
     (α : V → ℝ) (n : ℕ∞ω) :
     ContMDiff 𝓘(ℝ, euclideanZeroSumSpace (V := V)) 𝓘(ℝ) n (barrier d G ε α) :=
   (contDiffOn_coordinateBarrier d G ε α n).contMDiffOn.comp_contMDiff
     contMDiff_subtype_val Subtype.prop
 
+omit [DecidableEq V] in
 theorem continuous_barrier (d : ℕ) (G : Finset (Finset V)) (ε : ℝ) (α : V → ℝ) :
     Continuous (barrier d G ε α) := (contMDiff_barrier d G ε α ∞).continuous
 
@@ -349,6 +363,7 @@ def barrierTangentForm (d : ℕ) (G : Finset (Finset V)) (ε : ℝ) (μ : Simple
     QuadraticForm ℝ (zeroSumSpace (V := V)) :=
   (barrierHessian d G ε (μ.weights : V → ℝ)).toBilinForm.toQuadraticMap.restrict zeroSumSpace
 
+omit [Nonempty V] in
 theorem barrierTangentForm_apply (d : ℕ) (G : Finset (Finset V)) (ε : ℝ) (μ : Simplex V)
     (x : zeroSumSpace (V := V)) :
     barrierTangentForm d G ε μ x = hessian (d + 1) G (μ.weights : V → ℝ) x.1 x.1 +
@@ -372,6 +387,7 @@ theorem manifoldMorseIndex_barrier (d : ℕ) (G : Finset (Finset V)) (ε : ℝ)
     rfl
   rw [hform, sigNeg_comp_linearEquiv]
 
+omit [DecidableEq V] [Nonempty V] in
 /-- A positive coordinate slab is a compact subset of the closed simplex. -/
 theorem isCompact_coordinate_slab (b : ℝ) :
     IsCompact {μ : Simplex V | ∀ i, b ≤ μ.weights i} := by
@@ -380,6 +396,7 @@ theorem isCompact_coordinate_slab (b : ℝ) :
       (fun i : V => isClosed_le continuous_const (continuous_coordinate i))
   simpa only [Set.univ_inter] using isCompact_univ.inter_right hclosed
 
+omit [DecidableEq V] in
 /-- Compactness of all sublevels of the actual open-simplex barrier. -/
 theorem isCompact_barrier_sublevel (d : ℕ) (G : Finset (Finset V))
     {ε : ℝ} (hε : 0 < ε) (α : V → ℝ) (c : ℝ) :
@@ -388,7 +405,7 @@ theorem isCompact_barrier_sublevel (d : ℕ) (G : Finset (Finset V))
   have hb : 0 < b := Real.exp_pos _
   let K := {μ : Simplex V | ∀ i, b ≤ μ.weights i}
   have hK : IsCompact K := isCompact_coordinate_slab b
-  letI : CompactSpace K := isCompact_iff_compactSpace.mp hK
+  let : CompactSpace K := isCompact_iff_compactSpace.mp hK
   let f : K → openSimplexDomain (V := V) := fun μ =>
     fromPositiveSimplex ⟨μ.1, fun i => hb.trans_le (μ.2 i)⟩
   have hf : Continuous f := by
@@ -407,6 +424,7 @@ theorem isCompact_barrier_sublevel (d : ℕ) (G : Finset (Finset V))
   refine ⟨⟨μ, hμ⟩, ?_⟩
   exact openSimplexHomeomorph.left_inv z
 
+omit [DecidableEq V] in
 /-- Properness of the barrier function, as required by the Morse band theorem. -/
 theorem isProperMap_barrier (d : ℕ) (G : Finset (Finset V))
     {ε : ℝ} (hε : 0 < ε) (α : V → ℝ) :

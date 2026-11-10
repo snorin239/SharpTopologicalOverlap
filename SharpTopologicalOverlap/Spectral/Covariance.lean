@@ -23,11 +23,13 @@ def edgeWeight (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V) (e : Finset V)
   (k.factorial : ℝ) * monomial e (μ.weights : V → ℝ) /
     weightPolynomial k G (μ.weights : V → ℝ)
 
+omit [Fintype V] [DecidableEq V] in
 theorem edgeWeight_nonneg (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V) (e : Finset V) :
     0 ≤ edgeWeight k G μ e :=
   div_nonneg (mul_nonneg (Nat.cast_nonneg _) (monomial_nonneg (coordinate_nonneg μ)))
     (WeightPolynomial.nonneg k G (coordinate_nonneg μ))
 
+omit [Fintype V] [DecidableEq V] in
 theorem sum_edgeWeight (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V)
     (hp : weightPolynomial k G (μ.weights : V → ℝ) ≠ 0) :
     (∑ e ∈ homogeneousPart k G, edgeWeight k G μ e) = 1 := by
@@ -54,10 +56,12 @@ theorem covariance_posSemidef (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V)
       (edgeVector μ e - (k : ℝ) • rootVector μ)
   exact h.smul (edgeWeight_nonneg k G μ e)
 
+omit [Fintype V] in
 theorem monomial_erase_factor (e : Finset V) {i : V} (hi : i ∈ e) (x : V → ℝ) :
     monomial e x = x i * monomial (e.erase i) x := by
   exact (Finset.mul_prod_erase e x hi).symm
 
+omit [Fintype V] in
 theorem edgeWeight_mem_sum (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V) (i : V) :
     (∑ e ∈ (homogeneousPart k G).filter (i ∈ ·), edgeWeight k G μ e) =
       μ.weights i * coordinatePartial k G i (μ.weights : V → ℝ) /
@@ -108,6 +112,7 @@ theorem edgeVector_second_diagonal (k : ℕ) (G : Finset (Finset V)) (μ : Simpl
   have hi := ne_of_gt (hμ i)
   field_simp
 
+omit [Fintype V] in
 theorem monomial_pair_factor (e : Finset V) {i j : V}
     (hi : i ∈ e) (hj : j ∈ e) (hij : i ≠ j) (x : V → ℝ) :
     monomial e x = x i * x j * monomial ((e.erase i).erase j) x := by
@@ -128,7 +133,7 @@ theorem edgeWeight_pair_sum (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V)
   by_cases hi : i ∈ e <;> by_cases hj : j ∈ e
   · simp only [hi, hj, true_and, ↓reduceIte]
     rw [monomial_pair_factor e hi hj hij]
-    split_ifs with h
+    split_ifs
     · ring
   · simp [hj]
   · simp [hi]
@@ -146,7 +151,8 @@ theorem edgeVector_second_offdiagonal (k : ℕ) (G : Finset (Finset V)) (μ : Si
     simp only [edgeVector, Finset.sum_filter, div_eq_mul_inv, _root_.mul_inv_rev, Finset.sum_mul]
     apply Finset.sum_congr rfl
     intro e _
-    by_cases hi : i ∈ e <;> by_cases hj : j ∈ e <;> simp [hi, hj] <;> ring
+    by_cases hi : i ∈ e <;> by_cases hj : j ∈ e <;> simp [hi, hj]
+    ring
   rw [h, edgeWeight_pair_sum k G μ hij]
   unfold normalizedHessian
   rw [← rootVector_mul_self μ i, ← rootVector_mul_self μ j]
@@ -218,12 +224,12 @@ theorem normalizedHessian_lower_bound (k : ℕ) (G : Finset (Finset V)) (μ : Si
   rw [covariance_eq k G μ hμ (ne_of_gt hp) hc] at h
   simp only [star_trivial, Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec,
     Matrix.one_mulVec, Matrix.vecMulVec_mulVec, dotProduct_sub, dotProduct_add,
-    dotProduct_smul, hz, zero_smul, dotProduct_zero, sub_zero] at h
-  simp only [smul_eq_mul, MulOpposite.op_zero, zero_smul, sub_zero] at h
+    dotProduct_smul, hz] at h
+  simp only [smul_eq_mul, MulOpposite.op_zero, zero_smul] at h
   have h' := mul_nonneg hp.le h
   have hpp : weightPolynomial k G (μ.weights : V → ℝ) *
       (weightPolynomial k G (μ.weights : V → ℝ))⁻¹ = 1 := mul_inv_cancel₀ (ne_of_gt hp)
-  simp only [mul_add, mul_sub, mul_zero, sub_zero, ← mul_assoc, hpp, one_mul] at h'
+  simp only [mul_add, mul_zero, sub_zero, ← mul_assoc, hpp, one_mul] at h'
   nlinarith
 
 theorem covariance_projected_eq (d : ℕ) (G : Finset (Finset V)) (μ : Simplex V)
@@ -250,7 +256,7 @@ theorem projectedHessian_lower_bound (d : ℕ) (G : Finset (Finset V)) (μ : Sim
   rw [covariance_projected_eq d G μ hμ (ne_of_gt hp) hc] at h
   simp only [star_trivial, Matrix.sub_mulVec, Matrix.add_mulVec, Matrix.smul_mulVec,
     Matrix.one_mulVec, rankOne_mulVec, dotProduct_sub, dotProduct_add,
-    dotProduct_smul, smul_eq_mul, Nat.cast_add, Nat.cast_one] at h
+    dotProduct_smul, smul_eq_mul] at h
   rw [dotProduct_comm z (rootVector μ)] at h
   have h' := mul_nonneg hp.le h
   have hpp : weightPolynomial (d + 1) G (μ.weights : V → ℝ) *
@@ -261,6 +267,7 @@ theorem projectedHessian_lower_bound (d : ℕ) (G : Finset (Finset V)) (μ : Sim
     mul_nonneg (mul_nonneg hp.le (by positivity)) (sq_nonneg _)
   nlinarith
 
+omit [DecidableEq V] in
 theorem quadratic_finset_sum {I : Type*} (s : Finset I) (A : I → Matrix V V ℝ) (z : V → ℝ) :
     z ⬝ᵥ ((∑ i ∈ s, A i) *ᵥ z) = ∑ i ∈ s, z ⬝ᵥ (A i *ᵥ z) := by
   classical
@@ -281,6 +288,7 @@ theorem covariance_quadratic (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V) 
   rw [dotProduct_comm z (edgeVector μ e - (k : ℝ) • rootVector μ)]
   ring
 
+omit [Fintype V] [DecidableEq V] in
 theorem edgeWeight_pos (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V)
     (hμ : ∀ i, 0 < μ.weights i)
     (hp : 0 < weightPolynomial k G (μ.weights : V → ℝ)) (e : Finset V) :

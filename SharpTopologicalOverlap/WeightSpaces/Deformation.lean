@@ -19,6 +19,7 @@ def carrier (S : Finset V) (k : ℕ) (G : Finset (Finset V)) (θ : ℝ) : Set (S
 def faceCarrier (S : Finset V) (k : ℕ) (G : Finset (Finset V)) (θ : ℝ) : Set (Simplex V) :=
   carrier S k G θ ∩ closedFace Sᶜ
 
+omit [DecidableEq V] in
 theorem carrier_mass_lt_one (S : Finset V) (k : ℕ) (hk : 0 < k)
     (G : Finset (Finset V)) (θ : ℝ) (μ : carrier S k G θ) : mass S μ.1 < 1 := by
   have ht := mass_le_one S μ.1
@@ -97,7 +98,7 @@ theorem fills_carrier_of_face_homology (S : Finset V) (k : ℕ) (hk : 0 < k)
     Singular.Fills (X := TopCat.of (Simplex V)) (carrier S k G θ) J j := by
   let hAB : faceCarrier S k G θ ⊆ carrier S k G θ := Set.inter_subset_left
   let r := carrierRetraction S k hk G θ
-  haveI := TopPair.isIso_singularHomologyMap_ofInclusionMap_inclusion_of_homotopyRel
+  have := TopPair.isIso_singularHomologyMap_ofInclusionMap_inclusion_of_homotopyRel
     (X := TopCat.of (Simplex V)) hJA hAB r (carrierHomotopyRel S k hk G θ).symm
     (ModuleCat.of Simplicial.Coeff Simplicial.Coeff) j
   let φ := (TopPair.ofInclusion (X := TopCat.of (Simplex V)) hJA).singularHomologyMap

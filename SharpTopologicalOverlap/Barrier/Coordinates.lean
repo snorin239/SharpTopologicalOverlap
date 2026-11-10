@@ -17,7 +17,7 @@ open SharpTopologicalOverlap.Spectral
 
 namespace SharpTopologicalOverlap.Barrier
 
-variable {V : Type*} [Fintype V] [DecidableEq V]
+variable {V : Type*} [Fintype V]
 
 /-- The Euclidean zero-sum tangent space. -/
 def euclideanZeroSumSpace : Submodule ℝ (EuclideanSpace ℝ V) where
@@ -95,10 +95,12 @@ instance : Nonempty (openSimplexDomain (V := V)) := ⟨⟨0, zero_mem_openSimple
 abbrev PositiveSimplex (V : Type*) [Fintype V] :=
   {μ : Simplex V // ∀ i, 0 < μ.weights i}
 
+omit [Nonempty V] in
 theorem isOpen_positiveSimplex : IsOpen {μ : Simplex V | ∀ i, 0 < μ.weights i} := by
   simpa only [Set.iInter_ofPred] using isOpen_iInter_of_finite
     (fun i : V => isOpen_lt continuous_const (continuous_coordinate i))
 
+omit [Nonempty V] in
 theorem positive_iff_support_eq_univ (μ : Simplex V) :
     (∀ i, 0 < μ.weights i) ↔ support μ = Finset.univ := by
   constructor
@@ -137,7 +139,7 @@ def fromPositiveSimplex (μ : PositiveSimplex V) : openSimplexDomain (V := V) :=
   intro i
   change 0 < (uniform : Simplex V).weights i +
     (μ.1.weights i - (uniform : Simplex V).weights i)
-  convert μ.2 i using 1 <;> ring
+  convert μ.2 i using 1; ring
 
 @[simp] theorem fromPositiveSimplex_coordinate (μ : PositiveSimplex V) (i : V) :
     (fromPositiveSimplex μ).1.1 i = μ.1.weights i - (uniform : Simplex V).weights i := rfl

@@ -28,6 +28,7 @@ attribute [local instance 1] Classical.propDecidable
 /-- The vertices actually present in a precomplex. -/
 abbrev ActualVertex (L : PreAbstractSimplicialComplex V) := {v : V // {v} ∈ L}
 
+omit [LinearOrder V] in
 theorem singleton_mem_of_mem_face (L : PreAbstractSimplicialComplex V)
     {e : Finset V} (he : e ∈ L) {v : V} (hv : v ∈ e) : {v} ∈ L :=
   L.isRelLowerSet_faces.mem_of_le he (Finset.singleton_subset_iff.mpr hv)
@@ -47,6 +48,7 @@ def actualComplex (L : PreAbstractSimplicialComplex V) : AbstractSimplicialCompl
     change ({v} : Finset (ActualVertex L)).map (Function.Embedding.subtype _) ∈ L
     simpa only [Finset.map_singleton, Function.Embedding.subtype_apply] using v.2
 
+omit [LinearOrder V] in
 @[simp] theorem mem_actualComplex (L : PreAbstractSimplicialComplex V)
     (e : Finset (ActualVertex L)) :
     e ∈ actualComplex L ↔ e.map (Function.Embedding.subtype _) ∈ L := Iff.rfl
@@ -140,7 +142,7 @@ theorem boundary_actualChainEquiv (L : PreAbstractSimplicialComplex V) (k : ℕ)
   induction c using Finsupp.induction_linear with
   | zero => simp
   | add c b hc hb => simp only [map_add, Submodule.coe_add, hc, hb]
-  | single s r => simp [boundary_single, actualCell_face]
+  | single s r => simp [actualCell_face]
 
 section Realization
 
@@ -151,11 +153,13 @@ def actualSimplexInclusion (L : PreAbstractSimplicialComplex V) :
     C(Simplex (ActualVertex L), Simplex V) :=
   ⟨fun μ => μ.map Subtype.val, StdSimplex.continuous_map ℝ _⟩
 
+omit [LinearOrder V] [Fintype V] in
 theorem support_actualSimplexInclusion (L : PreAbstractSimplicialComplex V)
     (μ : Simplex (ActualVertex L)) :
     support (actualSimplexInclusion L μ) = (support μ).map (Function.Embedding.subtype _) := by
   exact Finsupp.support_mapDomain_embedding (Function.Embedding.subtype _) μ.weights
 
+omit [LinearOrder V] [Fintype V] in
 @[simp] theorem actualSimplexInclusion_coordinate (L : PreAbstractSimplicialComplex V)
     (μ : Simplex (ActualVertex L)) (i : ActualVertex L) :
     (actualSimplexInclusion L μ).weights i.1 = μ.weights i :=
@@ -173,6 +177,7 @@ def actualRealizationInclusion (L : PreAbstractSimplicialComplex V) :
   exact ⟨fun μ => ⟨actualSimplexInclusion L μ.1, hmem μ⟩,
     ((actualSimplexInclusion L).continuous.comp continuous_subtype_val).subtype_mk hmem⟩
 
+omit [LinearOrder V] [Fintype V] in
 theorem actualRealizationInclusion_injective (L : PreAbstractSimplicialComplex V) :
     Function.Injective (actualRealizationInclusion L) := by
   intro μ ν h
@@ -183,6 +188,7 @@ theorem actualRealizationInclusion_injective (L : PreAbstractSimplicialComplex V
   change (actualSimplexInclusion L μ.1).weights i.1 = (actualSimplexInclusion L ν.1).weights i.1 at hi
   simpa only [actualSimplexInclusion_coordinate] using hi
 
+omit [LinearOrder V] in
 theorem sum_actual_coordinates (L : PreAbstractSimplicialComplex V) (μ : realizedComplex L) :
     (∑ i : ActualVertex L, μ.1.weights i.1) = 1 := by
   let S := Finset.univ.filter fun v => {v} ∈ L
@@ -203,12 +209,14 @@ def actualRealizationRestriction (L : PreAbstractSimplicialComplex V)
   coordinateHomeomorph.symm ⟨fun i : ActualVertex L => μ.1.weights i.1,
     fun i => coordinate_nonneg μ.1 i.1, sum_actual_coordinates L μ⟩
 
+omit [LinearOrder V] in
 @[simp] theorem actualRealizationRestriction_coordinate (L : PreAbstractSimplicialComplex V)
     (μ : realizedComplex L) (i : ActualVertex L) :
     (actualRealizationRestriction L μ).weights i = μ.1.weights i.1 := by
   change (coordinateHomeomorph (actualRealizationRestriction L μ)).1 i = _
   simp only [actualRealizationRestriction, Homeomorph.apply_symm_apply]
 
+omit [LinearOrder V] in
 theorem actualRealizationRestriction_inclusion (L : PreAbstractSimplicialComplex V)
     (μ : realizedComplex L) : actualSimplexInclusion L (actualRealizationRestriction L μ) = μ.1 := by
   apply StdSimplex.ext
@@ -225,6 +233,7 @@ theorem actualRealizationRestriction_inclusion (L : PreAbstractSimplicialComplex
     by_contra h
     exact hi (singleton_mem_of_mem_face L μ.2 (mem_support.mpr h))
 
+omit [LinearOrder V] in
 theorem actualRealizationRestriction_mem (L : PreAbstractSimplicialComplex V)
     (μ : realizedComplex L) :
     actualRealizationRestriction L μ ∈ realizedComplex (actualComplex L).toPreAbstractSimplicialComplex := by
@@ -232,6 +241,7 @@ theorem actualRealizationRestriction_mem (L : PreAbstractSimplicialComplex V)
   rw [← support_actualSimplexInclusion, actualRealizationRestriction_inclusion]
   exact μ.2
 
+omit [LinearOrder V] in
 theorem actualRealizationInclusion_surjective (L : PreAbstractSimplicialComplex V) :
     Function.Surjective (actualRealizationInclusion L) := by
   intro μ
@@ -248,6 +258,7 @@ def actualRealizationHomeomorph (L : PreAbstractSimplicialComplex V) :
         (actualRealizationInclusion L).continuous
         (actualRealizationInclusion L).continuous.isClosedMap
 
+omit [LinearOrder V] in
 @[simp] theorem actualRealizationHomeomorph_apply (L : PreAbstractSimplicialComplex V)
     (μ : realizedComplex (actualComplex L).toPreAbstractSimplicialComplex) :
     actualRealizationHomeomorph L μ = actualRealizationInclusion L μ := rfl
@@ -261,11 +272,13 @@ def actualRealizationInverse (L : PreAbstractSimplicialComplex V) :
       TopCat.of (realizedComplex (actualComplex L).toPreAbstractSimplicialComplex) :=
   TopCat.ofHom ⟨(actualRealizationHomeomorph L).symm, (actualRealizationHomeomorph L).symm.continuous⟩
 
+omit [LinearOrder V] in
 @[simp] theorem actualRealizationMap_inverse (L : PreAbstractSimplicialComplex V) :
     actualRealizationMap L ≫ actualRealizationInverse L = 𝟙 _ := by
   ext μ : 1
   exact (actualRealizationHomeomorph L).symm_apply_apply μ
 
+omit [LinearOrder V] in
 @[simp] theorem actualRealizationInverse_map (L : PreAbstractSimplicialComplex V) :
     actualRealizationInverse L ≫ actualRealizationMap L = 𝟙 _ := by
   ext μ : 1
@@ -286,6 +299,7 @@ def actualSingularHomeomorphEquiv (L : PreAbstractSimplicialComplex V) (k : ℕ)
       (Singular.pushforward (actualRealizationInverse L) k c) = c
     rw [← Singular.pushforward_comp, actualRealizationInverse_map, Singular.pushforward_id]
 
+omit [LinearOrder V] in
 theorem boundary_actualSingularHomeomorphEquiv (L : PreAbstractSimplicialComplex V)
     (k : ℕ) (c : Singular.Chain
       (TopCat.of (realizedComplex (actualComplex L).toPreAbstractSimplicialComplex)) (k + 1)) :
@@ -300,15 +314,18 @@ def actualSingularInclusion (L : PreAbstractSimplicialComplex V) (k : ℕ) :
   (Singular.pushforward (Singular.inclusion (X := TopCat.of (Simplex V)) (realizedComplex L)) k).comp
     (actualSingularHomeomorphEquiv L k).toLinearMap
 
+omit [LinearOrder V] in
 theorem actualSingularInclusion_injective (L : PreAbstractSimplicialComplex V) (k : ℕ) :
     Function.Injective (actualSingularInclusion L k) :=
   (Singular.inclusion_injective (X := TopCat.of (Simplex V)) (realizedComplex L)).comp (actualSingularHomeomorphEquiv L k).injective
 
+omit [LinearOrder V] in
 theorem actualSingularInclusion_carriedBy (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (c : Singular.Chain (TopCat.of (realizedComplex (actualComplex L).toPreAbstractSimplicialComplex)) k) :
     Singular.CarriedBy (realizedComplex L) (actualSingularInclusion L k c) :=
   ⟨actualSingularHomeomorphEquiv L k c, rfl⟩
 
+omit [LinearOrder V] in
 theorem exists_actualSingular_lift (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (c : SingularChain V k) (hc : Singular.CarriedBy (realizedComplex L) c) :
     ∃ b : Singular.Chain (TopCat.of (realizedComplex (actualComplex L).toPreAbstractSimplicialComplex)) k,
@@ -320,6 +337,7 @@ theorem exists_actualSingular_lift (L : PreAbstractSimplicialComplex V) (k : ℕ
     rw [LinearEquiv.apply_symm_apply]
     exact hb⟩
 
+omit [LinearOrder V] in
 theorem boundary_actualSingularInclusion (L : PreAbstractSimplicialComplex V)
     (k : ℕ) (c : Singular.Chain
       (TopCat.of (realizedComplex (actualComplex L).toPreAbstractSimplicialComplex)) (k + 1)) :
@@ -329,12 +347,14 @@ theorem boundary_actualSingularInclusion (L : PreAbstractSimplicialComplex V)
     (congrArg (Singular.pushforward (Singular.inclusion (X := TopCat.of (Simplex V)) (realizedComplex L)) k)
       (boundary_actualSingularHomeomorphEquiv L k c))
 
+omit [Fintype V] in
 theorem actualCell_vertexEmbedding (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (s : Cell (actualComplex L) k) :
     ⇑(actualCell L k s).1.vertexEmbedding = Subtype.val ∘ s.vertexEmbedding := by
   simpa only [actualCell, actualInclusion, PreAbstractSimplicialComplex.SimplicialMap.coe_mk] using
     s.vertexEmbedding_map (actualInclusion L) ((actualInclusion_strictMono L).strictMonoOn _)
 
+omit [Fintype V] in
 theorem actualAffineSimplex_natural (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (s : Cell (actualComplex L) k) :
     (TopCat.toSSet.map (actualRealizationMap L ≫ Singular.inclusion (X := TopCat.of (Simplex V)) (realizedComplex L))).app _
@@ -345,6 +365,7 @@ theorem actualAffineSimplex_natural (L : PreAbstractSimplicialComplex V) (k : �
   change (μ.map s.vertexEmbedding).map Subtype.val = μ.map (actualCell L k s).1.vertexEmbedding
   rw [← StdSimplex.map_comp, actualCell_vertexEmbedding]
 
+omit [LinearOrder V] in
 theorem actualSingularInclusion_eq_pushforward (L : PreAbstractSimplicialComplex V) (k : ℕ)
     (c : Singular.Chain (TopCat.of (realizedComplex (actualComplex L).toPreAbstractSimplicialComplex)) k) :
     actualSingularInclusion L k c =

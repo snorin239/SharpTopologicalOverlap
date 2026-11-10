@@ -19,7 +19,7 @@ namespace SharpTopologicalOverlap.Sublevel
 
 open Barrier
 
-variable {V : Type} [Fintype V] [DecidableEq V] [Nonempty V]
+variable {V : Type} [Fintype V] [Nonempty V]
 
 /-- The closed sublevel inside the boundaryless open simplex. -/
 def barrierSublevel (d : ℕ) (G : Finset (Finset V)) (ε : ℝ) (α : V → ℝ) (r : ℝ) :

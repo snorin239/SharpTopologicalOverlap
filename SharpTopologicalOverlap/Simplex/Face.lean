@@ -13,22 +13,26 @@ variable {V : Type*} [Fintype V] [DecidableEq V]
 def faceInclusion (S : Finset V) : C(Simplex S, Simplex V) :=
   ⟨fun μ => μ.map Subtype.val, Convexity.StdSimplex.continuous_map ℝ _⟩
 
+omit [Fintype V] [DecidableEq V] in
 @[simp] theorem faceInclusion_coordinate (S : Finset V) (μ : Simplex S) (i : S) :
     (faceInclusion S μ).weights i.1 = μ.weights i := by
   exact Finsupp.mapDomain_apply_of_injective Subtype.val_injective μ.weights i
 
+omit [Fintype V] [DecidableEq V] in
 theorem faceInclusion_coordinate_zero (S : Finset V) (μ : Simplex S) {i : V} (hi : i ∉ S) :
     (faceInclusion S μ).weights i = 0 := by
   apply Finsupp.mapDomain_of_notMem_range
   rintro ⟨j, rfl⟩
   exact hi j.property
 
+omit [Fintype V] in
 theorem faceInclusion_mem_closedFace (S : Finset V) (μ : Simplex S) :
     faceInclusion S μ ∈ closedFace S := by
   intro i hi
   by_contra hiS
   exact (mem_support.mp hi) (faceInclusion_coordinate_zero S μ hiS)
 
+omit [DecidableEq V] in
 theorem sum_coordinates_on_face (S : Finset V) (μ : closedFace S) :
     (∑ i : S, μ.1.weights i.1) = 1 := by
   rw [Finset.sum_coe_sort]
@@ -44,6 +48,7 @@ def faceRestriction (S : Finset V) (μ : closedFace S) : Simplex S :=
   coordinateHomeomorph.symm ⟨fun i : S => μ.1.weights i.1,
     fun i => coordinate_nonneg μ.1 i.1, sum_coordinates_on_face S μ⟩
 
+omit [DecidableEq V] in
 @[simp] theorem faceRestriction_coordinate (S : Finset V) (μ : closedFace S) (i : S) :
     (faceRestriction S μ).weights i = μ.1.weights i.1 := by
   change (coordinateHomeomorph (faceRestriction S μ)).1 i = _

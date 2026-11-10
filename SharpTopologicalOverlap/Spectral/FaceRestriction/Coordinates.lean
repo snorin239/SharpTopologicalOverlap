@@ -20,9 +20,11 @@ def extendCoordinates (S : Finset V) : (S → ℝ) →ₗ[ℝ] (V → ℝ) where
   map_add' x y := by ext i; by_cases hi : i ∈ S <;> simp [hi]
   map_smul' a x := by ext i; by_cases hi : i ∈ S <;> simp [hi]
 
+omit [Fintype V] in
 @[simp] theorem extendCoordinates_apply_mem (S : Finset V) (x : S → ℝ) (i : S) :
     extendCoordinates S x i.1 = x i := by simp [extendCoordinates, i.2]
 
+omit [Fintype V] in
 @[simp] theorem extendCoordinates_apply_notMem (S : Finset V) (x : S → ℝ) {i : V}
     (hi : i ∉ S) : extendCoordinates S x i = 0 := by simp [extendCoordinates, hi]
 
@@ -31,6 +33,7 @@ theorem extendCoordinates_sum (S : Finset V) (x : S → ℝ) :
   rw [Finset.sum_coe_sort_eq_attach]
   exact (Finset.sum_attach_eq_sum_dite S x).symm
 
+omit [Fintype V] in
 theorem extendCoordinates_restrict (S : Finset V) {x : V → ℝ}
     (hx : ∀ i ∉ S, x i = 0) : extendCoordinates S (fun i : S => x i.1) = x := by
   ext i
@@ -77,6 +80,7 @@ def faceTangentEquiv (S : Finset V) :
     apply Subtype.ext
     exact map_smul (extendCoordinates S) a (x : S → ℝ)
 
+omit [DecidableEq V] in
 theorem sum_face_coordinates (μ : Simplex V) :
     (∑ i : support μ, μ.weights i.1) = 1 := by
   rw [Finset.sum_coe_sort]
@@ -93,12 +97,14 @@ def supportPoint (μ : Simplex V) : Simplex (support μ) :=
   coordinateHomeomorph.symm ⟨fun i : support μ => μ.weights i.1,
     fun i => coordinate_nonneg μ i.1, sum_face_coordinates μ⟩
 
+omit [DecidableEq V] in
 @[simp] theorem supportPoint_coordinate (μ : Simplex V) (i : support μ) :
     (supportPoint μ).weights i = μ.weights i.1 := by
   exact congrFun (congrArg Subtype.val (coordinateHomeomorph.apply_symm_apply
     ⟨fun i : support μ => μ.weights i.1,
       fun i => coordinate_nonneg μ i.1, sum_face_coordinates μ⟩)) i
 
+omit [DecidableEq V] in
 theorem supportPoint_positive (μ : Simplex V) (i : support μ) :
     0 < (supportPoint μ).weights i := by
   rw [supportPoint_coordinate]

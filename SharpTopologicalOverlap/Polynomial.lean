@@ -122,6 +122,7 @@ theorem eq_zero_iff (k : ℕ) (G : Finset (Finset V)) {x : V → ℝ}
     Finset.sum_eq_zero_iff_of_nonneg (fun _ _ => monomial_nonneg hx)]
   simp [monomial, Finset.prod_eq_zero_iff]
 
+omit [DecidableEq V] in
 theorem eq_zero_iff_support (k : ℕ) (G : Finset (Finset V)) (μ : Simplex V) :
     weightPolynomial k G (μ.weights : V → ℝ) = 0 ↔
       ∀ e ∈ homogeneousPart k G, ¬ e ⊆ support μ := by
@@ -143,6 +144,7 @@ omit [DecidableEq V] in
     s ∈ independenceComplex k G ↔
       s.Nonempty ∧ ∀ e ∈ homogeneousPart k G, ¬ e ⊆ s := Iff.rfl
 
+omit [DecidableEq V] in
 theorem realized_independenceComplex (k : ℕ) (G : Finset (Finset V)) :
     realizedComplex (independenceComplex k G) =
       {μ : Simplex V | weightPolynomial k G (μ.weights : V → ℝ) = 0} := by
@@ -383,8 +385,7 @@ theorem hessianEntry_eq (k : ℕ) (G : Finset (Finset V)) (i j : V) (x : V → �
       (k.factorial : ℝ) * ∑ e ∈ homogeneousPart k G,
         if i ∈ e ∧ j ∈ e ∧ i ≠ j then monomial ((e.erase i).erase j) x else 0 := by
   simp only [hessianEntry, partialDifferential, smul_apply,
-    sum_apply, smul_eq_mul, monomialDifferential_single,
-    Finset.mem_erase, Finset.sum_filter]
+    sum_apply, smul_eq_mul, Finset.sum_filter]
   congr 1
   apply Finset.sum_congr rfl
   intro e _
@@ -471,12 +472,12 @@ theorem hessian_single (k : ℕ) (G : Finset (Finset V)) (i j : V) (x : V → �
   simp only [hessian, monomialHessian, smul_apply,
     sum_apply, ContinuousLinearMap.smulRight_apply, smul_eq_mul,
     ContinuousLinearMap.proj_apply, Pi.single_apply, mul_ite, mul_one, mul_zero,
-    Finset.sum_ite_eq, Finset.sum_ite_eq', hessianEntry, partialDifferential,
+    Finset.sum_ite_eq', hessianEntry, partialDifferential,
     Finset.sum_filter]
   congr 1
   apply Finset.sum_congr rfl
   intro e _
-  by_cases hi : i ∈ e <;> simp [hi, eq_comm]
+  by_cases hi : i ∈ e <;> simp [hi]
 
 theorem hessian_eq_fderiv_fderiv (k : ℕ) (G : Finset (Finset V)) (x : V → ℝ) :
     hessian k G x = fderiv ℝ (fderiv ℝ (weightPolynomial k G)) x := by

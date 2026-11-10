@@ -19,6 +19,7 @@ def strictSublevel (d : ℕ) (G : Finset (Finset V)) : Set (Simplex V) :=
 def zeroSet (d : ℕ) (G : Finset (Finset V)) : Set (Simplex V) :=
   {μ | weightPolynomial (d + 1) G (μ.weights : V → ℝ) = 0}
 
+omit [Fintype V] [DecidableEq V] in
 theorem zeroSet_subset_strictSublevel (d : ℕ) (G : Finset (Finset V)) :
     zeroSet d G ⊆ strictSublevel d G := by
   intro μ hμ

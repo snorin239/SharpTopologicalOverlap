@@ -11,7 +11,7 @@ public import SharpTopologicalOverlap.Spectral.FaceRestriction.Family
 
 namespace SharpTopologicalOverlap
 
-open Simplicial WeightPolynomial
+open _root_.SharpTopologicalOverlap.Simplicial WeightPolynomial
 open CategoryTheory CategoryTheory.Limits
 
 variable {n d : ℕ} {W : Type} [Fintype W] [LinearOrder W]

@@ -19,7 +19,7 @@ namespace SharpTopologicalOverlap.Sublevel
 
 open Barrier
 
-variable {V : Type} [Fintype V] [DecidableEq V] [Nonempty V]
+variable {V : Type} [Fintype V] [Nonempty V]
 
 /-- The full chain construction of Theorem 5.1, with its remaining
 critical-index persistence input explicit. -/

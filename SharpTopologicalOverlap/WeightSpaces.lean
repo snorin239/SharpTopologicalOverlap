@@ -15,7 +15,7 @@ remaining vertex subtype is reserved for the proof of relative filling.
 
 namespace SharpTopologicalOverlap
 
-open Simplicial WeightPolynomial
+open _root_.SharpTopologicalOverlap.Simplicial WeightPolynomial
 
 variable {n d : ℕ} {W : Type} [Fintype W] [LinearOrder W]
   {T : AbstractSimplicialComplex W}

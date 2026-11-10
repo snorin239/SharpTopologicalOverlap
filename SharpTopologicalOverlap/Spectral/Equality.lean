@@ -33,7 +33,8 @@ theorem square_eq_neg_smul_of_two_value_spectrum {A : Matrix V V ℝ}
     funext i
     change hA.eigenvalues i * hA.eigenvalues i = -κ * hA.eigenvalues i
     have hi := hspec i
-    split_ifs at hi <;> rw [hi] <;> ring
+    split_ifs at hi <;> rw [hi]
+    ring
   have hdecomp : A = α D := by
     simpa only [D, α, Function.comp_def, RCLike.ofReal_real_eq_id, id_eq] using hA.spectral_theorem
   calc
@@ -53,6 +54,7 @@ theorem negativeProjection_mul_self {A : Matrix V V ℝ} {κ : ℝ} (hκ : κ �
   have hs : -κ⁻¹ * (-κ⁻¹ * -κ) = -κ⁻¹ := by field_simp
   rw [hs]
 
+omit [Fintype V] [DecidableEq V] in
 theorem negativeProjection_isHermitian {A : Matrix V V ℝ} (hA : A.IsHermitian) (κ : ℝ) :
     (negativeProjection κ A).IsHermitian := by
   exact hA.smul (show IsSelfAdjoint (-κ⁻¹) from rfl)
@@ -61,6 +63,7 @@ theorem negativeProjection_isHermitian {A : Matrix V V ℝ} (hA : A.IsHermitian)
 def projectionLabel (P : Matrix V V ℝ) (μ : Simplex V) (i : V) : V → ℝ :=
   fun a => P i a / rootVector μ i
 
+omit [DecidableEq V] in
 theorem projectionLabel_dot {P : Matrix V V ℝ} (hP : P.IsHermitian)
     (hid : P * P = P) (μ : Simplex V) (i j : V) :
     projectionLabel P μ i ⬝ᵥ projectionLabel P μ j =
@@ -136,7 +139,7 @@ theorem hessianEntry_pos_of_edge {k : ℕ} {G : Finset (Finset V)}
     · exact monomial_nonneg (coordinate_nonneg μ)
     · exact le_rfl
   · refine ⟨e, mem_homogeneousPart.mpr ⟨he, hG e he⟩, ?_⟩
-    rw [if_pos ⟨hi, hj, hij⟩]
+    rw [ite_eq_left ⟨hi, hj, hij⟩]
     exact (monomial_pos_iff (coordinate_nonneg μ)).mpr fun a _ => hμ a
 
 theorem equalityLabel_injOn_edge (d : ℕ) (G : Finset (Finset V))

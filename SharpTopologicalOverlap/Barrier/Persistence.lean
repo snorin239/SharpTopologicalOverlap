@@ -27,15 +27,15 @@ attribute [local instance 1] Classical.propDecidable
 theorem exists_barrier_index_persistence (d : ℕ) (G : Finset (Finset V))
     (hG : Simplicial.IsUniform (d + 1) G)
     (hpar : Simplicial.HasCocycleParity (d + 1) G) {h₀ h₁ : ℝ}
-    (h₀pos : 0 < h₀) (h₀₁ : h₀ < h₁) (h₁θ : h₁ < overlapThreshold d) :
+    (h₀pos : 0 < h₀) (_h₀₁ : h₀ < h₁) (h₁θ : h₁ < overlapThreshold d) :
     ∃ δ : ℝ, 0 < δ ∧ ∀ ε : ℝ, 0 < ε → ε < δ → ∀ α : V → ℝ, ‖α‖ < δ →
       ∀ ν : Simplex V, (∀ i, 0 < ν.weights i) → IsBarrierCritical d G ε α ν →
         ambientBarrier d G ε α (ν.weights : V → ℝ) ∈ Set.Icc h₀ h₁ →
           d + 1 ≤ sigNeg (barrierTangentForm d G ε ν) := by
-  letI : FirstCountableTopology (Simplex V) :=
+  let : FirstCountableTopology (Simplex V) :=
     (Convexity.StdSimplex.isEmbedding_toFun_comp_weights ℝ V).firstCountableTopology
   by_contra h
-  push_neg at h
+  push Not at h
   let cap : ℝ := 1 / ((Fintype.card V : ℝ) + 1)
   let δ : ℕ → ℝ := fun n => cap * (1 / ((n : ℝ) + 1))
   have hcap : 0 < cap := by dsimp [cap]; positivity
