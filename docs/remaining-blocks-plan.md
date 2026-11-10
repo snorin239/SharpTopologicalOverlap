@@ -147,3 +147,20 @@ Check each new module with `lake env lean`, expose it from
 `SharpTopologicalOverlap.lean`, run `lake build`, and inspect endpoint axioms.
 Update `FORMALIZATION.md` with actual declarations and proof status. Only
 checked results free of placeholders and project axioms count as complete.
+
+## Final integration and verification
+
+C, B, V, and W have now passed their component and full project builds and
+have been committed separately. The final block uses the concrete canonical
+comparison and unconditional sublevel vanishing to construct all inputs of
+the checked descending contradiction. The primary agent owns
+`Finite/Assembly.lean`, `Finite.lean`, root exports, documentation and the
+final commit. The deletion agent independently verifies the exact manuscript
+constant, dimensional hypotheses, actual overlap and an attained target
+point. The polynomial agent independently checks the final transitive axioms,
+placeholder scan and unchanged reference manuscript. The comparison agent
+checks the weight-space carrier directions and degree-zero sublevel
+construction. These reviews and endpoint probes have passed. The final
+umbrella build passed (9789 jobs), and `verification/Theorem12.lean`
+preserves the exact statement and axiom audit. The final commit completes
+the integration.

@@ -28,8 +28,15 @@ write `import SharpTopologicalOverlap`.
 
 ## Working on the formalization
 
+Theorem 1.2 is proved as `SharpTopologicalOverlap.finite_overlap_bound`,
+with no placeholders or project proof axioms. Its transitive axiom audit
+reports only `propext`, `Classical.choice`, and `Quot.sound`.
+Theorem 1.1 remains open.
+
 The [formalization status](FORMALIZATION.md) lists the checked declarations.
-The [blueprint](docs/blueprint.md) details the remaining formalization of
-Theorem 1.2, with proposed modules, proof dependencies, and completion checks.
+The [blueprint](docs/blueprint.md) gives the proof-block flowchart and dependencies;
+the [verification record](docs/finite-verification.md) records the final checks.
+Run `lake env lean verification/Theorem12.lean` to reproduce the final
+statement and axiom audit after building the project.
 The [LaTeX source](paper/sharp_topological_overlap.tex)
 provides stable labels for those results.

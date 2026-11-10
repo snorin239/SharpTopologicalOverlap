@@ -2,7 +2,7 @@
 
 This blueprint follows the 9 November 2026 [manuscript](../paper/sharp_topological_overlap.pdf) and [TeX source](../paper/sharp_topological_overlap.tex). It covers the finite overlap theorem and every ingredient used to prove it. The [dependency assessment](dependency-assessment.md) records the inspected external libraries and the completed import checks. References to section symbols and numbered mathematical results below use the manuscript's numbering.
 
-The foundation block in §3 implements probability simplices, faces, the realized skeleton, overlap, and finite chains and cochains. See [the formalization status](../FORMALIZATION.md) for the checked declarations and [the foundation plan](foundation-plan.md) for the work division. Block G is complete: `exists_intersectionData` proves Lemma 3.1, constructing a finite target of dimension exactly `d` and all five cochain properties from the continuous map. Its [implementation plan](intersection-plan.md) and [verification record](intersection-verification.md) describe the actual subdivision, placement, parity and cochain construction. The singular support, deletion, polynomial, spectral, and canonical comparison branches and the abstract descending contradiction are also complete. The analytic sublevel branch remains open. **Module and declaration names below are proposed unless recorded as implemented in the formalization status.**
+The foundation block in §3 implements probability simplices, faces, the realized skeleton, overlap, and finite chains and cochains. See [the formalization status](../FORMALIZATION.md) for the checked declarations and [the foundation plan](foundation-plan.md) for the work division. Block G is complete: `exists_intersectionData` proves Lemma 3.1, constructing a finite target of dimension exactly `d` and all five cochain properties from the continuous map. Its [implementation plan](intersection-plan.md) and [verification record](intersection-verification.md) describe the actual subdivision, placement, parity and cochain construction. The singular support, deletion, polynomial, spectral, and canonical comparison branches and the abstract descending contradiction are also complete. The analytic sublevel and weight-space branches and final assembly are complete as well: Theorem 1.2 is proved. The detailed design instructions below record the implementation plan; the flowchart and paper-to-Lean table give the completed status.
 
 ## 1. Target and conventions
 
@@ -18,7 +18,7 @@ The existing natural-number constant is
 $$
  C_d=\sum_{p=1}^{d}\binom{d+1}{p+1}(d+1-p)\left\lfloor d/p\right\rfloor.
 $$
-The final proposed declaration `finite_overlap_bound` must assert
+The proved declaration `finite_overlap_bound` asserts
 $$
  2\le d,\quad C_d<n
  \quad\Longrightarrow\quad
@@ -53,17 +53,17 @@ flowchart TD
   S["✓ S: Simplex, faces, chains and cochains"]:::done
   G["✓ G: Intersection cochains — Lemma 3.1"]:::done
   H["✓ H: Singular carriers, fillings and prism"]:::done
-  P["✓ P: Polynomials and spectral rigidity<br/>Lemma 4.1 + Corollary 4.2"]:::done
+  P["✓ ★ P: Polynomials and spectral rigidity<br/>Lemma 4.1 + Corollary 4.2"]:::done
   D["✓ D: Exceptional vertices — Lemma 6.1"]:::done
-  C0["✓ C: Canonical affine homology comparison"]:::done
+  C0["✓ ★ C: Canonical affine homology comparison"]:::done
   C1["✓ C: Unconditional supported inverse rho"]:::done
   B0["✓ B: Barrier calculus, properness and generic Morse tilt"]:::done
-  B1["✓ B: Uniform index persistence — Lemma 5.7"]:::done
+  B1["✓ ★ B: Uniform index persistence — Lemma 5.7"]:::done
   V0["✓ V: Retracting neighborhood and interior push"]:::done
   V1["✓ V: Morse-band parameters and relative vanishing — Theorem 5.1"]:::done
   W["✓ W: Nested weight spaces and relative vanishing — Lemma 6.2"]:::done
   F["✓ F: Descending contradiction — proved from explicit inputs"]:::done
-  T["Theorem 1.2: Unconditional final assembly"]:::pending
+  T["✓ Theorem 1.2: Unconditional final assembly"]:::done
   S --> G
   S --> H
   S --> P
@@ -90,10 +90,11 @@ flowchart TD
   classDef pending fill:#eeeeee,stroke:#777777,color:#333333
 ```
 
-Green means checked in Lean, yellow means active assembly, and red marks the
-main remaining technical bottleneck. Some checked subblocks are awaiting
-the commit of their larger block. Theorem 1.2 remains open. This chart was
-updated during the autonomous implementation on 9 November 2026.
+Green and ✓ mean checked in Lean. ★ marks the substantial technical blocks;
+they too are complete. All blocks have been committed, and Theorem 1.2 is
+proved without additional provider premises. The final root build passes,
+and its axiom audit contains only Lean's three standard axioms. This chart
+was updated on 9 November 2026.
 
 Use modules with the following responsibilities. Split a module further when its proof grows, while retaining these interfaces.
 
@@ -505,27 +506,29 @@ In `Finite.lean`, assume the strict contrary overlap bound, obtain `Intersection
 
 ## 10. Paper-to-Lean mapping
 
-The table lists the endpoint to record when each item is implemented. The imported band result already has a checked specialization over $\mathbb F_2$. Its chart and Hessian identifications with the paper remain project work.
+The table records implemented endpoints. All project adapters for the imported
+Morse theorem, including chart, Hessian, index and carrier identifications,
+are checked. See [FORMALIZATION.md](../FORMALIZATION.md) for the fuller mapping.
 
-| Paper item and stable label | Proposed endpoint | Module or imported supplier |
+| Paper item and stable label | Implemented endpoint | Module or imported supplier |
 | --- | --- | --- |
 | $C_d$, `eq:C` | `deletionBound`, already defined | Existing `Basic` |
-| Lemma 2.1, `lem:sd` | `subdivision_preserves_faces`, `subdivision_mesh_bound` | `Geometry/Subdivision` |
-| Lemma 2.2, `lem:prism` | `prism_supported`, retract and filtration consequences | `Singular` |
-| Theorem 2.3, `thm:hatcher` | `affineChainMap_homology_isIso` | `Comparison` |
-| Lemma 2.4, `lem:comparison` | `supportedComparison` | `Comparison` |
+| Lemma 2.1, `lem:sd` | `fundamentalChain_carried`, `exists_fundamentalChain_dist_lt` | `Geometry/Subdivision` |
+| Lemma 2.2, `lem:prism` | `carriedBy_prism`, `fills_of_homotopyRel` | `Singular/Prism`, `Singular/Deformation` |
+| Theorem 2.3, `thm:hatcher` | `isIso_homologyMap_affineChainComplexMapIn`, `canonicalHomologyComparison` | `Comparison/Canonical`, `Comparison/Provider` |
+| Lemma 2.4, `lem:comparison` | `supportedComparison`, `supportedQ` | `Comparison/Supported` |
 | Lemma 3.1, `lem:intersection` | `exists_intersectionData` (proved) | `Intersection/Existence` |
 | Lemma 4.1, `lem:spectral` | `spectral_index_rigidity` | `Spectral` |
 | Corollary 4.2, `cor:index` | `faceCritical_index_ge` | `Spectral` |
-| Theorem 5.1, `thm:weights` | `sublevel_relative_vanishing`, `sublevel_cycle_fills` | `Sublevel` |
-| Lemma 5.2, `lem:sard` | `dense_regular_values_equidim` | `Barrier`, using mathlib's Jacobian theorem |
+| Theorem 5.1, `thm:weights` | `sublevel_homology_vanishes`, `sublevel_cycle_fills` | `Sublevel` |
+| Lemma 5.2, `lem:sard` | Used through the generic Morse-tilt and regular-value suppliers | `Barrier/Generic`, `Sublevel/Band` |
 | Theorem 5.3, `thm:milnor` | Regular-band input to the imported Morse band theorem | TauCeti `Morse.Deformation.Homology` |
 | Theorem 5.4, `thm:goresky` | Constant-coefficient critical-level input to the imported Morse band theorem | TauCeti `Morse.Cell.Homology` |
-| Lemma 5.5, `lem:band` | `morse_band_vanishing`, after the open-simplex adapter | `Barrier`, using TauCeti `Morse.Cell.Band` |
-| Lemma 5.6, `lem:barrier` | `barrier_smooth_proper`, `barrier_critical_bounds`, `exists_morse_tilt` | `Barrier` |
-| Lemma 5.7, `lem:persistence` | `barrier_index_persists` | `Barrier` |
-| Lemma 6.1, `lem:covers` | `exceptional_vertices` and its five conclusions | `Deletion` |
-| Lemma 6.2, `lem:carriers` | `weightSpace_inclusions`, `uniform_mem_weightSpace`, `weightSpace_cycle_fills` | `WeightSpaces` |
+| Lemma 5.5, `lem:band` | `barrier_band_fills`, `exists_morseBandData` | `Sublevel/Band`, `Sublevel/Parameters`, using TauCeti `Morse.Cell.Band` |
+| Lemma 5.6, `lem:barrier` | `isCompact_barrierSublevel`, `coordinate_ge_of_critical`, `exists_small_morse_tilt` | `Barrier` |
+| Lemma 5.7, `lem:persistence` | `exists_manifold_index_persistence` | `Barrier/Persistence` |
+| Lemma 6.1, `lem:covers` | `exceptionalSet_card_le`, `exceptionalSet_mono`, `remainingFamily_hasCocycleParity` | `Deletion` |
+| Lemma 6.2, `lem:carriers` | `weightSpace_mono`, `uniform_mem_weightSpace`, `weightSpace_fills`, `weightSpace_homology_vanishes` | `WeightSpaces`, `WeightSpaces/Vanishing` |
 | Lemma A.1, `lem:fundamental` | `boundary_fundamentalChain`, `boundary_iteratedSubdivision` (proved) | `Geometry/Subdivision`, `Geometry/TargetCycle` |
 | Lemma A.2, `lem:generic` | `exists_genericPlacement`, `open_dense_genericPlacement` (proved) | `Geometry/GenericPlacements` |
 | Theorem 1.2, `thm:finite` | `finite_overlap_bound` | `Finite` |
@@ -546,7 +549,10 @@ Start with the following deliverables, each ending in checked Lean declarations.
 | 8 | Deletion and weight spaces | Prove Lemmas 6.1–6.2, including global matching choices and ambient carrier statements. The finite counting part can proceed earlier from the intersection-data interface. |
 | 9 | Final assembly | Derive the unconditional finite overlap theorem and complete its dependency and axiom audit. |
 
-The remaining principal risks are the canonical affine-generator identification and the open-simplex/Hessian transport needed for index persistence. The arbitrary-dimensional point/segment parity development is now checked in block G.
+All nine deliverables are complete. The canonical affine-generator
+identification, open-simplex/Hessian transport, uniform index persistence,
+and final finite-overlap theorem have passed their builds and transitive
+axiom audits. Theorem 1.1 is the next formalization target.
 
 For each new module, run `lake env lean SharpTopologicalOverlap/<module>.lean` and then `lake build`. Include it through the project root. Keep actual proved status in [FORMALIZATION.md](../FORMALIZATION.md). Proposed contracts in this document become completed milestones only after their proofs and dependencies are checked. Keep the dependency graph free of `sorry`, `admit`, and project axioms replacing the required providers. Use `#print axioms` on the completed major endpoints and on `finite_overlap_bound`.
 

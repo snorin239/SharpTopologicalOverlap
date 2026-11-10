@@ -1,5 +1,11 @@
 # Formalization status
 
+**Theorem 1.2 is proved** as `SharpTopologicalOverlap.finite_overlap_bound`.
+The full project build and transitive axiom audit pass; the theorem depends
+only on `propext`, `Classical.choice`, and `Quot.sound`.
+See the [final verification record](docs/finite-verification.md).
+Theorem 1.1 is the subsequent target and remains open.
+
 | Paper item | Lean declaration | Status |
 | --- | --- | --- |
 | Vertex deletion bound $C_d$ (`eq:C`) | [`SharpTopologicalOverlap.deletionBound`](SharpTopologicalOverlap/Basic.lean) | Defined |
@@ -39,10 +45,10 @@
 | Five-property interface of Lemma 3.1 | `IntersectionData`, `upwardSupport`, `IntersectionData.upwardSupport_card_le_overlap`, `IntersectionData.exists_top_cell` in [`Intersection.lean`](SharpTopologicalOverlap/Intersection.lean) | Specification and consequences proved; normalization forces dimension exactly `d` when `n > 0`. Defining this structure does not prove its existence. |
 | Lemma 3.1 (`lem:intersection`), flowchart block G | `IntersectionWitness`, `exists_intersectionData` in [`Intersection/Existence.lean`](SharpTopologicalOverlap/Intersection/Existence.lean) | Proved from `2 ≤ d`, `d + 1 ≤ n`, and an arbitrary continuous map. Constructs a finite target of dimension exactly `d`, a cycle and all five properties, with no geometric existence premise. See the [plan](docs/intersection-plan.md) and [verification record](docs/intersection-verification.md). |
 | Morse band vanishing used in Lemma 5.5 (`lem:band`) | `TauCeti.IsMorse.isZero_singularHomology_sublevelPair_of_le_manifoldMorseIndex`, `Sublevel.barrier_band_fills`, `exists_morseBandData` | Applied to the actual proper Morse barrier with regular levels; all parameter and carrier bounds are proved. |
-| Theorem 1.2 (`thm:finite`) | — | Open |
+| Theorem 1.2 (`thm:finite`) | `finite_overlap_bound` in [`Finite.lean`](SharpTopologicalOverlap/Finite.lean), exported by the project root | Proved with exactly `2 ≤ d`, `deletionBound d < n`, and the continuous map as hypotheses. All comparison, geometric, spectral, analytic, weight-space and descending providers are constructed and discharged. |
 | Lemma 4.1, spectral rigidity (`lem:spectral`) | `Spectral.spectral_index_rigidity` in [`Spectral/Partite.lean`](SharpTopologicalOverlap/Spectral/Partite.lean), exposed by [`Spectral.lean`](SharpTopologicalOverlap/Spectral.lean) | Proved, including the complete partite coloring, equal class masses, and exact equality value `overlapThreshold d`. Uses actual tangent-Hessian negative index. |
 | Corollary 4.2, strict-sublevel face index (`cor:index`) | `Spectral.faceCritical_index_ge` in [`Spectral/FaceRestriction.lean`](SharpTopologicalOverlap/Spectral/FaceRestriction.lean) | Proved on the actual tangent subspace of the coordinate support. Includes family restriction, parity, probability reindexing, derivative/Hessian pullback and signature transport. |
-| Descending fillings and evaluation (§6.3), block F | `Descending.transposeBoundary_squared`, `cofaceSum_cycle`, `SimplicialDescent.false`, `FillingInputs.toSimplicialDescent`, `FillingInputs.false` in [`Descending.lean`](SharpTopologicalOverlap/Descending.lean) and its three submodules | Proved from explicit comparison and nested-filling data. The actual singular chains are constructed by natural induction on source degree, including degree `d+1` at vertices. The final theorem must still construct `FillingInputs` from C and W. |
+| Descending fillings and evaluation (§6.3), block F | `Descending.transposeBoundary_squared`, `cofaceSum_cycle`, `SimplicialDescent.false`, `FillingInputs.toSimplicialDescent`, `FillingInputs.false` in [`Descending.lean`](SharpTopologicalOverlap/Descending.lean) and its three submodules | Proved from explicit comparison and nested-filling data. The actual singular chains are constructed by natural induction on source degree, including degree `d+1` at vertices. `IntersectionData.fillingInputs_of_sublevel` constructs all inputs in the final proof from the completed providers. |
 | Singular carriers, images and inclusions (§2.3), block H | `Singular.carriedBy_iff_support`, `carriedBy_iff_image_subset`, `inclusion_injective`, `isCompact_image`, `image_add_subset`, `image_pushforward_subset` in [`Singular.lean`](SharpTopologicalOverlap/Singular.lean) | Proved on the actual TauCeti chain modules. Carriers are defined by the image of subspace inclusion and identified with concrete support. |
 | Relative homology filling criterion (§2.3), block H | `Singular.relative_cycle_fills`, `fills_of_isZero_homology`, `fills_trans`, `fills_chain` in [`Singular/Relative.lean`](SharpTopologicalOverlap/Singular/Relative.lean) | Proved, including degree zero and both carriers in one ambient chain module. Vanishing is actual TauCeti relative singular homology; `Fills` is its concrete consequence. |
 | Lemma 2.2, prism and deformation retracts (`lem:prism`), block H | `Singular.boundary_prism_zero`, `boundary_prism_succ`, `carriedBy_prism`, `image_prism_subset`, `fills_of_homotopyRel` in [`Singular/Prism.lean`](SharpTopologicalOverlap/Singular/Prism.lean), [`Singular/Deformation.lean`](SharpTopologicalOverlap/Singular/Deformation.lean) | Proved using the library chain homotopy, its naturality for restricted pairs, and the checked relative-homology bridge. |
@@ -74,4 +80,6 @@ Block G is complete. The [block plan](docs/intersection-plan.md) records the
 actual construction and work division; the [independent verification](docs/intersection-verification.md)
 records the build, transitive axiom audit and boundary cases. The complete
 existence theorem constructs its subdivisions, placements, target cycle and
-intersection cochains from the continuous map. Theorems 1.2 and 1.1 remain open.
+intersection cochains from the continuous map. Blocks C, B, V, W and the
+final assembly now complete Theorem 1.2. Each completed block has its own
+commit. Theorem 1.1 remains open.
