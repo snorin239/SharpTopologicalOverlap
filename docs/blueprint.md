@@ -60,7 +60,7 @@ flowchart TD
   B0["✓ B: Barrier calculus, properness and generic Morse tilt"]:::done
   B1["✓ B: Uniform index persistence — Lemma 5.7"]:::done
   V0["✓ V: Retracting neighborhood and interior push"]:::done
-  V1["V: Morse-band parameters and relative vanishing — Theorem 5.1"]:::working
+  V1["✓ V: Morse-band parameters and relative vanishing — Theorem 5.1"]:::done
   W["W: Nested weight spaces — geometry checked; awaiting vanishing"]:::working
   F["✓ F: Descending contradiction — proved from explicit inputs"]:::done
   T["Theorem 1.2: Unconditional final assembly"]:::pending

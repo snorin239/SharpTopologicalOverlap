@@ -179,9 +179,9 @@ cycle-to-filling lemmas use the actual zero outgoing differential at degree
 zero; the supported induction starts with the point/edge construction above.
 No reduced-homology or positive-degree assumption is used to cover that case.
 
-All comparison source modules were checked with `lake env lean` during
-implementation. The completed module targets were also built successfully,
-including
+The comparison source modules were checked by Lean during implementation.
+Individual `lake env lean` checks were supplemented by successful builds of
+the completed module targets, including
 
 ```text
 lake build SharpTopologicalOverlap.Comparison.Canonical
