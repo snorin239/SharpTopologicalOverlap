@@ -146,6 +146,8 @@ mass `m < 1`, the common coordinate bound has positive scale
 fixes the remaining face and hence the smaller independence carrier; its
 reversal matches the library's relative deformation theorem. The face-pair
 isomorphism uses the same coordinate inclusion on both spaces, with
-restriction as inverse. The exact final build and axiom verification of
+restriction as inverse. The final targeted build of
 [`WeightSpaces/Vanishing.lean`](../SharpTopologicalOverlap/WeightSpaces/Vanishing.lean)
-is root-pending at the time of this note.
+passed. An independent downstream audit of both `weightSpace_fills` and
+`weightSpace_homology_vanishes` reported only
+`[propext, Classical.choice, Quot.sound]`.
