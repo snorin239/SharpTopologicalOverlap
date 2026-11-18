@@ -14,10 +14,10 @@ finite minimum sequences.
 Let $X_{n,d}$ be the $d$-dimensional skeleton of the simplex on $n$ vertices.
 For a continuous map $f:|X_{n,d}|\to\mathbb R^d$, its overlap is
 
-$$
+```math
 \mathrm{ov}(f)=\max_{y\in\mathbb R^d}
-\#\{\sigma\subseteq[n]:|\sigma|=d+1,\ y\in f(|\sigma|)\}.
-$$
+\left|\{\sigma\subseteq[n]:|\sigma|=d+1,\ y\in f(|\sigma|)\}\right|.
+```
 
 Faces are closed, and distinct source faces are counted separately even when
 their images coincide. In Lean the source is `Skeleton (Fin n) d`, the target
