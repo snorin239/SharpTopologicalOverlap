@@ -2,12 +2,12 @@
 
 This repository contains a Lean 4 formalization, for dimensions $d\ge1$, of
 Theorem 1.1 and a strengthening of Theorem 1.2 of Sergey Norin’s
-[*Sharp topological overlap in every dimension*](paper/main.pdf).
+[*Sharp topological overlap in every dimension*](paper/main.pdf) (current draft).
 
-The notation and numbering below follow the
-[9 November 2026 draft](paper/sharp_topological_overlap.pdf) and its
-[LaTeX source](paper/sharp_topological_overlap.tex). The development also
-proves convergence of both normalized finite minimum sequences.
+The [9 November 2026 draft](paper/sharp_topological_overlap.pdf) and its
+[LaTeX source](paper/sharp_topological_overlap.tex) are the reference for the
+formalization. The development also proves convergence of both normalized
+finite minimum sequences.
 
 ## The statements formalized
 
@@ -27,15 +27,13 @@ The declarations below are in the namespace `SharpTopologicalOverlap`.
 ### Theorem 1.1
 
 The topological overlap constant is the liminf, as $n\to\infty$, of the least
-overlap among all continuous maps, divided by $\binom n{d+1}$. For every $d\ge1$,
+overlap among all continuous maps, divided by $\binom n{d+1}$. The affine
+constant is defined independently by minimizing over vertex placements and
+their affine interpolations. For every $d\ge1$,
 
 $$
-c_d^{\mathrm{top}}=\frac{(d+1)!}{(d+1)^{d+1}}.
+c_d^{\mathrm{top}}=c_d^{\mathrm{aff}}=\frac{(d+1)!}{(d+1)^{d+1}}.
 $$
-
-The affine constant is defined independently by minimizing over vertex
-placements and their affine interpolations. The Lean theorem gives both
-equalities from Theorem 1.1 of the newer draft.
 
 ```lean
 theorem sharp_overlap_constants {d : ℕ} (hd : 0 < d) :
@@ -64,9 +62,12 @@ $$
 \operatorname{ov}(f)\ge\left(\frac{n-C_d}{d+1}\right)^{d+1}.
 $$
 
-The newer draft writes $N_d$ for $C_d$ and uses $n$ for the dimension of
-the source simplex, so it has $n+1$ vertices. With that convention, the
-formalized lower bound is stronger by the term $N_d\binom{n}{d}$.
+The current paper writes $N_d$ for $C_d$ and indexes the simplex by its
+dimension $m$, so $n=m+1$ in the Lean statement. Restricting a full-simplex
+map to the skeleton preserves overlap. The Lean theorem therefore gives a
+lower bound greater by $N_d\binom{m}{d}$ than the one stated in the current
+paper. The [formalization map](FORMALIZATION.md#relation-to-the-full-simplex)
+explains the passage to full-simplex maps for both theorems.
 The Lean statement is in [`Finite.lean`](SharpTopologicalOverlap/Finite.lean).
 
 ```lean
@@ -126,8 +127,9 @@ For subsequent builds, run `lake build`. Import the full library with
 
 ## Verification
 
-The full project passes `lake --wfail build`. The project Lean source contains
-no `sorry`, `admit`, or placeholder axioms. The transitive axiom audits of
+A local Windows run of `lake --wfail build` succeeded on November 18, 2026,
+at commit `bb8c37d` (9,831 Lake jobs). The project Lean source contains no
+`sorry`, `admit`, or placeholder axioms. The transitive axiom audits of
 Theorems 1.1, 1.2 and the geometric upper-bound construction report only
 `propext`, `Classical.choice`, and `Quot.sound`.
 
@@ -154,3 +156,13 @@ simplicial and singular chain complexes and Morse theory. The formalization
 proves the intersection-cochain construction following Dotterrer, Kaufman,
 and Wagner and the affine upper-bound construction of Bukh, Matoušek, and
 Nivasch.
+
+## License
+
+Copyright 2026 Sergey Norin, except for third-party material attributed to
+its respective copyright holders.
+
+The Lean code, build files, and repository documentation are distributed
+under the [Apache License 2.0](LICENSE). The manuscript PDFs and LaTeX source
+in `paper/` are distributed under
+[Creative Commons Attribution 4.0 International (CC BY 4.0)](paper/LICENSE).

@@ -1,4 +1,3 @@
-# Deferred until the formalization is complete. Restore the .yml extension to enable.
 name: Linux build
 
 on:
@@ -8,19 +7,26 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-24.04
+    env:
+      LAKE_CONFIG: ${{ github.workspace }}/lake-cache.toml
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
 
       - name: Verify fresh checkout
         run: |
           test ! -e .lake
           test -z "$(git status --porcelain)"
 
-      - name: Set up Lean and fetch the mathlib cache
+      - name: Set up Lean and fetch the Mathlib cache
         uses: leanprover/lean-action@v1
         with:
           auto-config: false
@@ -28,12 +34,16 @@ jobs:
           use-mathlib-cache: true
           use-github-cache: false
 
-      - name: Build formalization with TauCeti
-        env:
-          LAKE_CONFIG: ${{ github.workspace }}/lake-cache.toml
+      - name: Fetch the TauCeti cache and build the formalization
         run: |
           lake cache get --package=TauCeti --service=tauceti-public --repo=TauCetiProject/TauCeti --mappings-only
-          lake build
+          lake --wfail build
+
+      - name: Verify theorem statements and report their axioms
+        run: |
+          for theorem in 11 12 71; do
+            lake env lean -DwarningAsError=true "verification/Theorem${theorem}.lean"
+          done
 
       - name: Verify repository remains clean
         run: |

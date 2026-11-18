@@ -2,10 +2,10 @@
 
 This repository proves Theorem 1.1 and a strengthening of Theorem 1.2 of
 [*Sharp topological overlap in every dimension*](paper/main.pdf) for every
-positive dimension. The notation and numbering below follow the
-[9 November 2026 draft](paper/sharp_topological_overlap.pdf) and its
-[LaTeX source](paper/sharp_topological_overlap.tex). The development also
-proves convergence of both normalized finite minimum sequences.
+positive dimension. The [9 November 2026 draft](paper/sharp_topological_overlap.pdf)
+and its [LaTeX source](paper/sharp_topological_overlap.tex) are the reference
+for the formalization. The development also proves convergence of both
+normalized finite minimum sequences.
 
 All public results are available through `import SharpTopologicalOverlap`.
 The [blueprint](docs/blueprint.md) explains the proof dependencies and the main
@@ -49,6 +49,33 @@ theorem sharp_overlap_constants {d : ℕ} (hd : 0 < d) :
 `tendsto_normalizedMinimumOverlap` and `tendsto_normalizedAffineMinimumOverlap`
 prove full sequence convergence to this value, from which the two liminf
 identities follow.
+
+## Relation to the full simplex
+
+In the current paper, $\Delta^m$ has $m+1$ vertices, so the corresponding
+Lean vertex set is `Fin (m + 1)`. Overlap depends only on the images of the
+closed $d$-faces, so restriction from $\Delta^m$ to its $d$-skeleton preserves
+overlap. With $N_d=C_d$, `finite_overlap_bound` applies to this restriction
+whenever $m+1>N_d$ and gives
+
+$$
+\operatorname{ov}(f)\ge
+\left(\frac{m+1-N_d}{d+1}\right)^{d+1}.
+$$
+
+Theorem 1.2 of the current paper subtracts $N_d\binom{m}{d}$ from this
+lower bound.
+
+For Theorem 1.1, the minimum over continuous maps of the skeleton bounds
+the full-simplex continuous minimum from below. The full-simplex affine
+minimum bounds it from above. Each vertex placement determines an affine
+map on the full simplex by barycentric interpolation. Lean defines
+`affineSkeletonMap` as its restriction, so the full-simplex affine minimum
+equals the formalized affine minimum for each $m$.
+[`Overlap/Affine.lean`](SharpTopologicalOverlap/Overlap/Affine.lean)
+
+With normalization by $\binom{m+1}{d+1}$ for $m\ge d$, the two Lean limits
+squeeze the paper's normalized continuous minimum to the common limit.
 
 ## Representations and conventions
 
