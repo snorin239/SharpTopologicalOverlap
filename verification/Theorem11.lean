@@ -13,7 +13,7 @@ open SharpTopologicalOverlap
 namespace Theorem11Verification
 
 /-- The original manuscript statement, with the finite minimum expanded. -/
-theorem manuscript_bound {d : ℕ} (hd : 2 ≤ d) :
+theorem manuscript_bound {d : ℕ} (hd : 0 < d) :
     Filter.liminf
       (fun n : ℕ =>
         ((sInf (Set.range
@@ -24,7 +24,7 @@ theorem manuscript_bound {d : ℕ} (hd : 2 ≤ d) :
   exact topologicalOverlapConstant_eq_threshold hd
 
 /-- The affine analogue, with its independent finite minimum expanded. -/
-theorem affine_bound {d : ℕ} (hd : 2 ≤ d) :
+theorem affine_bound {d : ℕ} (hd : 0 < d) :
     Filter.liminf
       (fun n : ℕ =>
         ((sInf (Set.range
@@ -36,7 +36,7 @@ theorem affine_bound {d : ℕ} (hd : 2 ≤ d) :
   exact affineOverlapConstant_eq_threshold hd
 
 /-- The strengthened Theorem 1.1 requested for the two independently defined constants. -/
-theorem strengthened_bound {d : ℕ} (hd : 2 ≤ d) :
+theorem strengthened_bound {d : ℕ} (hd : 0 < d) :
     topologicalOverlapConstant d = affineOverlapConstant d ∧
       affineOverlapConstant d = ((d + 1).factorial : ℝ) / (d + 1 : ℝ) ^ (d + 1) :=
   sharp_overlap_constants hd
@@ -45,6 +45,13 @@ theorem strengthened_bound {d : ℕ} (hd : 2 ≤ d) :
 theorem normalized_empty_prefix (d n : ℕ) (hn : n < d + 1) :
     normalizedMinimumOverlap d n = 0 ∧ normalizedAffineMinimumOverlap d n = 0 := by
   simp [normalizedMinimumOverlap, normalizedAffineMinimumOverlap, Nat.choose_eq_zero_of_lt hn]
+
+example : topologicalOverlapConstant 1 = (1 : ℝ) / 2 ∧
+    affineOverlapConstant 1 = (1 : ℝ) / 2 := by
+  have ht := topologicalOverlapConstant_eq_threshold (d := 1) (by decide)
+  have ha := affineOverlapConstant_eq_threshold (d := 1) (by decide)
+  norm_num [overlapThreshold] at ht ha
+  exact ⟨ht, ha⟩
 
 example : topologicalOverlapConstant 2 = (2 : ℝ) / 9 := by
   rw [topologicalOverlapConstant_eq_threshold (by decide)]

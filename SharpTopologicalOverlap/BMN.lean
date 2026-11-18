@@ -68,6 +68,18 @@ theorem exists_affine_overlap_bound {d : ℕ} (hd : 2 ≤ d) (n : ℕ) :
   obtain ⟨p, hc, hi, hb⟩ := exists_configuration hd n
   exact ⟨p, hc, hi, overlap_affineSkeletonMap_le p hb⟩
 
+/-- The BMN overlap estimate for affine interpolation in every dimension. -/
+theorem exists_affineSkeletonMap_overlap_bound (d n : ℕ) :
+    ∃ p : Fin n → EuclideanSpace ℝ (Fin d),
+      (overlap (affineSkeletonMap d p) : ℝ) ≤
+        ((n : ℝ) / (d + 1 : ℝ)) ^ (d + 1) +
+          (2 * d : ℝ) * ((n - 1).choose d : ℝ) := by
+  let p := configuration d n
+  let e := (euclideanCoordinates (V := Fin d)).toLinearEquiv
+  refine ⟨e ∘ p, overlap_affineSkeletonMap_le _ fun r => ?_⟩
+  rw [hullCount_linearEquiv]
+  exact hullCount_le_of_separated (configuration_separated d n) (e.symm r)
+
 /-- A continuous-map upper bound with no remaining geometric inputs. -/
 theorem exists_continuous_overlap_bound {d : ℕ} (hd : 2 ≤ d) (n : ℕ) :
     ∃ f : C(Skeleton (Fin n) d, EuclideanSpace ℝ (Fin d)),

@@ -1,20 +1,115 @@
 # Sharp topological overlap in Lean
 
-This project formalizes *Sharp topological overlap in every dimension* in Lean 4
-with Mathlib and TauCeti. The targets, in order, are Theorem 1.2 (the finite overlap bound)
-and Theorem 1.1 (the sharp asymptotic constant). The reference is the
-[9 November 2026 manuscript](paper/sharp_topological_overlap.pdf).
+This repository contains a Lean 4 formalization, for dimensions $d\ge1$, of
+Theorem 1.1 and a strengthening of Theorem 1.2 of Sergey Norin’s
+[*Sharp topological overlap in every dimension*](paper/main.pdf).
 
-## Build
+The notation and numbering below follow the
+[9 November 2026 draft](paper/sharp_topological_overlap.pdf) and its
+[LaTeX source](paper/sharp_topological_overlap.tex). The development also
+proves convergence of both normalized finite minimum sequences.
 
-The project uses Lean `v4.36.0-rc2`, TauCeti `1e668f5e55bc`, and its matching
-mathlib revision `1b1ccf4b088b`. The [Lake manifest](lake-manifest.json) locks
-the full revisions.
+## The statements formalized
 
-With Git and Elan installed, run the following from the repository root.
-The first line selects the [public TauCeti cache](lake-cache.toml) for this
-shell. In PowerShell, use
-`$env:LAKE_CONFIG = (Resolve-Path lake-cache.toml).Path` for that line.
+Let $X_{n,d}$ be the $d$-dimensional skeleton of the simplex on $n$ vertices.
+For a continuous map $f:|X_{n,d}|\to\mathbb R^d$, its overlap is
+
+$$
+\operatorname{ov}(f)=\max_{y\in\mathbb R^d}
+\#\{\sigma\subseteq[n]:|\sigma|=d+1,\ y\in f(|\sigma|)\}.
+$$
+
+Faces are closed, and distinct source faces are counted separately even when
+their images coincide. In Lean the source is `Skeleton (Fin n) d`, the target
+is `EuclideanSpace ℝ (Fin d)`, and `overlap f` is a natural number.
+The declarations below are in the namespace `SharpTopologicalOverlap`.
+
+### Theorem 1.1
+
+The topological overlap constant is the liminf, as $n\to\infty$, of the least
+overlap among all continuous maps, divided by $\binom n{d+1}$. For every $d\ge1$,
+
+$$
+c_d^{\mathrm{top}}=\frac{(d+1)!}{(d+1)^{d+1}}.
+$$
+
+The affine constant is defined independently by minimizing over vertex
+placements and their affine interpolations. The Lean theorem gives both
+equalities from Theorem 1.1 of the newer draft.
+
+```lean
+theorem sharp_overlap_constants {d : ℕ} (hd : 0 < d) :
+    topologicalOverlapConstant d = affineOverlapConstant d ∧
+      affineOverlapConstant d =
+        ((d + 1).factorial : ℝ) / (d + 1 : ℝ) ^ (d + 1)
+```
+
+The individual statements and full sequence limits are in
+[`Asymptotic.lean`](SharpTopologicalOverlap/Asymptotic.lean).
+The common constant is $1/2$ in dimension one, $2/9$ in dimension two, and
+$3/32$ in dimension three.
+
+### Theorem 1.2
+
+Put
+
+$$
+C_d=\sum_{p=1}^{d}\binom{d+1}{p+1}(d+1-p)
+\left\lfloor\frac dp\right\rfloor.
+$$
+
+For $d\ge1$ and $n>C_d$, every continuous map satisfies
+
+$$
+\operatorname{ov}(f)\ge\left(\frac{n-C_d}{d+1}\right)^{d+1}.
+$$
+
+The newer draft writes $N_d$ for $C_d$ and uses $n$ for the dimension of
+the source simplex, so it has $n+1$ vertices. With that convention, the
+formalized lower bound is stronger by the term $N_d\binom{n}{d}$.
+The Lean statement is in [`Finite.lean`](SharpTopologicalOverlap/Finite.lean).
+
+```lean
+theorem finite_overlap_bound {n d : ℕ} (hd : 0 < d)
+    (hn : deletionBound d < n)
+    (f : C(Skeleton (Fin n) d, EuclideanSpace ℝ (Fin d))) :
+    (((n : ℝ) - deletionBound d) / (d + 1 : ℝ)) ^ (d + 1) ≤
+      (overlap f : ℝ)
+```
+
+`deletionBound` uses natural-number division for the floor. The subtraction
+in the lower bound takes place in the reals. In dimension one, the deletion bound is $C_1=1$,
+so the finite bound is $\operatorname{ov}(f)\ge ((n-1)/2)^2$ for $n>1$.
+
+## Structure of the proof
+
+1. Simplicial and singular chain foundations relate the concrete probability
+   simplex to geometric realizations, relative homology and supported fillings.
+2. Subdivision and general-position constructions produce the intersection
+   cochains of Lemma 3.1 from an arbitrary continuous map.
+3. The spectral estimate for uniform cocycles, followed by a logarithmic
+   barrier and Morse theory, proves the relative sublevel vanishing theorem.
+4. Compatible vertex deletion and nested weight spaces allow a descending
+   filling argument. Evaluation against the intersection cochains proves
+   the finite bound of Theorem 1.2.
+5. A formalized Bukh–Matoušek–Nivasch configuration supplies the matching
+   affine upper bound. Binomial normalization and the squeeze theorem prove
+   both limits and Theorem 1.1.
+
+The [paper-to-Lean map](FORMALIZATION.md) identifies the main declarations
+and explains changes to intermediate proof interfaces. The
+[blueprint](docs/blueprint.md) describes the modeling choices and module
+dependencies. Some intermediate results are adapted to simplify their
+Lean proofs.
+
+## Building
+
+The project pins Lean to `v4.36.0-rc2`, Mathlib to revision `1b1ccf4b088b`,
+and TauCeti to revision `1e668f5e55bc`. Full revisions are recorded in
+[`lake-manifest.json`](lake-manifest.json).
+
+With Git and [Elan](https://github.com/leanprover/elan) installed, run from
+the repository root:
 
 ```sh
 export LAKE_CONFIG="$PWD/lake-cache.toml"
@@ -23,25 +118,39 @@ lake cache get --package=TauCeti --service=tauceti-public --repo=TauCetiProject/
 lake build
 ```
 
-For subsequent builds, run `lake build`. To use the library in a Lean file,
-write `import SharpTopologicalOverlap`.
+In PowerShell, replace the first line with
+`$env:LAKE_CONFIG = (Resolve-Path lake-cache.toml).Path`.
+The [cache configuration](lake-cache.toml) selects TauCeti's public cache.
+For subsequent builds, run `lake build`. Import the full library with
+`import SharpTopologicalOverlap`.
 
-## Working on the formalization
+## Verification
 
-Theorem 1.2 is proved as `SharpTopologicalOverlap.finite_overlap_bound`,
-with no placeholders or project proof axioms. Its transitive axiom audit
-reports only `propext`, `Classical.choice`, and `Quot.sound`.
-Theorem 1.1 is proved and strengthened to include the affine constant:
-`SharpTopologicalOverlap.sharp_overlap_constants` states
-`c_top = c_aff = (d+1)!/(d+1)^(d+1)` for every `d ≥ 2`.
-Both normalized finite minimum sequences also converge to this value.
+The full project passes `lake --wfail build`. The project Lean source contains
+no `sorry`, `admit`, or placeholder axioms. The transitive axiom audits of
+Theorems 1.1, 1.2 and the geometric upper-bound construction report only
+`propext`, `Classical.choice`, and `Quot.sound`.
 
-The [formalization status](FORMALIZATION.md) lists the checked declarations.
-The [blueprint](docs/blueprint.md) gives the proof-block flowchart and dependencies;
-the verification records for [Theorem 1.2](docs/finite-verification.md) and
-[Theorem 1.1](docs/theorem11-verification.md) record the final checks.
-Run `lake env lean verification/Theorem12.lean` and
-`lake env lean verification/Theorem11.lean` to reproduce the statement
-and axiom audits after building the project.
-The [LaTeX source](paper/sharp_topological_overlap.tex)
-provides stable labels for those results.
+After building, reproduce the statement checks and axiom audits with:
+
+```sh
+lake env lean -DwarningAsError=true verification/Theorem11.lean
+lake env lean -DwarningAsError=true verification/Theorem12.lean
+lake env lean -DwarningAsError=true verification/Theorem71.lean
+```
+
+These files import only the public project root. They check the expanded
+statements, both overlap constants in dimension one, the two-vertex finite
+bound, and the axioms used by the main proof dependencies.
+
+## Acknowledgements
+
+OpenAI Codex (GPT-6.1 Sol) prepared the Lean formalization. The paper
+describes GPT-6 Astra’s role in developing the mathematical proof.
+
+The development uses [Mathlib](https://github.com/leanprover-community/mathlib4)
+and [TauCeti](https://github.com/TauCetiProject/TauCeti), which supplies
+simplicial and singular chain complexes and Morse theory. The formalization
+proves the intersection-cochain construction following Dotterrer, Kaufman,
+and Wagner and the affine upper-bound construction of Bukh, Matoušek, and
+Nivasch.

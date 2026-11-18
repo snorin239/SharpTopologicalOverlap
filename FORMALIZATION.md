@@ -1,125 +1,130 @@
-# Formalization status
+# Formalization map
 
-**Theorem 1.2 is proved** as `SharpTopologicalOverlap.finite_overlap_bound`.
-The full project build and transitive axiom audit pass; the theorem depends
-only on `propext`, `Classical.choice`, and `Quot.sound`.
-See the [final verification record](docs/finite-verification.md).
-**Theorem 7.1 is proved** as `SharpTopologicalOverlap.BMN.exists_configuration`,
-including convex position, affine independence and an explicit uniform
-error. Its continuous-map corollary and factorial normalization are proved
-as well; see the [verification record](docs/bmn-verification.md).
-**Theorem 1.1 and its affine strengthening are proved** in
-`SharpTopologicalOverlap.Asymptotic`: the independently defined topological
-and affine constants both equal `(d+1)!/(d+1)^(d+1)` for `d ≥ 2`.
-Both normalized finite minimum sequences also converge to this value.
-See the [implementation plan](docs/theorem11-plan.md) and
-[verification record](docs/theorem11-verification.md).
+This repository proves Theorem 1.1 and a strengthening of Theorem 1.2 of
+[*Sharp topological overlap in every dimension*](paper/main.pdf) for every
+positive dimension. The notation and numbering below follow the
+[9 November 2026 draft](paper/sharp_topological_overlap.pdf) and its
+[LaTeX source](paper/sharp_topological_overlap.tex). The development also
+proves convergence of both normalized finite minimum sequences.
 
-| Paper item | Lean declaration | Status |
+All public results are available through `import SharpTopologicalOverlap`.
+The [blueprint](docs/blueprint.md) explains the proof dependencies and the main
+differences between the manuscript argument and its formal implementation.
+
+## Public theorem statements
+
+All declarations below belong to the namespace `SharpTopologicalOverlap`.
+The natural-number constant `deletionBound d` is the manuscript's
+
+$$
+C_d=\sum_{p=1}^{d}\binom{d+1}{p+1}(d+1-p)\left\lfloor\frac dp\right\rfloor.
+$$
+
+Theorem 1.2 (`thm:finite`) is proved in
+[`Finite.lean`](SharpTopologicalOverlap/Finite.lean) in every positive dimension.
+
+```lean
+theorem finite_overlap_bound {n d : ℕ} (hd : 0 < d) (hn : deletionBound d < n)
+    (f : C(Skeleton (Fin n) d, EuclideanSpace ℝ (Fin d))) :
+    (((n : ℝ) - deletionBound d) / (d + 1 : ℝ)) ^ (d + 1) ≤ (overlap f : ℝ)
+```
+
+Theorem 1.1 (`thm:main`) is proved in
+[`Asymptotic.lean`](SharpTopologicalOverlap/Asymptotic.lean):
+
+```lean
+theorem topologicalOverlapConstant_eq_threshold {d : ℕ} (hd : 0 < d) :
+    topologicalOverlapConstant d = overlapThreshold d
+```
+
+Here `overlapThreshold d = ((d + 1).factorial : ℝ) / (d + 1 : ℝ) ^ (d + 1)`.
+The stronger combined endpoint is:
+
+```lean
+theorem sharp_overlap_constants {d : ℕ} (hd : 0 < d) :
+    topologicalOverlapConstant d = affineOverlapConstant d ∧
+      affineOverlapConstant d = ((d + 1).factorial : ℝ) / (d + 1 : ℝ) ^ (d + 1)
+```
+
+`tendsto_normalizedMinimumOverlap` and `tendsto_normalizedAffineMinimumOverlap`
+prove full sequence convergence to this value, from which the two liminf
+identities follow.
+
+## Representations and conventions
+
+- **Source and target.** Source vertices are `Fin n`. `Simplex V` is Mathlib's
+  probability simplex, `Convexity.StdSimplex ℝ V`; `Skeleton V d` consists of
+  points supported on at most `d + 1` vertices. A proved homeomorphism identifies
+  it with the realization of the abstract skeleton and preserves every closed
+  face. The target is `EuclideanSpace ℝ (Fin d)`.
+- **Overlap.** `overlap f` is an attained natural-number maximum. It counts
+  indexed source faces whose closed images contain a point, so distinct faces
+  with coincident images are counted separately.
+- **Finite minima and constants.** `minimumOverlap d n` minimizes over all
+  continuous maps; `affineMinimumOverlap d n` independently minimizes over all
+  vertex placements and their affine interpolation. Both minima are attained.
+  Each is divided by `n.choose (d + 1)`, and its real liminf defines the
+  corresponding overlap constant. Below `n = d + 1`, real division by zero
+  makes the normalized terms zero; these finitely many terms do not affect
+  the limits.
+- **Chains and cochains.** Coefficients are `ZMod 2`. Simplicial chains use
+  TauCeti's ordered chain complex. Source cochains are defined on the full
+  simplex, so vertex cocycle identities are checked in degree `d + 1`.
+  Singular chains and relative homology use TauCeti's actual constructions.
+- **Arithmetic and analysis.** Division in `deletionBound` is natural-number
+  division; subtraction and division in the overlap bound are real operations.
+  The polynomial degree parameter is the edge cardinality, `d + 1` in the
+  manuscript. Coordinate equivalences connect finite functions, simplex
+  weights and Euclidean spaces for derivatives and Hessian indices.
+
+## Paper-to-Lean correspondence
+
+Every result listed here is proved. Some intermediate declarations split
+or replace results from the draft to suit their role in the proofs.
+
+| Paper item | Main Lean declarations | Source |
 | --- | --- | --- |
-| Vertex deletion bound $C_d$ (`eq:C`) | [`SharpTopologicalOverlap.deletionBound`](SharpTopologicalOverlap/Basic.lean) | Defined |
-| Size implication $d+1\le C_d$ for $d\ge2$ | `add_one_le_deletionBound`, `add_one_lt_of_deletionBound_lt` in [`Basic.lean`](SharpTopologicalOverlap/Basic.lean) | Proved |
-| Probability simplex and finite/Euclidean coordinates (§2.1) | `Simplex`, `coordinateHomeomorph`, `euclideanCoordinates` in [`Simplex.lean`](SharpTopologicalOverlap/Simplex.lean) | Implemented; coordinate bounds, sum, continuity, vertex and uniform support proved |
-| Closed/open faces and realization (§2.1) | `closedFace`, `openFace`, `realizedComplex`, `closedFace_inter`, `realizedComplex_eq_iUnion_closedFace`, `isCompact_realizedComplex` | Proved; empty faces, singleton open faces, and disjoint open faces included |
-| Realized source skeleton $X_{n,d}$ | `Skeleton`, `skeletonRealizationHomeomorph`, `image_faceInclusion_skeletonRealizationHomeomorph` in [`Skeleton.lean`](SharpTopologicalOverlap/Skeleton.lean) | Proved; preserves coordinates and each closed face; skeleton and its closed faces are compact |
-| Overlap definition and elementary bounds (Introduction) | `facesAt`, `overlap`, `overlap_attained`, `overlap_le_choose`, `card_le_overlap_of_common_point` in [`Overlap.lean`](SharpTopologicalOverlap/Overlap.lean) | Defined and proved; counts source faces, including coincident images |
-| Indexed-face counting for constant maps and absent faces | `overlap_const`, `overlap_eq_zero_of_card_lt` in [`Overlap/Constant.lean`](SharpTopologicalOverlap/Overlap/Constant.lean) | Proved, including empty vertex types and degrees above the available dimension |
-| Simplicial chains, evaluation and coboundary (§2.2) | `Simplicial.Chain`, `Simplicial.Cochain`, `evaluation_coboundary`, `coboundary_coboundary` in [`Simplicial.lean`](SharpTopologicalOverlap/Simplicial.lean) | Defined and proved over `ZMod 2`; imported boundary, signless formula, actual unaugmented degree-zero differential and constant-one cocycle included |
-| Cochain supports and uniform cocycles (§2.2) | `supportFamily`, `cochainOfFamily`, `isCocycle_full_iff_parity` in namespace `Simplicial` | Proved; inverse conversions and parity on every one-size-larger vertex set |
-| Simplicial carriers and inclusion/restriction | `CarriedBy`, `carriedBy_boundary`, `evaluation_eq_zero_of_carriedBy`, `boundary_includeChain`, `coboundary_restrict` in namespace `Simplicial` | Proved; includes injective chain inclusions and restriction/evaluation compatibility |
-| Ambient vertex-omitting subcomplexes | `SubcomplexChain`, `restrictToSubcomplex`, `evaluation_restrictToSubcomplex`, `subcomplexBoundary_squared` in [`Simplicial/Subcomplex.lean`](SharpTopologicalOverlap/Simplicial/Subcomplex.lean) | Defined and proved using carried ambient submodules; does not require adding missing vertices |
-| Compact separation and perturbation transfer (Appendix A, before Steps 1 and 3) | `exists_faceImage_separation`, `exists_faceImage_perturbation_tolerance`, `exists_faceImage_cluster_tolerance`, `exists_faceImage_two_stage_tolerances` in [`Geometry/Stability.lean`](SharpTopologicalOverlap/Geometry/Stability.lean) | Proved; one tolerance works for every source-face family, including empty families; parameter order is `f → g → h` |
-| Indexed fundamental chains and Lemma A.1 | `fundamentalChain`, `boundary_fundamentalChain`, `fundamentalChain_carried`, `exists_fundamentalChain_dist_lt` in [`Geometry/Subdivision.lean`](SharpTopologicalOverlap/Geometry/Subdivision.lean) | Proved for indexed affine chains, with coefficients reduced modulo two, original-face carrier control, and one shrinking depth for all dimensions at most `d` |
-| Auxiliary interpolation on an edgewise subdivision | `continuous_interpolate`, `norm_interpolate_sub_le`, `edgewiseInterpolate_mem_convexHull`, `exists_edgewiseInterpolate_approx` in [`Geometry/Placements.lean`](SharpTopologicalOverlap/Geometry/Placements.lean) | Proved; the completed construction below instead uses one actual abstract barycentric model for both interpolation and chains. |
-| Auxiliary one-step barycentric bridge | `permutationCell`, `barycentricRealization_permutationPoint`, `fundamentalChain_one_child_represented` in [`Geometry/BarycentricBridge.lean`](SharpTopologicalOverlap/Geometry/BarycentricBridge.lean), namespace `Geometry.BarycentricBridge` | Proved; not needed by the final construction, which constructs chains directly on the actual iterated model. |
-| Common iterated barycentric model, geometry and approximation | `barycentricModel`, `cell_affineIndependent`, `exists_barycentric_interpolation_approx`, `exists_barycentric_hull_image_mesh_lt` in [`Geometry/BarycentricModel.lean`](SharpTopologicalOverlap/Geometry/BarycentricModel.lean), [`BarycentricGeometry.lean`](SharpTopologicalOverlap/Geometry/BarycentricGeometry.lean), [`BarycentricApproximation.lean`](SharpTopologicalOverlap/Geometry/BarycentricApproximation.lean) | Proved; realization homeomorphisms, original-face carriers, shrinking mesh and continuous interpolation share the same actual cells. |
-| First and second source approximations (Appendix A, Steps 1 and 3) | `exists_first_source_approximation`, `exists_second_source_approximation`, `sourceStrongGeneralPosition_iff` in [`Geometry/SourceApproximation.lean`](SharpTopologicalOverlap/Geometry/SourceApproximation.lean) | Proved; first map has strong general position on original source faces, second map is generic against the chosen finite target family on the same source model. |
-| Affine-independent placements, G2 of Lemma A.2 | `exists_generalPositionOn`, `exists_generalPosition`, `isOpen_generalPosition`, `dense_generalPosition` in [`Geometry/GeneralPosition.lean`](SharpTopologicalOverlap/Geometry/GeneralPosition.lean) | Proved; approximates every finite placement, including dimension zero; adapted from the exact donor source recorded in the module |
-| Below-complementary hull avoidance, G3 of Lemma A.2 | `isOpen_hull_avoidance`, `exists_near_hull_avoidance`, `open_dense_hull_avoidance` in [`Geometry/PlacementAvoidance.lean`](SharpTopologicalOverlap/Geometry/PlacementAvoidance.lean) | Proved for each finite source face and fixed closed target set contained in a below-complementary affine subspace; no independence assumption on the moving source images |
-| Strong general-position placements, G1 of Lemma A.2 | `isOpen_strongGeneralPositionOn`, `dense_strongGeneralPositionOn`, `exists_strongGeneralPositionOn` in [`Geometry/StrongGeneralPosition.lean`](SharpTopologicalOverlap/Geometry/StrongGeneralPosition.lean) | Proved simultaneously for all admissible disjoint subfamilies of a specified finite source family; independent-translation dimension argument and fixed-family hull openness proved |
-| Spanning source/target directions, G4 of Lemma A.2 | `exists_near_spanningDirectionsOn`, `isOpen_spanningDirectionsOn`, `dense_spanningDirectionsOn` in [`Geometry/TransversePlacements.lean`](SharpTopologicalOverlap/Geometry/TransversePlacements.lean) | Proved for every nonempty finite source vertex set and fixed target direction satisfying the dimension inequality; perturbations fix vertices outside the specified source set |
-| Simultaneous generic placements, Lemma A.2 (`lem:generic`) | `open_dense_genericPlacement`, `exists_genericPlacement` in [`Geometry/GenericPlacements.lean`](SharpTopologicalOverlap/Geometry/GenericPlacements.lean) | Proved with all four conditions simultaneously for the designated finite source family and an arbitrary finite family of actual target simplices; pairwise-distinct images and affine-span direction forms extracted |
-| Enclosing target simplex (Appendix A, Step 2) | `exists_enclosing_simplex`, `exists_enclosing_simplex_cthickening` in [`Geometry/EnclosingSimplex.lean`](SharpTopologicalOverlap/Geometry/EnclosingSimplex.lean) | Proved; any compact set and its closed metric neighborhood lie in the interior of a full-dimensional simplex, including dimension zero |
-| Complementary point intersections (Appendix A, A4) | `affineSpan_inter_eq_singleton`, `convexHull_inter_subsingleton`, `inter_subset_intrinsicInterior_inter` in [`Geometry/Intersections.lean`](SharpTopologicalOverlap/Geometry/Intersections.lean) | Proved from spanning directions, complementary dimensions, and proper-face exclusions; includes singleton open simplices |
-| Affine line and segment in the parity argument | `simplex_finrank_direction_inf_eq_one`, `simplex_convexHull_inter_eq_segment`, `exists_nonzero_strict_finite_affine_constraints` in [`Geometry/Segments.lean`](SharpTopologicalOverlap/Geometry/Segments.lean) | Proved; supplies the line and compact intersection used in the complete geometric parity theorem below. |
-| Endpoint parity for affine constraints on a line | `finite_affine_constraints_endpoints`, `card_activeConstraints_eq_zero_or_two`, `sum_activeConstraint_indicators_eq_zero` in [`Geometry/ConstraintParity.lean`](SharpTopologicalOverlap/Geometry/ConstraintParity.lean) | Proved; geometric hypotheses are discharged in `SimplexParity`. |
-| Geometric simplex facet parity (Appendix A, A4) | `facet_intersection_parity`, `source_facet_count_eq_target_facet_count` in [`Geometry/SimplexParity.lean`](SharpTopologicalOverlap/Geometry/SimplexParity.lean) | Proved from affine independence, lower-face avoidance and spanning directions; includes empty intersections and derives the unique-active-constraint and nonzero-slope conditions internally. |
-| Cone cycle and vertex-cocycle algebra (Appendix A, Steps 5 and 6) | `boundary_add_cone_boundary_eq_zero`, `isCocycle_of_edgePath_to_zero` in [`Intersection/Algebra.lean`](SharpTopologicalOverlap/Intersection/Algebra.lean) | Proved on the actual ordered chain and cochain modules; the required paths and zero anchor are constructed below. |
-| Strong general position implies the support matching bound, Lemma 3.1(e) | `card_mul_le_of_strongGeneralPosition`, `card_le_div_of_strongGeneralPosition` in [`Intersection/Matching.lean`](SharpTopologicalOverlap/Intersection/Matching.lean) | Proved from strong general position and the common-image property; includes empty and singleton disjoint families |
-| Local contributions give intersection cochains (Appendix A, Steps 4 and 6) | `intersectionCochainFamily`, `facet_coboundary_intersectionCochainFamily`, `exists_supported_child_of_intersectionCochain_ne_zero` in [`Intersection/Construction.lean`](SharpTopologicalOverlap/Intersection/Construction.lean) | Proved from explicit local contributions and local parity on supported children; geometric intersection counts and parity are not assumed proved |
-| Actual subdivision chains and finite target cycle | `iteratedSubdivision`, `boundary_iteratedSubdivision`, `refinedCycle`, `boundary_refinedCycle`, `refinedCycle_apply`, `refined_path_to_infinity` in [`Geometry/TargetCycle.lean`](SharpTopologicalOverlap/Geometry/TargetCycle.lean) | Proved; recursively cones subdivided boundaries on the same actual barycentric cells, preserves original-face carriers, and constructs a closed sphere cycle with coefficient one on every top cell and paths to the zero anchor. |
-| Target carriers, mesh, coverage and unique incidence | `targetCells_mono`, `exists_targetCells_mesh_lt`, `existsUnique_top_targetCells` in [`Geometry/TargetGeometry.lean`](SharpTopologicalOverlap/Geometry/TargetGeometry.lean), [`TargetGeometry/Boundary.lean`](SharpTopologicalOverlap/Geometry/TargetGeometry/Boundary.lean), [`TargetGeometry/Mesh.lean`](SharpTopologicalOverlap/Geometry/TargetGeometry/Mesh.lean), [`TargetCoverage.lean`](SharpTopologicalOverlap/Geometry/TargetCoverage.lean) | Proved; carriers are monotone even on outer cells, outer carriers miss the enclosed map image, and the infinity carrier is empty. Every point of `D` avoiding lower patch cells has unique top patch-cell incidence; normalization upgrades this to incidence among all target carriers for the interior source images. |
-| Actual local indicators and source cochain pullback | `localIndicator_coboundary_of_generic`, `barycentricCochainFamily`, `barycentricCochainFamily_supportMeets` in [`Intersection/TargetPlacement.lean`](SharpTopologicalOverlap/Intersection/TargetPlacement.lean), [`BarycentricCochains.lean`](SharpTopologicalOverlap/Intersection/BarycentricCochains.lean) | Proved using [`Refinement.lean`](SharpTopologicalOverlap/Intersection/Refinement.lean), [`Indicators.lean`](SharpTopologicalOverlap/Intersection/Indicators.lean) and [`LocalParity.lean`](SharpTopologicalOverlap/Intersection/LocalParity.lean); local parity is derived from the constructed generic placement. |
-| Facet identity, full-source vertex cocycles and normalization | `barycentric_family_facet_coboundary`, `barycentric_family_vertex_cocycle`, `barycentric_family_normalization` in [`Intersection/LocalConstruction.lean`](SharpTopologicalOverlap/Intersection/LocalConstruction.lean), [`Normalization.lean`](SharpTopologicalOverlap/Intersection/Normalization.lean) | Proved; vertex cocycles hold in degree `d+1` on the full source simplex, and normalization uses the actual constructed target cycle. |
-| Five-property interface of Lemma 3.1 | `IntersectionData`, `upwardSupport`, `IntersectionData.upwardSupport_card_le_overlap`, `IntersectionData.exists_top_cell` in [`Intersection.lean`](SharpTopologicalOverlap/Intersection.lean) | Specification and consequences proved; normalization forces dimension exactly `d` when `n > 0`. Defining this structure does not prove its existence. |
-| Lemma 3.1 (`lem:intersection`), flowchart block G | `IntersectionWitness`, `exists_intersectionData` in [`Intersection/Existence.lean`](SharpTopologicalOverlap/Intersection/Existence.lean) | Proved from `2 ≤ d`, `d + 1 ≤ n`, and an arbitrary continuous map. Constructs a finite target of dimension exactly `d`, a cycle and all five properties, with no geometric existence premise. See the [plan](docs/intersection-plan.md) and [verification record](docs/intersection-verification.md). |
-| Morse band vanishing used in Lemma 5.5 (`lem:band`) | `TauCeti.IsMorse.isZero_singularHomology_sublevelPair_of_le_manifoldMorseIndex`, `Sublevel.barrier_band_fills`, `exists_morseBandData` | Applied to the actual proper Morse barrier with regular levels; all parameter and carrier bounds are proved. |
-| Theorem 1.2 (`thm:finite`) | `finite_overlap_bound` in [`Finite.lean`](SharpTopologicalOverlap/Finite.lean), exported by the project root | Proved with exactly `2 ≤ d`, `deletionBound d < n`, and the continuous map as hypotheses. All comparison, geometric, spectral, analytic, weight-space and descending providers are constructed and discharged. |
-| Lemma 4.1, spectral rigidity (`lem:spectral`) | `Spectral.spectral_index_rigidity` in [`Spectral/Partite.lean`](SharpTopologicalOverlap/Spectral/Partite.lean), exposed by [`Spectral.lean`](SharpTopologicalOverlap/Spectral.lean) | Proved, including the complete partite coloring, equal class masses, and exact equality value `overlapThreshold d`. Uses actual tangent-Hessian negative index. |
-| Corollary 4.2, strict-sublevel face index (`cor:index`) | `Spectral.faceCritical_index_ge` in [`Spectral/FaceRestriction.lean`](SharpTopologicalOverlap/Spectral/FaceRestriction.lean) | Proved on the actual tangent subspace of the coordinate support. Includes family restriction, parity, probability reindexing, derivative/Hessian pullback and signature transport. |
-| Descending fillings and evaluation (§6.3), block F | `Descending.transposeBoundary_squared`, `cofaceSum_cycle`, `SimplicialDescent.false`, `FillingInputs.toSimplicialDescent`, `FillingInputs.false` in [`Descending.lean`](SharpTopologicalOverlap/Descending.lean) and its three submodules | Proved from explicit comparison and nested-filling data. The actual singular chains are constructed by natural induction on source degree, including degree `d+1` at vertices. `IntersectionData.fillingInputs_of_sublevel` constructs all inputs in the final proof from the completed providers. |
-| Singular carriers, images and inclusions (§2.3), block H | `Singular.carriedBy_iff_support`, `carriedBy_iff_image_subset`, `inclusion_injective`, `isCompact_image`, `image_add_subset`, `image_pushforward_subset` in [`Singular.lean`](SharpTopologicalOverlap/Singular.lean) | Proved on the actual TauCeti chain modules. Carriers are defined by the image of subspace inclusion and identified with concrete support. |
-| Relative homology filling criterion (§2.3), block H | `Singular.relative_cycle_fills`, `fills_of_isZero_homology`, `fills_trans`, `fills_chain` in [`Singular/Relative.lean`](SharpTopologicalOverlap/Singular/Relative.lean) | Proved, including degree zero and both carriers in one ambient chain module. Vanishing is actual TauCeti relative singular homology; `Fills` is its concrete consequence. |
-| Lemma 2.2, prism and deformation retracts (`lem:prism`), block H | `Singular.boundary_prism_zero`, `boundary_prism_succ`, `carriedBy_prism`, `image_prism_subset`, `fills_of_homotopyRel` in [`Singular/Prism.lean`](SharpTopologicalOverlap/Singular/Prism.lean), [`Singular/Deformation.lean`](SharpTopologicalOverlap/Singular/Deformation.lean) | Proved using the library chain homotopy, its naturality for restricted pairs, and the checked relative-homology bridge. |
-| Weight polynomials (§2.4), block P | `WeightPolynomial.weightPolynomial`, `contDiff`, `hasFDerivAt`, `hessian_eq_fderiv_fderiv`, `euler`, `partial_euler`, `le_sum_pow`, `simplex_le_one`, `simplex_partial_le`, `uniform_value`, `realized_independenceComplex`, `hessian_restrict_eq` in [`Polynomial.lean`](SharpTopologicalOverlap/Polynomial.lean) | Proved. The degree parameter is the edge cardinality (`d+1` in the paper). Includes the filtered-family convention, actual Frechet derivatives, symmetric zero-diagonal Hessian, independence-precomplex zero set, and active-coordinate restrictions. |
-| Lemma 6.1, compatible exceptional vertices (`lem:covers`), block D | `IntersectionData.exceptionalSet_card_le`, `exceptionalSet_mono`, `remainingVertices_nonempty`, `cochain_eq_zero_on_remaining`, `vertex_cochain_eq_on_remaining`, `remainingFamily_hasCocycleParity`, `remainingFamily_image` in [`Deletion.lean`](SharpTopologicalOverlap/Deletion.lean) | Proved from the checked intersection data. Choices of maximal disjoint support families are global per target face. The common cocycle is on the actual subtype of remaining vertices; its ambient image is exactly upward support restricted to those vertices. |
-| Theorem 7.1 (`thm:bmn`), BMN Theorem 1.3 | `BMN.exists_configuration`, `BMN.exists_configuration_polynomial_error` in [`BMN.lean`](SharpTopologicalOverlap/BMN.lean) | Proved for every `d ≥ 2` and every `n`, in Euclidean space: convex position, every top face affine independent, and a uniform error `2*d*choose(n-1,d) ≤ 2*d*n^d`. |
-| BMN convex-position and nondegeneracy inputs (§2, Lemma 2.1 and proof of Lemma 2.2) | `BMN.configuration_separated`, `BMN.convexIndependent_of_separated`, `BMN.Separated.affineIndependent_face`, `BMN.convexHull_injective_of_convexIndependent` | Proved using an explicit recursive configuration, supporting linear functionals, positive augmented determinants and coordinate transport; different source subsets span different geometric hulls. |
-| BMN type lemma (BMN Lemma 2.2) | `BMN.type_of_mem_convexHull`, `BMN.hullCount_le_of_separated` in [`BMN/Types.lean`](SharpTopologicalOverlap/BMN/Types.lean) | Proved from the explicit separated geometry. Closed-hull replacement determinants are nonnegative; the adjacent-swap contradictions prove strict interleaving after deleting at most `2*d` vertices. |
-| Affine upper-bound maps (§7) | `affineSkeletonMap`, `image_affineSkeletonMap_face`, `BMN.exists_affine_overlap_bound`, `BMN.exists_continuous_overlap_bound` | Proved with exact closed-face hull images and the same finite error; no geometric provider premise remains. |
-| BMN normalization from `n^(d+1)` to `choose(n,d+1)` | `BMN.normalized_error_eq`, `BMN.tendsto_choose_div_pow`, `BMN.tendsto_normalized_bmn_bound`, `BMN.eventually_exists_normalized_overlap_lt` | Proved: the normalized error is exactly `2*d*(d+1)/n` on the positive-denominator tail, and the upper bound converges to the existing `overlapThreshold d`. |
-| Topological and affine finite minima and constants (Introduction; affine strengthening) | `minimumOverlap`, `affineMinimumOverlap`, `normalizedMinimumOverlap`, `normalizedAffineMinimumOverlap`, `topologicalOverlapConstant`, `affineOverlapConstant` in [`Overlap/Minimum.lean`](SharpTopologicalOverlap/Overlap/Minimum.lean) | Defined independently as attained natural minima and real liminfs; the affine minimum ranges over all vertex placements and their affine interpolation. Finite comparison and `[0,1]` bounds are proved. |
-| Normalized finite lower bound and its limit | `normalized_finite_overlap_bound`, `tendsto_normalized_finite_bound` in [`Overlap/Lower.lean`](SharpTopologicalOverlap/Overlap/Lower.lean) | The finite theorem is divided by `choose(n,d+1)`, and its numerical lower bound converges to `overlapThreshold d`. |
-| Convergence of both normalized finite minimum sequences | `tendsto_normalizedMinimumOverlap`, `tendsto_normalizedAffineMinimumOverlap` in [`Asymptotic.lean`](SharpTopologicalOverlap/Asymptotic.lean) | Squeezed between the normalized finite lower bound and the affine BMN upper bound. |
-| Theorem 1.1 (`thm:main`) and affine strengthening | `topologicalOverlapConstant_eq_threshold`, `affineOverlapConstant_eq_threshold`, `sharp_overlap_constants` in [`Asymptotic.lean`](SharpTopologicalOverlap/Asymptotic.lean) | The liminf values follow from convergence. The combined endpoint expands the factorial threshold and states `c_top = c_aff` and `c_aff = (d+1)!/(d+1)^(d+1)` for every `d ≥ 2`. |
-| Canonical comparison, Theorem 2.3 (`thm:hatcher`), block C | `Comparison.isIso_homologyMap_affineChainComplexMapIn`, `canonicalHomologyComparison` in [`Comparison/Canonical.lean`](SharpTopologicalOverlap/Comparison/Canonical.lean) and [`Provider.lean`](SharpTopologicalOverlap/Comparison/Provider.lean) | Proved for the actual affine generator map, via its cellular basis classes and naturality. Includes arbitrary ambient precomplexes, with their actual vertex subtype and empty carriers. |
-| Supported inverse, Lemma 2.4, block C | `Comparison.supportedComparison`, `supportedQ`, `supportedQ_carriedBy`, `boundary_supportedQ_zero`, `boundary_supportedQ_succ` in [`Comparison/Supported.lean`](SharpTopologicalOverlap/Comparison/Supported.lean) | Proved unconditionally. The chain map preserves all simplicial carriers simultaneously and sends the uniform point chain to the prescribed vertex; the chain homotopy preserves those same carriers. |
-| Logarithmic barrier and generic perturbation (§5), block B | `Barrier.barrier_critical_iff`, `manifoldMorseIndex_barrier`, `isCompact_barrierSublevel`, `exists_small_morse_tilt` in [`Barrier/Basic.lean`](SharpTopologicalOverlap/Barrier/Basic.lean) and [`Generic.lean`](SharpTopologicalOverlap/Barrier/Generic.lean) | Proved for the actual open-simplex manifold. Includes smoothness, critical multiplier estimates, properness, the Hessian/index identification and arbitrarily small Morse tilts. |
-| Uniform critical-index persistence, Lemma 5.7 (`lem:persistence`), block B | `Barrier.faceCritical_of_critical_limit`, `tendsto_critical_barrier_value`, `eventually_faceIndex_le_barrierIndex_of_tendsto`, `exists_barrier_index_persistence`, `exists_manifold_index_persistence` in [`Barrier.lean`](SharpTopologicalOverlap/Barrier.lean) | Proved on every positive compact band strictly below `overlapThreshold d`. Restricts Hessians to the fixed support of the limiting point and combines lower semicontinuity with Corollary 4.2. See the [verification record](docs/barrier-verification.md). |
-| Theorem 5.1 (`thm:weights`), block V | `Sublevel.sublevel_cycle_fills`, `Sublevel.sublevel_homology_vanishes` in [`Sublevel.lean`](SharpTopologicalOverlap/Sublevel.lean) | Proved unconditionally for every finite nonempty vertex type and uniform cocycle, in all degrees `j ≤ d`, including zero. Uses the actual sublevel/zero-set topological pair; no analytic provider premise remains. |
-| Nested weight spaces, Lemma 6.2 (`lem:carriers`), block W | `IntersectionData.weightSpace_mono`, `independentSpace_mono`, `uniform_mem_weightSpace`, `weightSpace_fills`, `weightSpace_homology_vanishes` in [`WeightSpaces.lean`](SharpTopologicalOverlap/WeightSpaces.lean) and [`WeightSpaces/Vanishing.lean`](SharpTopologicalOverlap/WeightSpaces/Vanishing.lean) | Proved, including the exceptional-mass deletion deformation, exact remaining-face pair transport, uniform-point inequality, and actual ambient relative fillings/vanishing in every degree `j ≤ d`. |
+| Deletion constant, equation `eq:C` | `deletionBound`, `deletionBound_one`, `add_one_le_of_deletionBound_lt` | [Basic](SharpTopologicalOverlap/Basic.lean) |
+| Simplex, faces and skeleton, §2.1 | `Simplex`, `closedFace`, `openFace`, `Skeleton`, `skeletonRealizationHomeomorph` | [Simplex](SharpTopologicalOverlap/Simplex.lean), [Skeleton](SharpTopologicalOverlap/Skeleton.lean) |
+| Overlap, Introduction | `facesAt`, `overlap`, `overlap_attained`, `overlap_le_choose` | [Overlap](SharpTopologicalOverlap/Overlap.lean) |
+| Chains, cochains and cocycle parity, §2.2 | `Simplicial.Chain`, `Simplicial.Cochain`, `Simplicial.evaluation_coboundary`, `Simplicial.isCocycle_full_iff_parity` | [Simplicial](SharpTopologicalOverlap/Simplicial.lean) |
+| Relative fillings and prism, §2.3 and Lemma 2.2 | `Singular.fills_of_isZero_homology`, `Singular.fills_of_homotopyRel`, `Singular.boundary_prism_zero`, `Singular.boundary_prism_succ` | [Relative](SharpTopologicalOverlap/Singular/Relative.lean), [Prism](SharpTopologicalOverlap/Singular/Prism.lean), [Deformation](SharpTopologicalOverlap/Singular/Deformation.lean) |
+| Canonical comparison and supported inverse, Theorem 2.3 and Lemma 2.4 | `Comparison.canonicalHomologyComparison`, `Comparison.supportedComparison`, `Comparison.supportedQ_carriedBy` | [Provider](SharpTopologicalOverlap/Comparison/Provider.lean), [Supported](SharpTopologicalOverlap/Comparison/Supported.lean) |
+| Weight polynomials, §2.4 | `WeightPolynomial.weightPolynomial`, `WeightPolynomial.hessian_eq_fderiv_fderiv`, `WeightPolynomial.realized_independenceComplex` | [Polynomial](SharpTopologicalOverlap/Polynomial.lean) |
+| Intersection cochains, Lemma 3.1 and Appendix A | `IntersectionData`, `IntersectionWitness`, `exists_intersectionData` | [Intersection](SharpTopologicalOverlap/Intersection.lean), [Existence](SharpTopologicalOverlap/Intersection/Existence.lean) |
+| Generic placements, Lemma A.2 | `Geometry.exists_genericPlacement` | [GenericPlacements](SharpTopologicalOverlap/Geometry/GenericPlacements.lean) |
+| Spectral rigidity and face index, Lemma 4.1 and Corollary 4.2 | `Spectral.spectral_index_rigidity`, `Spectral.faceCritical_index_ge` | [Partite](SharpTopologicalOverlap/Spectral/Partite.lean), [FaceRestriction](SharpTopologicalOverlap/Spectral/FaceRestriction.lean) |
+| Barrier calculus and index persistence, §5 and Lemma 5.7 | `Barrier.barrier_critical_iff`, `Barrier.exists_small_morse_tilt`, `Barrier.exists_barrier_index_persistence` | [Basic](SharpTopologicalOverlap/Barrier/Basic.lean), [Generic](SharpTopologicalOverlap/Barrier/Generic.lean), [Persistence](SharpTopologicalOverlap/Barrier/Persistence.lean) |
+| Relative sublevel vanishing, Theorem 5.1 | `Sublevel.sublevel_cycle_fills`, `Sublevel.sublevel_homology_vanishes` | [Sublevel](SharpTopologicalOverlap/Sublevel.lean) |
+| Compatible exceptional vertices, Lemma 6.1 | `IntersectionData.exceptionalSet_card_le`, `IntersectionData.exceptionalSet_mono`, `IntersectionData.remainingFamily_hasCocycleParity` | [Deletion](SharpTopologicalOverlap/Deletion.lean) |
+| Nested weight spaces, Lemma 6.2 | `IntersectionData.weightSpace_mono`, `IntersectionData.uniform_mem_weightSpace`, `IntersectionData.weightSpace_fills`, `IntersectionData.weightSpace_homology_vanishes` | [WeightSpaces](SharpTopologicalOverlap/WeightSpaces.lean), [Vanishing](SharpTopologicalOverlap/WeightSpaces/Vanishing.lean) |
+| Descending contradiction, §6 | `Descending.SimplicialDescent.false`, `Descending.FillingInputs.false` | [Algebra](SharpTopologicalOverlap/Descending/Algebra.lean), [Fillings](SharpTopologicalOverlap/Descending/Fillings.lean) |
+| Finite overlap bound, Theorem 1.2 | `finite_overlap_bound` | [Finite](SharpTopologicalOverlap/Finite.lean) |
+| BMN upper construction, Theorem 7.1 | `BMN.exists_configuration`, `BMN.exists_configuration_polynomial_error`, `BMN.exists_affine_overlap_bound`, `BMN.exists_affineSkeletonMap_overlap_bound` | [BMN](SharpTopologicalOverlap/BMN.lean) |
+| Normalization and finite minima, Introduction and §7 | `minimumOverlap`, `affineMinimumOverlap`, `normalizedMinimumOverlap`, `normalizedAffineMinimumOverlap`, `topologicalOverlapConstant`, `affineOverlapConstant` | [Minimum](SharpTopologicalOverlap/Overlap/Minimum.lean) |
+| Sharp asymptotic value, Theorem 1.1 and affine strengthening | `tendsto_normalizedMinimumOverlap`, `tendsto_normalizedAffineMinimumOverlap`, `topologicalOverlapConstant_eq_threshold`, `affineOverlapConstant_eq_threshold`, `sharp_overlap_constants` | [Asymptotic](SharpTopologicalOverlap/Asymptotic.lean) |
 
-The foundation work follows [the implementation plan](docs/foundation-plan.md).
-The [detailed blueprint](docs/blueprint.md) specifies the subsequent modules,
-intermediate statements, dependency order, and completion checks for Theorem 1.2.
-Only Theorems 1.1 and 1.2 must retain their exact manuscript statements;
-intermediate statements may be replaced by simpler formalization routes.
+The geometric existence theorem constructs its subdivisions, generic placements,
+target cycle and all five intersection-cochain properties from the continuous
+map. The comparison and sublevel-vanishing inputs to the finite theorem are
+also proved. The BMN overlap estimate has uniform error
+`2 * d * choose(n - 1, d)`, which is at most `2 * d * n^d`.
+For `d ≥ 2`, the geometric theorem also supplies convex position and
+affine independence on every top face.
 
-The foundation's module checks and full project build pass. A transitive axiom
-audit of 38 major endpoints found only `propext`, `Classical.choice`, and
-`Quot.sound`, with no placeholders or project axioms. The intended Theorem 1.2
-proposition type-checks on `Skeleton (Fin n) d` with target
-`EuclideanSpace ℝ (Fin d)`; this is a statement check, not a proof of the theorem.
-The source closed-face identification is proved. See the
-[foundation verification details](docs/foundation-verification.md).
+## Verification
 
-Block G is complete. The [block plan](docs/intersection-plan.md) records the
-actual construction and work division; the [independent verification](docs/intersection-verification.md)
-records the build, transitive axiom audit and boundary cases. The complete
-existence theorem constructs its subdivisions, placements, target cycle and
-intersection cochains from the continuous map. Blocks C, B, V, W and the
-final assembly now complete Theorem 1.2. Each of those completed blocks has
-its own commit. The subsequent asymptotic assembly adds Theorem 1.1 and
-the equality with the independently defined affine constant.
+The root build checks the complete library. The three theorem audit files
+import only the public project root, restate the manuscript conclusions with
+explicit constants, and print the transitive axioms of the endpoints:
 
-The 10 November 2026 maintenance pass removed the build warnings without
-disabling linters. `lake --wfail build` passed (9789 jobs) with no warnings.
-Both persistent audits, `verification/BlockG.lean` and
-`verification/Theorem12.lean`, passed with `-DwarningAsError=true`; their
-axiom reports contain only `propext`, `Classical.choice`, and `Quot.sound`.
-The public Theorem 1.2 statement and the reference manuscript are unchanged.
+```sh
+lake --wfail build
+lake env lean -DwarningAsError=true verification/Theorem12.lean
+lake env lean -DwarningAsError=true verification/Theorem71.lean
+lake env lean -DwarningAsError=true verification/Theorem11.lean
+```
 
-The Theorem 7.1 implementation also passed `lake --wfail build` (9825 jobs).
-The root-only `verification/Theorem71.lean` and existing Theorem 1.2 harness
-both passed with `-DwarningAsError=true`; all reported dependencies use only
-`propext`, `Classical.choice`, and `Quot.sound`. The BMN finite construction,
-continuous-map bound and factorial-normalized eventual upper bound have no
-remaining proof gaps or provider premises.
-
-The strengthened Theorem 1.1 assembly passed `lake --wfail build` (9831
-jobs). Its root-only `verification/Theorem11.lean` and the existing
-Theorem 1.2 and Theorem 7.1 audits passed with `-DwarningAsError=true`.
-Both full sequence limits, both independently defined constants, and the
-expanded factorial endpoint use only `propext`, `Classical.choice`, and
-`Quot.sound`. No placeholders or project proof axioms were introduced.
-The reference manuscript remains unchanged.
+The library contains no `sorry`, `admit`, or project proof axioms. The target
+theorems depend only on `propext`, `Classical.choice`, and `Quot.sound`.
+See the [README](README.md) for dependency installation and cache commands.

@@ -39,7 +39,7 @@ attribute [instance] IntersectionWitness.vertexFintype IntersectionWitness.verte
 /-- Lemma 3.1: every continuous map in the stated dimension and size range
 has a finite `d`-dimensional target cycle and all five intersection-cochain
 properties. No geometric construction is left as a premise. -/
-theorem exists_intersectionData (hd : 2 ≤ d) (hn : d + 1 ≤ n)
+theorem exists_intersectionData (hd : 0 < d) (hn : d + 1 ≤ n)
     (f : C(Skeleton (Fin n) d, EuclideanSpace ℝ (Fin d))) :
     Nonempty (IntersectionWitness f) := by
   classical
@@ -101,7 +101,7 @@ theorem exists_intersectionData (hd : 2 ≤ d) (hn : d + 1 ≤ n)
       exact TargetCycle.boundary_refinedCycle k r
     cochain := a
     facet_coboundary := barycentric_family_facet_coboundary j r D yh hyGeneric hinside
-    vertex_cocycle := barycentric_family_vertex_cocycle (by omega : 0 < d)
+    vertex_cocycle := barycentric_family_vertex_cocycle hd
       j r D yh hyGeneric hinside
     normalization := barycentric_family_normalization j r D yh hyGeneric hinside
     common_point := hcommon

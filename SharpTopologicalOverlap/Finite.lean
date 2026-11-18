@@ -11,7 +11,7 @@ public import SharpTopologicalOverlap.Sublevel
 namespace SharpTopologicalOverlap
 
 /-- Theorem 1.2 of the reference manuscript. -/
-theorem finite_overlap_bound {n d : ℕ} (hd : 2 ≤ d) (hn : deletionBound d < n)
+theorem finite_overlap_bound {n d : ℕ} (hd : 0 < d) (hn : deletionBound d < n)
     (f : C(Skeleton (Fin n) d, EuclideanSpace ℝ (Fin d))) :
     (((n : ℝ) - deletionBound d) / (d + 1 : ℝ)) ^ (d + 1) ≤ (overlap f : ℝ) :=
   finite_overlap_bound_of_providers hd hn f Comparison.canonicalHomologyComparison

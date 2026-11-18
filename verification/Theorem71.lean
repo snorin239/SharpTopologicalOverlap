@@ -53,6 +53,7 @@ example {d : ℕ} (hd : 2 ≤ d) :
 #print axioms BMN.exists_configuration
 #print axioms BMN.exists_configuration_polynomial_error
 #print axioms BMN.exists_affine_overlap_bound
+#print axioms BMN.exists_affineSkeletonMap_overlap_bound
 #print axioms BMN.exists_continuous_overlap_bound
 #print axioms BMN.convexHull_injective_of_convexIndependent
 #print axioms BMN.tendsto_normalized_bmn_bound

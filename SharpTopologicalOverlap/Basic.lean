@@ -38,4 +38,17 @@ theorem add_one_lt_of_deletionBound_lt {d n : ℕ} (hd : 2 ≤ d)
     (hn : deletionBound d < n) : d + 1 < n :=
   (add_one_le_deletionBound hd).trans_lt hn
 
+/-- In dimension one the deletion sum has a single term of value one. -/
+theorem deletionBound_one : deletionBound 1 = 1 := by decide
+
+/-- Above the deletion bound there are enough vertices for a top-dimensional face. -/
+theorem add_one_le_of_deletionBound_lt {d n : ℕ} (hd : 0 < d)
+    (hn : deletionBound d < n) : d + 1 ≤ n := by
+  by_cases hd₂ : 2 ≤ d
+  · exact Nat.le_of_lt (add_one_lt_of_deletionBound_lt hd₂ hn)
+  · have h : d = 1 := by omega
+    subst d
+    rw [deletionBound_one] at hn
+    omega
+
 end SharpTopologicalOverlap

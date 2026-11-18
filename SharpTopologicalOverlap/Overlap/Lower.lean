@@ -13,7 +13,7 @@ open Filter
 open scoped Topology
 
 /-- The finite theorem, with the same binomial normalization as the constants. -/
-theorem normalized_finite_overlap_bound {n d : ℕ} (hd : 2 ≤ d)
+theorem normalized_finite_overlap_bound {n d : ℕ} (hd : 0 < d)
     (hn : deletionBound d < n)
     (f : C(Skeleton (Fin n) d, EuclideanSpace ℝ (Fin d))) :
     (((n : ℝ) - deletionBound d) / (d + 1 : ℝ)) ^ (d + 1) /

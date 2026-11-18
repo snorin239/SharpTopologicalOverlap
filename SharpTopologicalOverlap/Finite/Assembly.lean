@@ -57,7 +57,7 @@ end IntersectionData
 /-- The exact finite bound, conditional only on the separately constructed
 comparison and analytic sublevel providers. This is not the unconditional
 Theorem 1.2. -/
-theorem finite_overlap_bound_of_providers {n d : ℕ} (hd : 2 ≤ d)
+theorem finite_overlap_bound_of_providers {n d : ℕ} (hd : 0 < d)
     (hn : deletionBound d < n)
     (f : C(Skeleton (Fin n) d, EuclideanSpace ℝ (Fin d)))
     (cmp : Comparison.CanonicalHomologyComparison (Fin n))
@@ -74,7 +74,7 @@ theorem finite_overlap_bound_of_providers {n d : ℕ} (hd : 2 ≤ d)
   let x : Fin n := ⟨0, hnpos⟩
   let ρ := Comparison.supportedComparison_of_canonicalHomology cmp x
   obtain ⟨w⟩ := exists_intersectionData hd
-    (Nat.le_of_lt (add_one_lt_of_deletionBound_lt hd hn)) f
+    (add_one_le_of_deletionBound_lt hd hn) f
   let I := w.data
   have hH : ∀ p q, p + q = d → ∀ τ : Cell w.complex p,
       IsZero ((Sublevel.sublevelPair d (I.remainingFamily τ)).singularHomology
@@ -84,6 +84,6 @@ theorem finite_overlap_bound_of_providers {n d : ℕ} (hd : 2 ≤ d)
     let : Nonempty (I.remainingVertices τ) := ⟨⟨i, hi⟩⟩
     exact hV (I.remainingVertices τ) (I.remainingFamily τ)
       (I.remainingFamily_uniform τ) (I.remainingFamily_hasCocycleParity τ) q (by omega)
-  exact (I.fillingInputs_of_sublevel (by omega) hn x ρ hsmall hH).false
+  exact (I.fillingInputs_of_sublevel hd hn x ρ hsmall hH).false
 
 end SharpTopologicalOverlap
