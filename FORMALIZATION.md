@@ -59,7 +59,7 @@ overlap. With $N_d=C_d$, `finite_overlap_bound` applies to this restriction
 whenever $m+1>N_d$ and gives
 
 $$
-\operatorname{ov}(f)\ge
+\mathrm{ov}(f)\ge
 \left(\frac{m+1-N_d}{d+1}\right)^{d+1}.
 $$
 

@@ -15,7 +15,7 @@ Let $X_{n,d}$ be the $d$-dimensional skeleton of the simplex on $n$ vertices.
 For a continuous map $f:|X_{n,d}|\to\mathbb R^d$, its overlap is
 
 $$
-\operatorname{ov}(f)=\max_{y\in\mathbb R^d}
+\mathrm{ov}(f)=\max_{y\in\mathbb R^d}
 \#\{\sigma\subseteq[n]:|\sigma|=d+1,\ y\in f(|\sigma|)\}.
 $$
 
@@ -59,7 +59,7 @@ $$
 For $d\ge1$ and $n>C_d$, every continuous map satisfies
 
 $$
-\operatorname{ov}(f)\ge\left(\frac{n-C_d}{d+1}\right)^{d+1}.
+\mathrm{ov}(f)\ge\left(\frac{n-C_d}{d+1}\right)^{d+1}.
 $$
 
 The current paper writes $N_d$ for $C_d$ and indexes the simplex by its
@@ -80,7 +80,7 @@ theorem finite_overlap_bound {n d : ℕ} (hd : 0 < d)
 
 `deletionBound` uses natural-number division for the floor. The subtraction
 in the lower bound takes place in the reals. In dimension one, the deletion bound is $C_1=1$,
-so the finite bound is $\operatorname{ov}(f)\ge ((n-1)/2)^2$ for $n>1$.
+so the finite bound is $\mathrm{ov}(f)\ge ((n-1)/2)^2$ for $n>1$.
 
 ## Structure of the proof
 
