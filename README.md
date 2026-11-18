@@ -133,6 +133,12 @@ at commit `bb8c37d` (9,831 Lake jobs). The project Lean source contains no
 Theorems 1.1, 1.2 and the geometric upper-bound construction report only
 `propext`, `Classical.choice`, and `Quot.sound`.
 
+A fresh `ubuntu-24.04` GitHub Actions build succeeded on November 18, 2026,
+at commit [`de8bcae`](https://github.com/snorin239/SharpTopologicalOverlap/commit/de8bcae610f78cea72894438dc4daac0a4effc41).
+The job ran for 8 min 39 s and passed all three theorem audits and both
+checkout cleanliness checks. The [Actions run](https://github.com/snorin239/SharpTopologicalOverlap/actions/runs/44407974047)
+records the build and audit output.
+
 After building, reproduce the statement checks and axiom audits with:
 
 ```sh
