@@ -2,7 +2,7 @@
 
 This repository contains a Lean 4 formalization, for dimensions $d\ge1$, of
 Theorem 1.1 and a strengthening of Theorem 1.2 of Sergey Norin’s
-[*Sharp topological overlap in every dimension*](paper/main.pdf) (current draft).
+[*Sharp topological overlap in every dimension*](paper/main.pdf).
 
 The [9 November 2026 draft](paper/sharp_topological_overlap.pdf) and its
 [LaTeX source](paper/sharp_topological_overlap.tex) are the reference for the
